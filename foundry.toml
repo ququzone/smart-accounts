@@ -1,6 +1,12 @@
 [profile.default]
-src = 'src'
-out = 'out'
+src = 'contracts'
+out = 'foundry-out'
 libs = ['lib']
+solc_version = '0.8.19'
+optimizer_runs = 800
+via_ir = false
+ffi = true
+fs_permissions = [{ access = "read-write", path = ".forge-snapshots/"}, { access = "read", path = "./foundry-out"}]
 
-# See more config options https://github.com/foundry-rs/foundry/tree/master/config
+[profile.ci]
+fuzz_runs = 100000
