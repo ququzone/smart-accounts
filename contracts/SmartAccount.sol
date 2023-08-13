@@ -5,10 +5,11 @@ import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import "@account-abstraction/contracts/core/BaseAccount.sol";
 
-import "./core/AuthManager.sol";
+import "./core/EntryPointManager.sol";
+import "./core/FallbackManager.sol";
 
-contract SmartAccount is BaseAccount, UUPSUpgradeable, Initializable, AuthManager {
-    constructor(IEntryPoint _EntryPoint) AuthManager(_EntryPoint) {
+contract SmartAccount is BaseAccount, UUPSUpgradeable, Initializable, EntryPointManager, FallbackManager {
+    constructor(IEntryPoint _EntryPoint) EntryPointManager(_EntryPoint) {
         _disableInitializers();
     }
 
