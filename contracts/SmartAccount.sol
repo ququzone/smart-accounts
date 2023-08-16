@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import "@account-abstraction/contracts/core/BaseAccount.sol";
 
 import "./core/EntryPointManager.sol";
+import "./core/ExecutionManager.sol";
 import "./core/FallbackManager.sol";
 import "./core/ValidatorManager.sol";
 
@@ -14,6 +15,7 @@ contract SmartAccount is
     UUPSUpgradeable,
     Initializable,
     EntryPointManager,
+    ExecutionManager,
     FallbackManager,
     ValidatorManager
 {
