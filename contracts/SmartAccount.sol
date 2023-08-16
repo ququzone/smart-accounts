@@ -7,8 +7,16 @@ import "@account-abstraction/contracts/core/BaseAccount.sol";
 
 import "./core/EntryPointManager.sol";
 import "./core/FallbackManager.sol";
+import "./core/ValidatorManager.sol";
 
-contract SmartAccount is BaseAccount, UUPSUpgradeable, Initializable, EntryPointManager, FallbackManager {
+contract SmartAccount is
+    BaseAccount,
+    UUPSUpgradeable,
+    Initializable,
+    EntryPointManager,
+    FallbackManager,
+    ValidatorManager
+{
     constructor(IEntryPoint _EntryPoint) EntryPointManager(_EntryPoint) {
         _disableInitializers();
     }
@@ -22,7 +30,14 @@ contract SmartAccount is BaseAccount, UUPSUpgradeable, Initializable, EntryPoint
         virtual
         override
         returns (uint256 validationData)
-    {}
+    {
+        (address validator, bytes memory signature) = abi.decode(userOp.signature, (address, bytes));
+
+        if (!isValidatorEnabled(validator)) {
+            return SIG_VALIDATION_FAILED;
+        }
+        return IValidator(validator).validateSignature(userOpHash, signature);
+    }
 
     function _authorizeUpgrade(address newImplementation) internal virtual override onlyEntryPoint {}
 }

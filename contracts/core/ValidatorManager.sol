@@ -15,10 +15,6 @@ abstract contract ValidatorManager is Authority {
 
     mapping(address => address) internal validators;
 
-    constructor() {
-        validators[Contants.SENTINEL] = Contants.SENTINEL;
-    }
-
     function getValidatorsPaginated(address start, uint256 pageSize)
         external
         view
@@ -64,5 +60,9 @@ abstract contract ValidatorManager is Authority {
 
     function isValidatorEnabled(address validator) public view returns (bool) {
         return Contants.SENTINEL != validator && validators[validator] != address(0);
+    }
+
+    function _setupValidators() internal {
+        validators[Contants.SENTINEL] = Contants.SENTINEL;
     }
 }

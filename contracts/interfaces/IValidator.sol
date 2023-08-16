@@ -1,10 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import {UserOperation} from "@account-abstraction/contracts/interfaces/UserOperation.sol";
-
 interface IValidator {
-    function validateUserOp(UserOperation calldata userOp, bytes32 userOpHash)
+    function validateSignature(bytes32 userOpHash, bytes calldata signature)
         external
         payable
         returns (uint256 validationData);
