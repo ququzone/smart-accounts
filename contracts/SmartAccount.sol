@@ -23,6 +23,22 @@ contract SmartAccount is
         _disableInitializers();
     }
 
+    function initialize(address defalutCallbackHandler, address[] calldata validators, bytes[] calldata data)
+        external
+        initializer
+    {
+        if (validators.length != data.length) {
+            revert WrongArrayLength();
+        }
+        _setFallbackHandler(defalutCallbackHandler);
+        for (uint256 i = 0; i < validators.length;) {
+            enableValidator(validators[i], data[i]);
+            unchecked {
+                i++;
+            }
+        }
+    }
+
     function entryPoint() public view virtual override returns (IEntryPoint) {
         return _entryPoint();
     }

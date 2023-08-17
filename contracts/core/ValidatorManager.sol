@@ -35,7 +35,7 @@ abstract contract ValidatorManager is Authority {
         }
     }
 
-    function enableValidator(address validator, bytes calldata data) external onlySelf {
+    function enableValidator(address validator, bytes calldata data) public onlySelf {
         if (validator == address(0) || validator == Contants.SENTINEL) {
             revert ValidatorCannotBeZeroOrSentinel(validator);
         }

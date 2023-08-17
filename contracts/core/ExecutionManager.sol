@@ -4,6 +4,8 @@ pragma solidity 0.8.19;
 import "../common/Authority.sol";
 
 abstract contract ExecutionManager is Authority {
+    error WrongArrayLength();
+
     function execute(address dest, uint256 value, bytes calldata func) external onlyEntryPoint {
         _call(dest, value, func);
     }
@@ -12,14 +14,22 @@ abstract contract ExecutionManager is Authority {
         external
         onlyEntryPoint
     {
-        require(dest.length == func.length && (value.length == 0 || value.length == func.length), "wrong array lengths");
+        if (dest.length != func.length || (value.length != 0 && value.length != func.length)) {
+            revert WrongArrayLength();
+        }
         if (value.length == 0) {
-            for (uint256 i = 0; i < dest.length; i++) {
+            for (uint256 i = 0; i < dest.length;) {
                 _call(dest[i], 0, func[i]);
+                unchecked {
+                    i++;
+                }
             }
         } else {
-            for (uint256 i = 0; i < dest.length; i++) {
+            for (uint256 i = 0; i < dest.length;) {
                 _call(dest[i], value[i], func[i]);
+                unchecked {
+                    i++;
+                }
             }
         }
     }
