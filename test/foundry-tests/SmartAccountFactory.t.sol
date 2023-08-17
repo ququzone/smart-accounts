@@ -31,7 +31,7 @@ contract CreateAccountTest is Test {
         (address[] memory validators, address next) = account.getValidatorsPaginated(Contants.SENTINEL, 5);
         assertEq(validators.length, 1);
         assertEq(validators[0], address(validator));
-        assertEq(next, address(0));
+        assertEq(next, Contants.SENTINEL);
         assertEq(accountOwner, validator.owner(address(account)));
     }
 }

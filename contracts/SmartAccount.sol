@@ -31,6 +31,7 @@ contract SmartAccount is
             revert WrongArrayLength();
         }
         _setFallbackHandler(defalutCallbackHandler);
+        _setupValidators();
         for (uint256 i = 0; i < validators.length;) {
             _enableValidator(validators[i], data[i]);
             unchecked {
