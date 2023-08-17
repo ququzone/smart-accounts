@@ -42,7 +42,7 @@ abstract contract ValidatorManager is Authority {
         if (validators[validator] != address(0)) revert ValidatorAlreadyEnabled(validator);
         validators[validator] = validators[Contants.SENTINEL];
         validators[Contants.SENTINEL] = validator;
-        IValidator(validator).setup(data);
+        IValidator(validator).enable(data);
         emit EnabledValidator(validator);
     }
 

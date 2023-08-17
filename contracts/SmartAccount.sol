@@ -38,7 +38,7 @@ contract SmartAccount is
         if (!isValidatorEnabled(validator)) {
             return SIG_VALIDATION_FAILED;
         }
-        return IValidator(validator).validateSignature(userOpHash, signature);
+        return IValidator(validator).validateSignature(userOp.sender, userOpHash, signature);
     }
 
     function _authorizeUpgrade(address newImplementation) internal virtual override onlyEntryPoint {}
