@@ -32,7 +32,7 @@ contract SmartAccount is
         }
         _setFallbackHandler(defalutCallbackHandler);
         for (uint256 i = 0; i < validators.length;) {
-            enableValidator(validators[i], data[i]);
+            _enableValidator(validators[i], data[i]);
             unchecked {
                 i++;
             }
