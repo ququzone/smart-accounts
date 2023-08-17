@@ -41,6 +41,9 @@ const config: HardhatUserConfig = {
       },
     },
   },
+  typechain: {
+    outDir: "types",
+  },
 };
 
 export default config;
