@@ -7,6 +7,9 @@ import "../interfaces/IValidator.sol";
 import "../common/Contants.sol";
 
 contract ECDSAValidator is IValidator {
+    string public constant override NAME = "ECDSA Validator";
+    string public constant override VERSION = "0.0.1";
+
     event OwnerChanged(address indexed account, address indexed oldOwner, address indexed newOwner);
 
     mapping(address => address) public owner;

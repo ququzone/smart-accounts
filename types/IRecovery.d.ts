@@ -14,41 +14,37 @@ import {
   Contract,
   ContractTransaction,
   Overrides,
-  PayableOverrides,
   CallOverrides,
 } from "@ethersproject/contracts";
 import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
-interface IValidatorInterface extends ethers.utils.Interface {
+interface IRecoveryInterface extends ethers.utils.Interface {
   functions: {
     "NAME()": FunctionFragment;
     "VERSION()": FunctionFragment;
-    "enable(bytes)": FunctionFragment;
-    "validateSignature(address,bytes32,bytes)": FunctionFragment;
+    "bind(bytes)": FunctionFragment;
+    "recover(bytes,address,bytes)": FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: "NAME", values?: undefined): string;
   encodeFunctionData(functionFragment: "VERSION", values?: undefined): string;
-  encodeFunctionData(functionFragment: "enable", values: [BytesLike]): string;
+  encodeFunctionData(functionFragment: "bind", values: [BytesLike]): string;
   encodeFunctionData(
-    functionFragment: "validateSignature",
-    values: [string, BytesLike, BytesLike]
+    functionFragment: "recover",
+    values: [BytesLike, string, BytesLike]
   ): string;
 
   decodeFunctionResult(functionFragment: "NAME", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "VERSION", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "enable", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "validateSignature",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "bind", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "recover", data: BytesLike): Result;
 
   events: {};
 }
 
-export class IValidator extends Contract {
+export class IRecovery extends Contract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -59,7 +55,7 @@ export class IValidator extends Contract {
   removeAllListeners(eventName: EventFilter | string): this;
   removeListener(eventName: any, listener: Listener): this;
 
-  interface: IValidatorInterface;
+  interface: IRecoveryInterface;
 
   functions: {
     NAME(overrides?: CallOverrides): Promise<{
@@ -78,28 +74,25 @@ export class IValidator extends Contract {
       0: string;
     }>;
 
-    enable(
+    bind(data: BytesLike, overrides?: Overrides): Promise<ContractTransaction>;
+
+    "bind(bytes)"(
       data: BytesLike,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "enable(bytes)"(
+    recover(
+      proof: BytesLike,
+      validator: string,
       data: BytesLike,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    validateSignature(
-      account: string,
-      userOpHash: BytesLike,
-      signature: BytesLike,
-      overrides?: PayableOverrides
-    ): Promise<ContractTransaction>;
-
-    "validateSignature(address,bytes32,bytes)"(
-      account: string,
-      userOpHash: BytesLike,
-      signature: BytesLike,
-      overrides?: PayableOverrides
+    "recover(bytes,address,bytes)"(
+      proof: BytesLike,
+      validator: string,
+      data: BytesLike,
+      overrides?: Overrides
     ): Promise<ContractTransaction>;
   };
 
@@ -111,25 +104,25 @@ export class IValidator extends Contract {
 
   "VERSION()"(overrides?: CallOverrides): Promise<string>;
 
-  enable(data: BytesLike, overrides?: Overrides): Promise<ContractTransaction>;
+  bind(data: BytesLike, overrides?: Overrides): Promise<ContractTransaction>;
 
-  "enable(bytes)"(
+  "bind(bytes)"(
     data: BytesLike,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  validateSignature(
-    account: string,
-    userOpHash: BytesLike,
-    signature: BytesLike,
-    overrides?: PayableOverrides
+  recover(
+    proof: BytesLike,
+    validator: string,
+    data: BytesLike,
+    overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "validateSignature(address,bytes32,bytes)"(
-    account: string,
-    userOpHash: BytesLike,
-    signature: BytesLike,
-    overrides?: PayableOverrides
+  "recover(bytes,address,bytes)"(
+    proof: BytesLike,
+    validator: string,
+    data: BytesLike,
+    overrides?: Overrides
   ): Promise<ContractTransaction>;
 
   callStatic: {
@@ -141,23 +134,23 @@ export class IValidator extends Contract {
 
     "VERSION()"(overrides?: CallOverrides): Promise<string>;
 
-    enable(data: BytesLike, overrides?: CallOverrides): Promise<void>;
+    bind(data: BytesLike, overrides?: CallOverrides): Promise<void>;
 
-    "enable(bytes)"(data: BytesLike, overrides?: CallOverrides): Promise<void>;
+    "bind(bytes)"(data: BytesLike, overrides?: CallOverrides): Promise<void>;
 
-    validateSignature(
-      account: string,
-      userOpHash: BytesLike,
-      signature: BytesLike,
+    recover(
+      proof: BytesLike,
+      validator: string,
+      data: BytesLike,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<void>;
 
-    "validateSignature(address,bytes32,bytes)"(
-      account: string,
-      userOpHash: BytesLike,
-      signature: BytesLike,
+    "recover(bytes,address,bytes)"(
+      proof: BytesLike,
+      validator: string,
+      data: BytesLike,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<void>;
   };
 
   filters: {};
@@ -171,22 +164,22 @@ export class IValidator extends Contract {
 
     "VERSION()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    enable(data: BytesLike, overrides?: Overrides): Promise<BigNumber>;
+    bind(data: BytesLike, overrides?: Overrides): Promise<BigNumber>;
 
-    "enable(bytes)"(data: BytesLike, overrides?: Overrides): Promise<BigNumber>;
+    "bind(bytes)"(data: BytesLike, overrides?: Overrides): Promise<BigNumber>;
 
-    validateSignature(
-      account: string,
-      userOpHash: BytesLike,
-      signature: BytesLike,
-      overrides?: PayableOverrides
+    recover(
+      proof: BytesLike,
+      validator: string,
+      data: BytesLike,
+      overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "validateSignature(address,bytes32,bytes)"(
-      account: string,
-      userOpHash: BytesLike,
-      signature: BytesLike,
-      overrides?: PayableOverrides
+    "recover(bytes,address,bytes)"(
+      proof: BytesLike,
+      validator: string,
+      data: BytesLike,
+      overrides?: Overrides
     ): Promise<BigNumber>;
   };
 
@@ -199,28 +192,25 @@ export class IValidator extends Contract {
 
     "VERSION()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    enable(
+    bind(data: BytesLike, overrides?: Overrides): Promise<PopulatedTransaction>;
+
+    "bind(bytes)"(
       data: BytesLike,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "enable(bytes)"(
+    recover(
+      proof: BytesLike,
+      validator: string,
       data: BytesLike,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    validateSignature(
-      account: string,
-      userOpHash: BytesLike,
-      signature: BytesLike,
-      overrides?: PayableOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "validateSignature(address,bytes32,bytes)"(
-      account: string,
-      userOpHash: BytesLike,
-      signature: BytesLike,
-      overrides?: PayableOverrides
+    "recover(bytes,address,bytes)"(
+      proof: BytesLike,
+      validator: string,
+      data: BytesLike,
+      overrides?: Overrides
     ): Promise<PopulatedTransaction>;
   };
 }

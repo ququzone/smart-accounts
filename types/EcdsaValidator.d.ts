@@ -23,11 +23,15 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
 interface EcdsaValidatorInterface extends ethers.utils.Interface {
   functions: {
+    "NAME()": FunctionFragment;
+    "VERSION()": FunctionFragment;
     "enable(bytes)": FunctionFragment;
     "owner(address)": FunctionFragment;
     "validateSignature(address,bytes32,bytes)": FunctionFragment;
   };
 
+  encodeFunctionData(functionFragment: "NAME", values?: undefined): string;
+  encodeFunctionData(functionFragment: "VERSION", values?: undefined): string;
   encodeFunctionData(functionFragment: "enable", values: [BytesLike]): string;
   encodeFunctionData(functionFragment: "owner", values: [string]): string;
   encodeFunctionData(
@@ -35,6 +39,8 @@ interface EcdsaValidatorInterface extends ethers.utils.Interface {
     values: [string, BytesLike, BytesLike]
   ): string;
 
+  decodeFunctionResult(functionFragment: "NAME", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "VERSION", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "enable", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
@@ -63,6 +69,22 @@ export class EcdsaValidator extends Contract {
   interface: EcdsaValidatorInterface;
 
   functions: {
+    NAME(overrides?: CallOverrides): Promise<{
+      0: string;
+    }>;
+
+    "NAME()"(overrides?: CallOverrides): Promise<{
+      0: string;
+    }>;
+
+    VERSION(overrides?: CallOverrides): Promise<{
+      0: string;
+    }>;
+
+    "VERSION()"(overrides?: CallOverrides): Promise<{
+      0: string;
+    }>;
+
     enable(
       data: BytesLike,
       overrides?: Overrides
@@ -102,6 +124,14 @@ export class EcdsaValidator extends Contract {
     ): Promise<ContractTransaction>;
   };
 
+  NAME(overrides?: CallOverrides): Promise<string>;
+
+  "NAME()"(overrides?: CallOverrides): Promise<string>;
+
+  VERSION(overrides?: CallOverrides): Promise<string>;
+
+  "VERSION()"(overrides?: CallOverrides): Promise<string>;
+
   enable(data: BytesLike, overrides?: Overrides): Promise<ContractTransaction>;
 
   "enable(bytes)"(
@@ -128,6 +158,14 @@ export class EcdsaValidator extends Contract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    NAME(overrides?: CallOverrides): Promise<string>;
+
+    "NAME()"(overrides?: CallOverrides): Promise<string>;
+
+    VERSION(overrides?: CallOverrides): Promise<string>;
+
+    "VERSION()"(overrides?: CallOverrides): Promise<string>;
+
     enable(data: BytesLike, overrides?: CallOverrides): Promise<void>;
 
     "enable(bytes)"(data: BytesLike, overrides?: CallOverrides): Promise<void>;
@@ -160,6 +198,14 @@ export class EcdsaValidator extends Contract {
   };
 
   estimateGas: {
+    NAME(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "NAME()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    VERSION(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "VERSION()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     enable(data: BytesLike, overrides?: Overrides): Promise<BigNumber>;
 
     "enable(bytes)"(data: BytesLike, overrides?: Overrides): Promise<BigNumber>;
@@ -187,6 +233,14 @@ export class EcdsaValidator extends Contract {
   };
 
   populateTransaction: {
+    NAME(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "NAME()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    VERSION(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "VERSION()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     enable(
       data: BytesLike,
       overrides?: Overrides

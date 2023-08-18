@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-interface IValidator {
+import "./Metadata.sol";
+
+interface IValidator is Metadata {
     function validateSignature(address account, bytes32 userOpHash, bytes calldata signature)
         external
         payable

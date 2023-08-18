@@ -5,14 +5,14 @@
 import { Contract, Signer } from "ethers";
 import { Provider } from "@ethersproject/providers";
 
-import type { IValidator } from "../IValidator";
+import type { IRecovery } from "../IRecovery";
 
-export class IValidator__factory {
+export class IRecovery__factory {
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
-  ): IValidator {
-    return new Contract(address, _abi, signerOrProvider) as IValidator;
+  ): IRecovery {
+    return new Contract(address, _abi, signerOrProvider) as IRecovery;
   }
 }
 
@@ -51,7 +51,7 @@ const _abi = [
         type: "bytes",
       },
     ],
-    name: "enable",
+    name: "bind",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -59,30 +59,24 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "bytes",
+        name: "proof",
+        type: "bytes",
+      },
+      {
         internalType: "address",
-        name: "account",
+        name: "validator",
         type: "address",
       },
       {
-        internalType: "bytes32",
-        name: "userOpHash",
-        type: "bytes32",
-      },
-      {
         internalType: "bytes",
-        name: "signature",
+        name: "data",
         type: "bytes",
       },
     ],
-    name: "validateSignature",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "validationData",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "payable",
+    name: "recover",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
 ];
