@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rimraf ./artifacts ./cache ./foundry-out ./types",
     "compile": "hardhat compile",
-    "test": "hardhat test ./test/**/*.spec.ts",
+    "test": "hardhat test",
     "snapshots": "UPDATE_SNAPSHOT=1 hardhat test",
     "lint:fix": "forge fmt contracts/ && forge fmt test/ && prettier --write 'test/**/*.ts'",
     "lint": "forge fmt --check && prettier --check 'test/**/*.ts'"
