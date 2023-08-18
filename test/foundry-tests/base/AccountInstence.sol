@@ -14,8 +14,8 @@ contract AccountInstence {
         entryPoint = new EntryPoint();
         accountFactory = new SmartAccountFactory(entryPoint, defaultCallbackHandler);
 
-        account = accountFactory.createAccount(validators, data, salt);
         address accountAddress = accountFactory.getAddress(validators, data, salt);
+        account = accountFactory.createAccount(validators, data, salt);
         require(address(account) == accountAddress, "walletAddress isn't query address");
         require(accountAddress.code.length > 0, "wallet code is empty");
     }
