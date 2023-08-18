@@ -2,10 +2,15 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { BaseAccount } from "./BaseAccount";
+export type { EntryPoint } from "./EntryPoint";
+export type { NonceManager } from "./NonceManager";
+export type { SenderCreator } from "./SenderCreator";
+export type { StakeManager } from "./StakeManager";
 export type { IAccount } from "./IAccount";
 export type { IAggregator } from "./IAggregator";
 export type { IEntryPoint } from "./IEntryPoint";
 export type { INonceManager } from "./INonceManager";
+export type { IPaymaster } from "./IPaymaster";
 export type { IStakeManager } from "./IStakeManager";
 export type { TokenCallbackHandler } from "./TokenCallbackHandler";
 export type { Ierc1822Proxiable } from "./Ierc1822Proxiable";
@@ -25,6 +30,7 @@ export type { EntryPointAuth } from "./EntryPointAuth";
 export type { EntryPointManager } from "./EntryPointManager";
 export type { ExecutionManager } from "./ExecutionManager";
 export type { FallbackManager } from "./FallbackManager";
+export type { RecoveryManager } from "./RecoveryManager";
 export type { ValidatorManager } from "./ValidatorManager";
 export type { DefaultCallbackHandler } from "./DefaultCallbackHandler";
 export type { IRecovery } from "./IRecovery";
@@ -35,10 +41,15 @@ export type { SmartAccountFactory } from "./SmartAccountFactory";
 export type { EcdsaValidator } from "./EcdsaValidator";
 
 export { BaseAccount__factory } from "./factories/BaseAccount__factory";
+export { EntryPoint__factory } from "./factories/EntryPoint__factory";
+export { NonceManager__factory } from "./factories/NonceManager__factory";
+export { SenderCreator__factory } from "./factories/SenderCreator__factory";
+export { StakeManager__factory } from "./factories/StakeManager__factory";
 export { IAccount__factory } from "./factories/IAccount__factory";
 export { IAggregator__factory } from "./factories/IAggregator__factory";
 export { IEntryPoint__factory } from "./factories/IEntryPoint__factory";
 export { INonceManager__factory } from "./factories/INonceManager__factory";
+export { IPaymaster__factory } from "./factories/IPaymaster__factory";
 export { IStakeManager__factory } from "./factories/IStakeManager__factory";
 export { TokenCallbackHandler__factory } from "./factories/TokenCallbackHandler__factory";
 export { Ierc1822Proxiable__factory } from "./factories/Ierc1822Proxiable__factory";
@@ -58,6 +69,7 @@ export { EntryPointAuth__factory } from "./factories/EntryPointAuth__factory";
 export { EntryPointManager__factory } from "./factories/EntryPointManager__factory";
 export { ExecutionManager__factory } from "./factories/ExecutionManager__factory";
 export { FallbackManager__factory } from "./factories/FallbackManager__factory";
+export { RecoveryManager__factory } from "./factories/RecoveryManager__factory";
 export { ValidatorManager__factory } from "./factories/ValidatorManager__factory";
 export { DefaultCallbackHandler__factory } from "./factories/DefaultCallbackHandler__factory";
 export { IRecovery__factory } from "./factories/IRecovery__factory";

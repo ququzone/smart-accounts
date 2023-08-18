@@ -1,18 +1,13 @@
 import { expect } from 'chai'
 import { ethers } from 'hardhat'
 
-import { EntryPoint, EntryPoint__factory } from '@account-abstraction/contracts'
-import { EcdsaValidator, SmartAccountFactory } from '../types'
+import { EcdsaValidator, EntryPoint, SmartAccountFactory } from '../types'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
 import { UserOperationBuilder, UserOperationMiddlewareCtx } from 'userop'
 import { getGasPrice } from 'userop/dist/preset/middleware'
 
-export async function deployEntryPoint(provider = ethers.provider): Promise<EntryPoint> {
-  const factory = new ethers.ContractFactory(
-    EntryPoint__factory.abi,
-    EntryPoint__factory.bytecode,
-    provider.getSigner(),
-  )
+export async function deployEntryPoint(): Promise<EntryPoint> {
+  const factory = await ethers.getContractFactory('EntryPoint')
   return (await factory.deploy()) as EntryPoint
 }
 
@@ -68,13 +63,19 @@ describe('Smart Account tests', () => {
       builder.setVerificationGasLimit(350000)
       const op = await builder.buildOp(entryPoint.address, chainId)
       const ctx = new UserOperationMiddlewareCtx(op, entryPoint.address, chainId)
-      const signature = await owner.signMessage(ethers.utils.arrayify(ctx.getUserOpHash()))
+      let signature = await beneficiary.signMessage(ethers.utils.arrayify(ctx.getUserOpHash()))
       ctx.op.signature = ethers.utils.defaultAbiCoder.encode(['address', 'bytes'], [validator.address, signature])
 
       // deposit gas
       await owner.sendTransaction({ to: account, value: ethers.utils.parseEther('10') })
 
+      await expect(entryPoint.handleOps([ctx.op], beneficiary.address)).to.be.revertedWith('AA24 signature error')
+
+      signature = await owner.signMessage(ethers.utils.arrayify(ctx.getUserOpHash()))
+      ctx.op.signature = ethers.utils.defaultAbiCoder.encode(['address', 'bytes'], [validator.address, signature])
+
       await entryPoint.handleOps([ctx.op], beneficiary.address)
+
       expect(ethers.provider.getCode(account)).not.to.equal('0x')
       expect(await validator.owner(account)).to.equal(owner.address)
     })
