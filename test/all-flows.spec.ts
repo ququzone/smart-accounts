@@ -2,16 +2,15 @@ import { expect } from 'chai'
 import { ethers } from 'hardhat'
 
 import { EntryPoint, EntryPoint__factory } from '@account-abstraction/contracts'
-import { ECDSAValidator, SmartAccountFactory } from '../types'
+import { EcdsaValidator, SmartAccountFactory } from '../types'
 
 export async function deployEntryPoint(provider = ethers.provider): Promise<EntryPoint> {
   const factory = new ethers.ContractFactory(
     EntryPoint__factory.abi,
     EntryPoint__factory.bytecode,
-    await provider.getSigner(),
+    provider.getSigner(),
   )
-  const ep = await factory.deploy()
-  return EntryPoint__factory.connect(await ep.getAddress(), await provider.getSigner())
+  return (await factory.deploy()) as EntryPoint
 }
 
 describe('Smart Account tests', () => {
@@ -26,30 +25,29 @@ describe('Smart Account tests', () => {
     const handler = await (await ethers.getContractFactory('DefaultCallbackHandler')).deploy()
     accountFactory = (await (
       await ethers.getContractFactory('SmartAccountFactory')
-    ).deploy(entryPoint.target, handler.target)) as unknown as SmartAccountFactory
+    ).deploy(entryPoint.address, handler.address)) as SmartAccountFactory
   })
 
   describe('ECDSA validator account', () => {
     let owner: string
-    let validator: ECDSAValidator
+    let validator: EcdsaValidator
 
     before(async () => {
       owner = accounts[0].address
-      validator = (await (await ethers.getContractFactory('ECDSAValidator')).deploy()) as unknown as ECDSAValidator
+      validator = (await (await ethers.getContractFactory('ECDSAValidator')).deploy()) as EcdsaValidator
     })
 
     it('create account use factory', async () => {
-      // @ts-ignore
-      const account = await accountFactory['getAddress(address[],bytes[],uint256)']([validator.target], [owner], 0)
+      const account = await accountFactory.getAddress([validator.address], [owner], 0)
       expect(await ethers.provider.getCode(account)).to.equal('0x')
 
-      await accountFactory.createAccount([validator.target], [owner], 0)
+      await accountFactory.createAccount([validator.address], [owner], 0)
       expect(ethers.provider.getCode(account)).not.to.equal('0x')
+      expect(await validator.owner(account)).to.equal(owner)
     })
 
     it('create account use userop', async () => {
-      // @ts-ignore
-      const account = await accountFactory['getAddress(address[],bytes[],uint256)']([validator.target], [owner], 1)
+      const account = await accountFactory.getAddress([validator.address], [owner], 1)
       expect(await ethers.provider.getCode(account)).to.equal('0x')
     })
   })

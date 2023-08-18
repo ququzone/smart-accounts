@@ -1,10 +1,13 @@
-import { HardhatUserConfig } from "hardhat/config";
-import "@nomicfoundation/hardhat-toolbox";
+import '@nomiclabs/hardhat-ethers'
+import '@nomiclabs/hardhat-etherscan'
+import '@nomiclabs/hardhat-waffle'
+import 'hardhat-typechain'
 
-const importToml = require('import-toml')
-const foundryConfig = importToml.sync('foundry.toml')
+import importToml from 'import-toml'
+// @ts-ignore
+const foundryConfig = importToml.sync('foundry.toml').profile
 
-const config: HardhatUserConfig = {
+export default {
   networks: {
     hardhat: {
       allowUnlimitedContractSize: true,
@@ -26,12 +29,12 @@ const config: HardhatUserConfig = {
     },
   },
   solidity: {
-    version: foundryConfig.profile.default.solc_version,
+    version: foundryConfig.default.solc_version,
     settings: {
-      viaIR: foundryConfig.profile.default.via_ir,
+      viaIR: foundryConfig.default.via_ir,
       optimizer: {
         enabled: true,
-        runs: foundryConfig.profile.default.optimizer_runs,
+        runs: foundryConfig.default.optimizer_runs,
       },
       metadata: {
         // do not include the metadata hash, since this is machine dependent
@@ -42,8 +45,6 @@ const config: HardhatUserConfig = {
     },
   },
   typechain: {
-    outDir: "types",
+    outDir: "types"
   },
-};
-
-export default config;
+}
