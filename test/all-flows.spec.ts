@@ -55,18 +55,16 @@ describe('Smart Account tests', () => {
       const account = await accountFactory.getAddress([validator.address], [owner.address], 1)
       expect(await ethers.provider.getCode(account)).to.equal('0x')
 
-      const {chainId} = await ethers.provider.getNetwork()
+      const { chainId } = await ethers.provider.getNetwork()
       const builder = new UserOperationBuilder()
       builder.useMiddleware(getGasPrice(ethers.provider))
       builder.setSender(account)
-      builder.setInitCode(ethers.utils.hexConcat([
-        accountFactory.address,
-        accountFactory.interface.encodeFunctionData('createAccount', [
-          [validator.address],
-          [owner.address],
-          1,
+      builder.setInitCode(
+        ethers.utils.hexConcat([
+          accountFactory.address,
+          accountFactory.interface.encodeFunctionData('createAccount', [[validator.address], [owner.address], 1]),
         ]),
-      ]))
+      )
       builder.setVerificationGasLimit(350000)
       const op = await builder.buildOp(entryPoint.address, chainId)
       const ctx = new UserOperationMiddlewareCtx(op, entryPoint.address, chainId)
@@ -74,7 +72,7 @@ describe('Smart Account tests', () => {
       ctx.op.signature = ethers.utils.defaultAbiCoder.encode(['address', 'bytes'], [validator.address, signature])
 
       // deposit gas
-      await owner.sendTransaction({to: account, value: ethers.utils.parseEther('10')})
+      await owner.sendTransaction({ to: account, value: ethers.utils.parseEther('10') })
 
       await entryPoint.handleOps([ctx.op], beneficiary.address)
       expect(ethers.provider.getCode(account)).not.to.equal('0x')
