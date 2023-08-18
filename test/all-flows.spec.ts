@@ -40,18 +40,16 @@ describe('Smart Account tests', () => {
 
     it('create account use factory', async () => {
       // @ts-ignore
-      const account = await accountFactory["getAddress(address[],bytes[],uint256)"]([validator.target], [owner], 0)
+      const account = await accountFactory['getAddress(address[],bytes[],uint256)']([validator.target], [owner], 0)
       expect(await ethers.provider.getCode(account)).to.equal('0x')
 
-      await accountFactory.createAccount(
-        [validator.target], [owner], 0
-      )
+      await accountFactory.createAccount([validator.target], [owner], 0)
       expect(ethers.provider.getCode(account)).not.to.equal('0x')
     })
 
     it('create account use userop', async () => {
       // @ts-ignore
-      const account = await accountFactory["getAddress(address[],bytes[],uint256)"]([validator.target], [owner], 1)
+      const account = await accountFactory['getAddress(address[],bytes[],uint256)']([validator.target], [owner], 1)
       expect(await ethers.provider.getCode(account)).to.equal('0x')
     })
   })
