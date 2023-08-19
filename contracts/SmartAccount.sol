@@ -58,5 +58,17 @@ contract SmartAccount is
         return IValidator(validator).validateSignature(userOp.sender, userOpHash, signature);
     }
 
+    function getDeposit() public view returns (uint256) {
+        return entryPoint().balanceOf(address(this));
+    }
+
+    function addDeposit() public payable {
+        entryPoint().depositTo{value: msg.value}(address(this));
+    }
+
+    function withdrawDepositTo(address payable withdrawAddress, uint256 amount) public onlySelf {
+        entryPoint().withdrawTo(withdrawAddress, amount);
+    }
+
     function _authorizeUpgrade(address newImplementation) internal virtual override onlyEntryPoint {}
 }
