@@ -23,23 +23,27 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
 interface SmartAccountInterface extends ethers.utils.Interface {
   functions: {
+    "addDeposit()": FunctionFragment;
     "disableModule(address,address)": FunctionFragment;
     "enableValidator(address,bytes)": FunctionFragment;
     "entryPoint()": FunctionFragment;
     "execute(address,uint256,bytes)": FunctionFragment;
     "executeBatch(address[],uint256[],bytes[])": FunctionFragment;
+    "getDeposit()": FunctionFragment;
     "getFallbackHandler()": FunctionFragment;
     "getNonce()": FunctionFragment;
     "getValidatorsPaginated(address,uint256)": FunctionFragment;
     "initialize(address,address[],bytes[])": FunctionFragment;
     "isValidatorEnabled(address)": FunctionFragment;
-    "proxiableUUID()": FunctionFragment;
     "setFallbackHandler(address)": FunctionFragment;
-    "upgradeTo(address)": FunctionFragment;
-    "upgradeToAndCall(address,bytes)": FunctionFragment;
     "validateUserOp(tuple,bytes32,uint256)": FunctionFragment;
+    "withdrawDepositTo(address,uint256)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "addDeposit",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "disableModule",
     values: [string, string]
@@ -61,6 +65,10 @@ interface SmartAccountInterface extends ethers.utils.Interface {
     values: [string[], BigNumberish[], BytesLike[]]
   ): string;
   encodeFunctionData(
+    functionFragment: "getDeposit",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "getFallbackHandler",
     values?: undefined
   ): string;
@@ -78,17 +86,8 @@ interface SmartAccountInterface extends ethers.utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(
-    functionFragment: "proxiableUUID",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "setFallbackHandler",
     values: [string]
-  ): string;
-  encodeFunctionData(functionFragment: "upgradeTo", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "upgradeToAndCall",
-    values: [string, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "validateUserOp",
@@ -110,7 +109,12 @@ interface SmartAccountInterface extends ethers.utils.Interface {
       BigNumberish
     ]
   ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawDepositTo",
+    values: [string, BigNumberish]
+  ): string;
 
+  decodeFunctionResult(functionFragment: "addDeposit", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "disableModule",
     data: BytesLike
@@ -125,6 +129,7 @@ interface SmartAccountInterface extends ethers.utils.Interface {
     functionFragment: "executeBatch",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "getDeposit", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getFallbackHandler",
     data: BytesLike
@@ -140,40 +145,29 @@ interface SmartAccountInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "proxiableUUID",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "setFallbackHandler",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "upgradeTo", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "upgradeToAndCall",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "validateUserOp",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawDepositTo",
+    data: BytesLike
+  ): Result;
 
   events: {
-    "AdminChanged(address,address)": EventFragment;
-    "BeaconUpgraded(address)": EventFragment;
     "ChangedFallbackHandler(address,address)": EventFragment;
     "DisabledValidator(address)": EventFragment;
     "EnabledValidator(address)": EventFragment;
     "Initialized(uint8)": EventFragment;
-    "Upgraded(address)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ChangedFallbackHandler"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DisabledValidator"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "EnabledValidator"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
 }
 
 export class SmartAccount extends Contract {
@@ -190,6 +184,10 @@ export class SmartAccount extends Contract {
   interface: SmartAccountInterface;
 
   functions: {
+    addDeposit(overrides?: PayableOverrides): Promise<ContractTransaction>;
+
+    "addDeposit()"(overrides?: PayableOverrides): Promise<ContractTransaction>;
+
     disableModule(
       prevValidator: string,
       validator: string,
@@ -249,6 +247,14 @@ export class SmartAccount extends Contract {
       func: BytesLike[],
       overrides?: Overrides
     ): Promise<ContractTransaction>;
+
+    getDeposit(overrides?: CallOverrides): Promise<{
+      0: BigNumber;
+    }>;
+
+    "getDeposit()"(overrides?: CallOverrides): Promise<{
+      0: BigNumber;
+    }>;
 
     getFallbackHandler(overrides?: CallOverrides): Promise<{
       _handler: string;
@@ -318,14 +324,6 @@ export class SmartAccount extends Contract {
       0: boolean;
     }>;
 
-    proxiableUUID(overrides?: CallOverrides): Promise<{
-      0: string;
-    }>;
-
-    "proxiableUUID()"(overrides?: CallOverrides): Promise<{
-      0: string;
-    }>;
-
     setFallbackHandler(
       handler: string,
       overrides?: Overrides
@@ -334,28 +332,6 @@ export class SmartAccount extends Contract {
     "setFallbackHandler(address)"(
       handler: string,
       overrides?: Overrides
-    ): Promise<ContractTransaction>;
-
-    upgradeTo(
-      newImplementation: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>;
-
-    "upgradeTo(address)"(
-      newImplementation: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>;
-
-    upgradeToAndCall(
-      newImplementation: string,
-      data: BytesLike,
-      overrides?: PayableOverrides
-    ): Promise<ContractTransaction>;
-
-    "upgradeToAndCall(address,bytes)"(
-      newImplementation: string,
-      data: BytesLike,
-      overrides?: PayableOverrides
     ): Promise<ContractTransaction>;
 
     validateUserOp(
@@ -395,7 +371,23 @@ export class SmartAccount extends Contract {
       missingAccountFunds: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
+
+    withdrawDepositTo(
+      withdrawAddress: string,
+      amount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "withdrawDepositTo(address,uint256)"(
+      withdrawAddress: string,
+      amount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
   };
+
+  addDeposit(overrides?: PayableOverrides): Promise<ContractTransaction>;
+
+  "addDeposit()"(overrides?: PayableOverrides): Promise<ContractTransaction>;
 
   disableModule(
     prevValidator: string,
@@ -453,6 +445,10 @@ export class SmartAccount extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
+  getDeposit(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "getDeposit()"(overrides?: CallOverrides): Promise<BigNumber>;
+
   getFallbackHandler(overrides?: CallOverrides): Promise<string>;
 
   "getFallbackHandler()"(overrides?: CallOverrides): Promise<string>;
@@ -507,10 +503,6 @@ export class SmartAccount extends Contract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  proxiableUUID(overrides?: CallOverrides): Promise<string>;
-
-  "proxiableUUID()"(overrides?: CallOverrides): Promise<string>;
-
   setFallbackHandler(
     handler: string,
     overrides?: Overrides
@@ -519,28 +511,6 @@ export class SmartAccount extends Contract {
   "setFallbackHandler(address)"(
     handler: string,
     overrides?: Overrides
-  ): Promise<ContractTransaction>;
-
-  upgradeTo(
-    newImplementation: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>;
-
-  "upgradeTo(address)"(
-    newImplementation: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>;
-
-  upgradeToAndCall(
-    newImplementation: string,
-    data: BytesLike,
-    overrides?: PayableOverrides
-  ): Promise<ContractTransaction>;
-
-  "upgradeToAndCall(address,bytes)"(
-    newImplementation: string,
-    data: BytesLike,
-    overrides?: PayableOverrides
   ): Promise<ContractTransaction>;
 
   validateUserOp(
@@ -581,7 +551,23 @@ export class SmartAccount extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
+  withdrawDepositTo(
+    withdrawAddress: string,
+    amount: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "withdrawDepositTo(address,uint256)"(
+    withdrawAddress: string,
+    amount: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
   callStatic: {
+    addDeposit(overrides?: CallOverrides): Promise<void>;
+
+    "addDeposit()"(overrides?: CallOverrides): Promise<void>;
+
     disableModule(
       prevValidator: string,
       validator: string,
@@ -638,6 +624,10 @@ export class SmartAccount extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    getDeposit(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "getDeposit()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     getFallbackHandler(overrides?: CallOverrides): Promise<string>;
 
     "getFallbackHandler()"(overrides?: CallOverrides): Promise<string>;
@@ -692,10 +682,6 @@ export class SmartAccount extends Contract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    proxiableUUID(overrides?: CallOverrides): Promise<string>;
-
-    "proxiableUUID()"(overrides?: CallOverrides): Promise<string>;
-
     setFallbackHandler(
       handler: string,
       overrides?: CallOverrides
@@ -703,28 +689,6 @@ export class SmartAccount extends Contract {
 
     "setFallbackHandler(address)"(
       handler: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    upgradeTo(
-      newImplementation: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "upgradeTo(address)"(
-      newImplementation: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    upgradeToAndCall(
-      newImplementation: string,
-      data: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "upgradeToAndCall(address,bytes)"(
-      newImplementation: string,
-      data: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -765,13 +729,21 @@ export class SmartAccount extends Contract {
       missingAccountFunds: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    withdrawDepositTo(
+      withdrawAddress: string,
+      amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "withdrawDepositTo(address,uint256)"(
+      withdrawAddress: string,
+      amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
-    AdminChanged(previousAdmin: null, newAdmin: null): EventFilter;
-
-    BeaconUpgraded(beacon: string | null): EventFilter;
-
     ChangedFallbackHandler(
       previousHandler: string | null,
       handler: string | null
@@ -782,11 +754,13 @@ export class SmartAccount extends Contract {
     EnabledValidator(validator: null): EventFilter;
 
     Initialized(version: null): EventFilter;
-
-    Upgraded(implementation: string | null): EventFilter;
   };
 
   estimateGas: {
+    addDeposit(overrides?: PayableOverrides): Promise<BigNumber>;
+
+    "addDeposit()"(overrides?: PayableOverrides): Promise<BigNumber>;
+
     disableModule(
       prevValidator: string,
       validator: string,
@@ -843,6 +817,10 @@ export class SmartAccount extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
+    getDeposit(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "getDeposit()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     getFallbackHandler(overrides?: CallOverrides): Promise<BigNumber>;
 
     "getFallbackHandler()"(overrides?: CallOverrides): Promise<BigNumber>;
@@ -887,10 +865,6 @@ export class SmartAccount extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "proxiableUUID()"(overrides?: CallOverrides): Promise<BigNumber>;
-
     setFallbackHandler(
       handler: string,
       overrides?: Overrides
@@ -899,28 +873,6 @@ export class SmartAccount extends Contract {
     "setFallbackHandler(address)"(
       handler: string,
       overrides?: Overrides
-    ): Promise<BigNumber>;
-
-    upgradeTo(
-      newImplementation: string,
-      overrides?: Overrides
-    ): Promise<BigNumber>;
-
-    "upgradeTo(address)"(
-      newImplementation: string,
-      overrides?: Overrides
-    ): Promise<BigNumber>;
-
-    upgradeToAndCall(
-      newImplementation: string,
-      data: BytesLike,
-      overrides?: PayableOverrides
-    ): Promise<BigNumber>;
-
-    "upgradeToAndCall(address,bytes)"(
-      newImplementation: string,
-      data: BytesLike,
-      overrides?: PayableOverrides
     ): Promise<BigNumber>;
 
     validateUserOp(
@@ -960,9 +912,25 @@ export class SmartAccount extends Contract {
       missingAccountFunds: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
+
+    withdrawDepositTo(
+      withdrawAddress: string,
+      amount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "withdrawDepositTo(address,uint256)"(
+      withdrawAddress: string,
+      amount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    addDeposit(overrides?: PayableOverrides): Promise<PopulatedTransaction>;
+
+    "addDeposit()"(overrides?: PayableOverrides): Promise<PopulatedTransaction>;
+
     disableModule(
       prevValidator: string,
       validator: string,
@@ -1019,6 +987,10 @@ export class SmartAccount extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
+    getDeposit(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "getDeposit()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     getFallbackHandler(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -1067,10 +1039,6 @@ export class SmartAccount extends Contract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    "proxiableUUID()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     setFallbackHandler(
       handler: string,
       overrides?: Overrides
@@ -1079,28 +1047,6 @@ export class SmartAccount extends Contract {
     "setFallbackHandler(address)"(
       handler: string,
       overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
-
-    upgradeTo(
-      newImplementation: string,
-      overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
-
-    "upgradeTo(address)"(
-      newImplementation: string,
-      overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
-
-    upgradeToAndCall(
-      newImplementation: string,
-      data: BytesLike,
-      overrides?: PayableOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "upgradeToAndCall(address,bytes)"(
-      newImplementation: string,
-      data: BytesLike,
-      overrides?: PayableOverrides
     ): Promise<PopulatedTransaction>;
 
     validateUserOp(
@@ -1138,6 +1084,18 @@ export class SmartAccount extends Contract {
       },
       userOpHash: BytesLike,
       missingAccountFunds: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    withdrawDepositTo(
+      withdrawAddress: string,
+      amount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "withdrawDepositTo(address,uint256)"(
+      withdrawAddress: string,
+      amount: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
   };

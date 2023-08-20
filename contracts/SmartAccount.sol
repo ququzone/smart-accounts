@@ -2,7 +2,6 @@
 pragma solidity 0.8.19;
 
 import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import "@account-abstraction/contracts/core/BaseAccount.sol";
 
 import "./core/EntryPointManager.sol";
@@ -12,7 +11,6 @@ import "./core/ValidatorManager.sol";
 
 contract SmartAccount is
     BaseAccount,
-    UUPSUpgradeable,
     Initializable,
     EntryPointManager,
     ExecutionManager,
@@ -69,6 +67,4 @@ contract SmartAccount is
     function withdrawDepositTo(address payable withdrawAddress, uint256 amount) public onlySelf {
         entryPoint().withdrawTo(withdrawAddress, amount);
     }
-
-    function _authorizeUpgrade(address newImplementation) internal virtual override onlyEntryPoint {}
 }
