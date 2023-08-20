@@ -109,7 +109,7 @@ const _abi = [
         type: "address",
       },
     ],
-    name: "disableModule",
+    name: "disableValidator",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

@@ -10,21 +10,56 @@ import {
   BigNumberish,
   PopulatedTransaction,
 } from "ethers";
-import { Contract, ContractTransaction } from "@ethersproject/contracts";
+import {
+  Contract,
+  ContractTransaction,
+  Overrides,
+  CallOverrides,
+} from "@ethersproject/contracts";
 import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
 interface RecoveryManagerInterface extends ethers.utils.Interface {
-  functions: {};
-
-  events: {
-    "AddedRecovery(address)": EventFragment;
-    "RemovedRecovery(address)": EventFragment;
+  functions: {
+    "addRecoveror(address,bytes)": FunctionFragment;
+    "getRecoverorsPaginated(address,uint256)": FunctionFragment;
+    "removeRecoveror(address,address)": FunctionFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "AddedRecovery"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "RemovedRecovery"): EventFragment;
+  encodeFunctionData(
+    functionFragment: "addRecoveror",
+    values: [string, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getRecoverorsPaginated",
+    values: [string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "removeRecoveror",
+    values: [string, string]
+  ): string;
+
+  decodeFunctionResult(
+    functionFragment: "addRecoveror",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getRecoverorsPaginated",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "removeRecoveror",
+    data: BytesLike
+  ): Result;
+
+  events: {
+    "AddedRecoveror(address)": EventFragment;
+    "RemovedRecoveror(address)": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "AddedRecoveror"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RemovedRecoveror"): EventFragment;
 }
 
 export class RecoveryManager extends Contract {
@@ -40,17 +75,227 @@ export class RecoveryManager extends Contract {
 
   interface: RecoveryManagerInterface;
 
-  functions: {};
+  functions: {
+    addRecoveror(
+      recoveror: string,
+      data: BytesLike,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
 
-  callStatic: {};
+    "addRecoveror(address,bytes)"(
+      recoveror: string,
+      data: BytesLike,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
 
-  filters: {
-    AddedRecovery(recovery: null): EventFilter;
+    getRecoverorsPaginated(
+      start: string,
+      pageSize: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      array: string[];
+      next: string;
+      0: string[];
+      1: string;
+    }>;
 
-    RemovedRecovery(recovery: null): EventFilter;
+    "getRecoverorsPaginated(address,uint256)"(
+      start: string,
+      pageSize: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      array: string[];
+      next: string;
+      0: string[];
+      1: string;
+    }>;
+
+    removeRecoveror(
+      prevRecoveror: string,
+      recoveror: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "removeRecoveror(address,address)"(
+      prevRecoveror: string,
+      recoveror: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
   };
 
-  estimateGas: {};
+  addRecoveror(
+    recoveror: string,
+    data: BytesLike,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
 
-  populateTransaction: {};
+  "addRecoveror(address,bytes)"(
+    recoveror: string,
+    data: BytesLike,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  getRecoverorsPaginated(
+    start: string,
+    pageSize: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<{
+    array: string[];
+    next: string;
+    0: string[];
+    1: string;
+  }>;
+
+  "getRecoverorsPaginated(address,uint256)"(
+    start: string,
+    pageSize: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<{
+    array: string[];
+    next: string;
+    0: string[];
+    1: string;
+  }>;
+
+  removeRecoveror(
+    prevRecoveror: string,
+    recoveror: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "removeRecoveror(address,address)"(
+    prevRecoveror: string,
+    recoveror: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  callStatic: {
+    addRecoveror(
+      recoveror: string,
+      data: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "addRecoveror(address,bytes)"(
+      recoveror: string,
+      data: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    getRecoverorsPaginated(
+      start: string,
+      pageSize: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      array: string[];
+      next: string;
+      0: string[];
+      1: string;
+    }>;
+
+    "getRecoverorsPaginated(address,uint256)"(
+      start: string,
+      pageSize: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      array: string[];
+      next: string;
+      0: string[];
+      1: string;
+    }>;
+
+    removeRecoveror(
+      prevRecoveror: string,
+      recoveror: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "removeRecoveror(address,address)"(
+      prevRecoveror: string,
+      recoveror: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+  };
+
+  filters: {
+    AddedRecoveror(recoveror: null): EventFilter;
+
+    RemovedRecoveror(recoveror: null): EventFilter;
+  };
+
+  estimateGas: {
+    addRecoveror(
+      recoveror: string,
+      data: BytesLike,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "addRecoveror(address,bytes)"(
+      recoveror: string,
+      data: BytesLike,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    getRecoverorsPaginated(
+      start: string,
+      pageSize: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "getRecoverorsPaginated(address,uint256)"(
+      start: string,
+      pageSize: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    removeRecoveror(
+      prevRecoveror: string,
+      recoveror: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "removeRecoveror(address,address)"(
+      prevRecoveror: string,
+      recoveror: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+  };
+
+  populateTransaction: {
+    addRecoveror(
+      recoveror: string,
+      data: BytesLike,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "addRecoveror(address,bytes)"(
+      recoveror: string,
+      data: BytesLike,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    getRecoverorsPaginated(
+      start: string,
+      pageSize: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "getRecoverorsPaginated(address,uint256)"(
+      start: string,
+      pageSize: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    removeRecoveror(
+      prevRecoveror: string,
+      recoveror: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "removeRecoveror(address,address)"(
+      prevRecoveror: string,
+      recoveror: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+  };
 }

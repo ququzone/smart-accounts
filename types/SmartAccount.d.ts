@@ -24,7 +24,7 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 interface SmartAccountInterface extends ethers.utils.Interface {
   functions: {
     "addDeposit()": FunctionFragment;
-    "disableModule(address,address)": FunctionFragment;
+    "disableValidator(address,address)": FunctionFragment;
     "enableValidator(address,bytes)": FunctionFragment;
     "entryPoint()": FunctionFragment;
     "execute(address,uint256,bytes)": FunctionFragment;
@@ -45,7 +45,7 @@ interface SmartAccountInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "disableModule",
+    functionFragment: "disableValidator",
     values: [string, string]
   ): string;
   encodeFunctionData(
@@ -116,7 +116,7 @@ interface SmartAccountInterface extends ethers.utils.Interface {
 
   decodeFunctionResult(functionFragment: "addDeposit", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "disableModule",
+    functionFragment: "disableValidator",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -188,13 +188,13 @@ export class SmartAccount extends Contract {
 
     "addDeposit()"(overrides?: PayableOverrides): Promise<ContractTransaction>;
 
-    disableModule(
+    disableValidator(
       prevValidator: string,
       validator: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "disableModule(address,address)"(
+    "disableValidator(address,address)"(
       prevValidator: string,
       validator: string,
       overrides?: Overrides
@@ -389,13 +389,13 @@ export class SmartAccount extends Contract {
 
   "addDeposit()"(overrides?: PayableOverrides): Promise<ContractTransaction>;
 
-  disableModule(
+  disableValidator(
     prevValidator: string,
     validator: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "disableModule(address,address)"(
+  "disableValidator(address,address)"(
     prevValidator: string,
     validator: string,
     overrides?: Overrides
@@ -568,13 +568,13 @@ export class SmartAccount extends Contract {
 
     "addDeposit()"(overrides?: CallOverrides): Promise<void>;
 
-    disableModule(
+    disableValidator(
       prevValidator: string,
       validator: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "disableModule(address,address)"(
+    "disableValidator(address,address)"(
       prevValidator: string,
       validator: string,
       overrides?: CallOverrides
@@ -761,13 +761,13 @@ export class SmartAccount extends Contract {
 
     "addDeposit()"(overrides?: PayableOverrides): Promise<BigNumber>;
 
-    disableModule(
+    disableValidator(
       prevValidator: string,
       validator: string,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "disableModule(address,address)"(
+    "disableValidator(address,address)"(
       prevValidator: string,
       validator: string,
       overrides?: Overrides
@@ -931,13 +931,13 @@ export class SmartAccount extends Contract {
 
     "addDeposit()"(overrides?: PayableOverrides): Promise<PopulatedTransaction>;
 
-    disableModule(
+    disableValidator(
       prevValidator: string,
       validator: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "disableModule(address,address)"(
+    "disableValidator(address,address)"(
       prevValidator: string,
       validator: string,
       overrides?: Overrides

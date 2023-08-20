@@ -33,11 +33,11 @@ const _abi = [
       {
         indexed: false,
         internalType: "address",
-        name: "recovery",
+        name: "recoveror",
         type: "address",
       },
     ],
-    name: "AddedRecovery",
+    name: "AddedRecoveror",
     type: "event",
   },
   {
@@ -46,11 +46,76 @@ const _abi = [
       {
         indexed: false,
         internalType: "address",
-        name: "recovery",
+        name: "recoveror",
         type: "address",
       },
     ],
-    name: "RemovedRecovery",
+    name: "RemovedRecoveror",
     type: "event",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "recoveror",
+        type: "address",
+      },
+      {
+        internalType: "bytes",
+        name: "data",
+        type: "bytes",
+      },
+    ],
+    name: "addRecoveror",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "start",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "pageSize",
+        type: "uint256",
+      },
+    ],
+    name: "getRecoverorsPaginated",
+    outputs: [
+      {
+        internalType: "address[]",
+        name: "array",
+        type: "address[]",
+      },
+      {
+        internalType: "address",
+        name: "next",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "prevRecoveror",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "recoveror",
+        type: "address",
+      },
+    ],
+    name: "removeRecoveror",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
 ];

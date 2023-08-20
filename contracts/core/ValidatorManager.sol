@@ -3,9 +3,12 @@ pragma solidity 0.8.19;
 
 import "../common/Authority.sol";
 import "../common/Contants.sol";
+import "../libraries/LinkedAddressList.sol";
 import "../interfaces/IValidator.sol";
 
 abstract contract ValidatorManager is Authority {
+    using LinkedAddressList for mapping(address => address);
+
     error ValidatorCannotBeZeroOrSentinel(address validator);
     error ValidatorAlreadyEnabled(address validator);
     error ValidatorAndPrevValidatorMismatch(address expectedValidator, address returnedValidator, address prevValidator);
@@ -20,28 +23,11 @@ abstract contract ValidatorManager is Authority {
         view
         returns (address[] memory array, address next)
     {
-        array = new address[](pageSize);
-
-        uint256 count;
-        address current = validators[start];
-        while (current != address(0x0) && current != Contants.SENTINEL && count < pageSize) {
-            array[count] = current;
-            current = validators[current];
-            count++;
-        }
-        next = current;
-        assembly {
-            mstore(array, count)
-        }
+        return validators.page(start, pageSize);
     }
 
     function _enableValidator(address validator, bytes calldata data) internal {
-        if (validator == address(0) || validator == Contants.SENTINEL) {
-            revert ValidatorCannotBeZeroOrSentinel(validator);
-        }
-        if (validators[validator] != address(0)) revert ValidatorAlreadyEnabled(validator);
-        validators[validator] = validators[Contants.SENTINEL];
-        validators[Contants.SENTINEL] = validator;
+        validators.add(validator);
         IValidator(validator).enable(data);
         emit EnabledValidator(validator);
     }
@@ -50,23 +36,16 @@ abstract contract ValidatorManager is Authority {
         _enableValidator(validator, data);
     }
 
-    function disableModule(address prevValidator, address validator) external onlySelf {
-        if (validator == address(0) || validator == Contants.SENTINEL) {
-            revert ValidatorCannotBeZeroOrSentinel(validator);
-        }
-        if (validators[prevValidator] != validator) {
-            revert ValidatorAndPrevValidatorMismatch(validator, validators[prevValidator], prevValidator);
-        }
-        validators[prevValidator] = validators[validator];
-        delete validators[validator];
+    function disableValidator(address prevValidator, address validator) external onlySelf {
+        validators.remove(prevValidator, validator);
         emit DisabledValidator(validator);
     }
 
     function isValidatorEnabled(address validator) public view returns (bool) {
-        return Contants.SENTINEL != validator && validators[validator] != address(0);
+        return validators.contains(validator);
     }
 
     function _setupValidators() internal {
-        validators[Contants.SENTINEL] = Contants.SENTINEL;
+        validators.setup();
     }
 }

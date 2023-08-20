@@ -22,14 +22,14 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
 interface ValidatorManagerInterface extends ethers.utils.Interface {
   functions: {
-    "disableModule(address,address)": FunctionFragment;
+    "disableValidator(address,address)": FunctionFragment;
     "enableValidator(address,bytes)": FunctionFragment;
     "getValidatorsPaginated(address,uint256)": FunctionFragment;
     "isValidatorEnabled(address)": FunctionFragment;
   };
 
   encodeFunctionData(
-    functionFragment: "disableModule",
+    functionFragment: "disableValidator",
     values: [string, string]
   ): string;
   encodeFunctionData(
@@ -46,7 +46,7 @@ interface ValidatorManagerInterface extends ethers.utils.Interface {
   ): string;
 
   decodeFunctionResult(
-    functionFragment: "disableModule",
+    functionFragment: "disableValidator",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -85,13 +85,13 @@ export class ValidatorManager extends Contract {
   interface: ValidatorManagerInterface;
 
   functions: {
-    disableModule(
+    disableValidator(
       prevValidator: string,
       validator: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "disableModule(address,address)"(
+    "disableValidator(address,address)"(
       prevValidator: string,
       validator: string,
       overrides?: Overrides
@@ -146,13 +146,13 @@ export class ValidatorManager extends Contract {
     }>;
   };
 
-  disableModule(
+  disableValidator(
     prevValidator: string,
     validator: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "disableModule(address,address)"(
+  "disableValidator(address,address)"(
     prevValidator: string,
     validator: string,
     overrides?: Overrides
@@ -203,13 +203,13 @@ export class ValidatorManager extends Contract {
   ): Promise<boolean>;
 
   callStatic: {
-    disableModule(
+    disableValidator(
       prevValidator: string,
       validator: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "disableModule(address,address)"(
+    "disableValidator(address,address)"(
       prevValidator: string,
       validator: string,
       overrides?: CallOverrides
@@ -267,13 +267,13 @@ export class ValidatorManager extends Contract {
   };
 
   estimateGas: {
-    disableModule(
+    disableValidator(
       prevValidator: string,
       validator: string,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "disableModule(address,address)"(
+    "disableValidator(address,address)"(
       prevValidator: string,
       validator: string,
       overrides?: Overrides
@@ -315,13 +315,13 @@ export class ValidatorManager extends Contract {
   };
 
   populateTransaction: {
-    disableModule(
+    disableValidator(
       prevValidator: string,
       validator: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "disableModule(address,address)"(
+    "disableValidator(address,address)"(
       prevValidator: string,
       validator: string,
       overrides?: Overrides
