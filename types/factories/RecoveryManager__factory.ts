@@ -28,6 +28,17 @@ const _abi = [
     type: "error",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "ErrorRecoveror",
+    type: "error",
+  },
+  {
     anonymous: false,
     inputs: [
       {
@@ -95,6 +106,25 @@ const _abi = [
         internalType: "address",
         name: "next",
         type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "recoveror",
+        type: "address",
+      },
+    ],
+    name: "isRecoverorEnabled",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
       },
     ],
     stateMutability: "view",

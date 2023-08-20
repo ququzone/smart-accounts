@@ -24,6 +24,7 @@ interface RecoveryManagerInterface extends ethers.utils.Interface {
   functions: {
     "addRecoveror(address,bytes)": FunctionFragment;
     "getRecoverorsPaginated(address,uint256)": FunctionFragment;
+    "isRecoverorEnabled(address)": FunctionFragment;
     "removeRecoveror(address,address)": FunctionFragment;
   };
 
@@ -36,6 +37,10 @@ interface RecoveryManagerInterface extends ethers.utils.Interface {
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "isRecoverorEnabled",
+    values: [string]
+  ): string;
+  encodeFunctionData(
     functionFragment: "removeRecoveror",
     values: [string, string]
   ): string;
@@ -46,6 +51,10 @@ interface RecoveryManagerInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getRecoverorsPaginated",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "isRecoverorEnabled",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -110,6 +119,20 @@ export class RecoveryManager extends Contract {
       1: string;
     }>;
 
+    isRecoverorEnabled(
+      recoveror: string,
+      overrides?: CallOverrides
+    ): Promise<{
+      0: boolean;
+    }>;
+
+    "isRecoverorEnabled(address)"(
+      recoveror: string,
+      overrides?: CallOverrides
+    ): Promise<{
+      0: boolean;
+    }>;
+
     removeRecoveror(
       prevRecoveror: string,
       recoveror: string,
@@ -156,6 +179,16 @@ export class RecoveryManager extends Contract {
     0: string[];
     1: string;
   }>;
+
+  isRecoverorEnabled(
+    recoveror: string,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  "isRecoverorEnabled(address)"(
+    recoveror: string,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   removeRecoveror(
     prevRecoveror: string,
@@ -204,6 +237,16 @@ export class RecoveryManager extends Contract {
       1: string;
     }>;
 
+    isRecoverorEnabled(
+      recoveror: string,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    "isRecoverorEnabled(address)"(
+      recoveror: string,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     removeRecoveror(
       prevRecoveror: string,
       recoveror: string,
@@ -248,6 +291,16 @@ export class RecoveryManager extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    isRecoverorEnabled(
+      recoveror: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "isRecoverorEnabled(address)"(
+      recoveror: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     removeRecoveror(
       prevRecoveror: string,
       recoveror: string,
@@ -283,6 +336,16 @@ export class RecoveryManager extends Contract {
     "getRecoverorsPaginated(address,uint256)"(
       start: string,
       pageSize: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    isRecoverorEnabled(
+      recoveror: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "isRecoverorEnabled(address)"(
+      recoveror: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

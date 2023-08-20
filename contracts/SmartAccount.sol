@@ -8,6 +8,7 @@ import "./core/EntryPointManager.sol";
 import "./core/ExecutionManager.sol";
 import "./core/FallbackManager.sol";
 import "./core/ValidatorManager.sol";
+import "./core/RecoveryManager.sol";
 
 contract SmartAccount is
     BaseAccount,
@@ -15,7 +16,8 @@ contract SmartAccount is
     EntryPointManager,
     ExecutionManager,
     FallbackManager,
-    ValidatorManager
+    ValidatorManager,
+    RecoveryManager
 {
     constructor(IEntryPoint _EntryPoint) EntryPointManager(_EntryPoint) {
         _disableInitializers();
@@ -30,6 +32,7 @@ contract SmartAccount is
         }
         _setFallbackHandler(defalutCallbackHandler);
         _setupValidators();
+        _setupRecoverors();
         for (uint256 i = 0; i < validators.length;) {
             _enableValidator(validators[i], data[i]);
             unchecked {
@@ -54,6 +57,16 @@ contract SmartAccount is
             return SIG_VALIDATION_FAILED;
         }
         return IValidator(validator).validateSignature(userOp.sender, userOpHash, signature);
+    }
+
+    function recovery(address validator, bytes calldata data) external {
+        if (!isRecoverorEnabled(msg.sender)) {
+            revert ErrorRecoveror(msg.sender);
+        }
+        if (!isValidatorEnabled(validator)) {
+            revert ErrorValidator(validator);
+        }
+        IValidator(validator).enable(data);
     }
 
     function getDeposit() public view returns (uint256) {

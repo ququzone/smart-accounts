@@ -7,6 +7,8 @@ import "../libraries/LinkedAddressList.sol";
 import "../interfaces/IValidator.sol";
 
 abstract contract ValidatorManager is Authority {
+    error ErrorValidator(address);
+
     using LinkedAddressList for mapping(address => address);
 
     error ValidatorCannotBeZeroOrSentinel(address validator);

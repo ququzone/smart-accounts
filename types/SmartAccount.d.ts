@@ -24,6 +24,7 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 interface SmartAccountInterface extends ethers.utils.Interface {
   functions: {
     "addDeposit()": FunctionFragment;
+    "addRecoveror(address,bytes)": FunctionFragment;
     "disableValidator(address,address)": FunctionFragment;
     "enableValidator(address,bytes)": FunctionFragment;
     "entryPoint()": FunctionFragment;
@@ -32,9 +33,13 @@ interface SmartAccountInterface extends ethers.utils.Interface {
     "getDeposit()": FunctionFragment;
     "getFallbackHandler()": FunctionFragment;
     "getNonce()": FunctionFragment;
+    "getRecoverorsPaginated(address,uint256)": FunctionFragment;
     "getValidatorsPaginated(address,uint256)": FunctionFragment;
     "initialize(address,address[],bytes[])": FunctionFragment;
+    "isRecoverorEnabled(address)": FunctionFragment;
     "isValidatorEnabled(address)": FunctionFragment;
+    "recovery(address,bytes)": FunctionFragment;
+    "removeRecoveror(address,address)": FunctionFragment;
     "setFallbackHandler(address)": FunctionFragment;
     "validateUserOp(tuple,bytes32,uint256)": FunctionFragment;
     "withdrawDepositTo(address,uint256)": FunctionFragment;
@@ -43,6 +48,10 @@ interface SmartAccountInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "addDeposit",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "addRecoveror",
+    values: [string, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "disableValidator",
@@ -74,6 +83,10 @@ interface SmartAccountInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "getNonce", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "getRecoverorsPaginated",
+    values: [string, BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "getValidatorsPaginated",
     values: [string, BigNumberish]
   ): string;
@@ -82,8 +95,20 @@ interface SmartAccountInterface extends ethers.utils.Interface {
     values: [string, string[], BytesLike[]]
   ): string;
   encodeFunctionData(
+    functionFragment: "isRecoverorEnabled",
+    values: [string]
+  ): string;
+  encodeFunctionData(
     functionFragment: "isValidatorEnabled",
     values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "recovery",
+    values: [string, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "removeRecoveror",
+    values: [string, string]
   ): string;
   encodeFunctionData(
     functionFragment: "setFallbackHandler",
@@ -116,6 +141,10 @@ interface SmartAccountInterface extends ethers.utils.Interface {
 
   decodeFunctionResult(functionFragment: "addDeposit", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "addRecoveror",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "disableValidator",
     data: BytesLike
   ): Result;
@@ -136,12 +165,25 @@ interface SmartAccountInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "getNonce", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "getRecoverorsPaginated",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getValidatorsPaginated",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "isRecoverorEnabled",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "isValidatorEnabled",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "recovery", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "removeRecoveror",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -158,16 +200,20 @@ interface SmartAccountInterface extends ethers.utils.Interface {
   ): Result;
 
   events: {
+    "AddedRecoveror(address)": EventFragment;
     "ChangedFallbackHandler(address,address)": EventFragment;
     "DisabledValidator(address)": EventFragment;
     "EnabledValidator(address)": EventFragment;
     "Initialized(uint8)": EventFragment;
+    "RemovedRecoveror(address)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "AddedRecoveror"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ChangedFallbackHandler"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DisabledValidator"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "EnabledValidator"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RemovedRecoveror"): EventFragment;
 }
 
 export class SmartAccount extends Contract {
@@ -187,6 +233,18 @@ export class SmartAccount extends Contract {
     addDeposit(overrides?: PayableOverrides): Promise<ContractTransaction>;
 
     "addDeposit()"(overrides?: PayableOverrides): Promise<ContractTransaction>;
+
+    addRecoveror(
+      recoveror: string,
+      data: BytesLike,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "addRecoveror(address,bytes)"(
+      recoveror: string,
+      data: BytesLike,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
 
     disableValidator(
       prevValidator: string,
@@ -274,6 +332,28 @@ export class SmartAccount extends Contract {
       0: BigNumber;
     }>;
 
+    getRecoverorsPaginated(
+      start: string,
+      pageSize: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      array: string[];
+      next: string;
+      0: string[];
+      1: string;
+    }>;
+
+    "getRecoverorsPaginated(address,uint256)"(
+      start: string,
+      pageSize: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      array: string[];
+      next: string;
+      0: string[];
+      1: string;
+    }>;
+
     getValidatorsPaginated(
       start: string,
       pageSize: BigNumberish,
@@ -310,6 +390,20 @@ export class SmartAccount extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
+    isRecoverorEnabled(
+      recoveror: string,
+      overrides?: CallOverrides
+    ): Promise<{
+      0: boolean;
+    }>;
+
+    "isRecoverorEnabled(address)"(
+      recoveror: string,
+      overrides?: CallOverrides
+    ): Promise<{
+      0: boolean;
+    }>;
+
     isValidatorEnabled(
       validator: string,
       overrides?: CallOverrides
@@ -323,6 +417,30 @@ export class SmartAccount extends Contract {
     ): Promise<{
       0: boolean;
     }>;
+
+    recovery(
+      validator: string,
+      data: BytesLike,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "recovery(address,bytes)"(
+      validator: string,
+      data: BytesLike,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    removeRecoveror(
+      prevRecoveror: string,
+      recoveror: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "removeRecoveror(address,address)"(
+      prevRecoveror: string,
+      recoveror: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
 
     setFallbackHandler(
       handler: string,
@@ -388,6 +506,18 @@ export class SmartAccount extends Contract {
   addDeposit(overrides?: PayableOverrides): Promise<ContractTransaction>;
 
   "addDeposit()"(overrides?: PayableOverrides): Promise<ContractTransaction>;
+
+  addRecoveror(
+    recoveror: string,
+    data: BytesLike,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "addRecoveror(address,bytes)"(
+    recoveror: string,
+    data: BytesLike,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
 
   disableValidator(
     prevValidator: string,
@@ -457,6 +587,28 @@ export class SmartAccount extends Contract {
 
   "getNonce()"(overrides?: CallOverrides): Promise<BigNumber>;
 
+  getRecoverorsPaginated(
+    start: string,
+    pageSize: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<{
+    array: string[];
+    next: string;
+    0: string[];
+    1: string;
+  }>;
+
+  "getRecoverorsPaginated(address,uint256)"(
+    start: string,
+    pageSize: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<{
+    array: string[];
+    next: string;
+    0: string[];
+    1: string;
+  }>;
+
   getValidatorsPaginated(
     start: string,
     pageSize: BigNumberish,
@@ -493,6 +645,16 @@ export class SmartAccount extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
+  isRecoverorEnabled(
+    recoveror: string,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  "isRecoverorEnabled(address)"(
+    recoveror: string,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   isValidatorEnabled(
     validator: string,
     overrides?: CallOverrides
@@ -502,6 +664,30 @@ export class SmartAccount extends Contract {
     validator: string,
     overrides?: CallOverrides
   ): Promise<boolean>;
+
+  recovery(
+    validator: string,
+    data: BytesLike,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "recovery(address,bytes)"(
+    validator: string,
+    data: BytesLike,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  removeRecoveror(
+    prevRecoveror: string,
+    recoveror: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "removeRecoveror(address,address)"(
+    prevRecoveror: string,
+    recoveror: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
 
   setFallbackHandler(
     handler: string,
@@ -567,6 +753,18 @@ export class SmartAccount extends Contract {
     addDeposit(overrides?: CallOverrides): Promise<void>;
 
     "addDeposit()"(overrides?: CallOverrides): Promise<void>;
+
+    addRecoveror(
+      recoveror: string,
+      data: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "addRecoveror(address,bytes)"(
+      recoveror: string,
+      data: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     disableValidator(
       prevValidator: string,
@@ -636,6 +834,28 @@ export class SmartAccount extends Contract {
 
     "getNonce()"(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getRecoverorsPaginated(
+      start: string,
+      pageSize: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      array: string[];
+      next: string;
+      0: string[];
+      1: string;
+    }>;
+
+    "getRecoverorsPaginated(address,uint256)"(
+      start: string,
+      pageSize: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      array: string[];
+      next: string;
+      0: string[];
+      1: string;
+    }>;
+
     getValidatorsPaginated(
       start: string,
       pageSize: BigNumberish,
@@ -672,6 +892,16 @@ export class SmartAccount extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    isRecoverorEnabled(
+      recoveror: string,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    "isRecoverorEnabled(address)"(
+      recoveror: string,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     isValidatorEnabled(
       validator: string,
       overrides?: CallOverrides
@@ -681,6 +911,30 @@ export class SmartAccount extends Contract {
       validator: string,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    recovery(
+      validator: string,
+      data: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "recovery(address,bytes)"(
+      validator: string,
+      data: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    removeRecoveror(
+      prevRecoveror: string,
+      recoveror: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "removeRecoveror(address,address)"(
+      prevRecoveror: string,
+      recoveror: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     setFallbackHandler(
       handler: string,
@@ -744,6 +998,8 @@ export class SmartAccount extends Contract {
   };
 
   filters: {
+    AddedRecoveror(recoveror: null): EventFilter;
+
     ChangedFallbackHandler(
       previousHandler: string | null,
       handler: string | null
@@ -754,12 +1010,26 @@ export class SmartAccount extends Contract {
     EnabledValidator(validator: null): EventFilter;
 
     Initialized(version: null): EventFilter;
+
+    RemovedRecoveror(recoveror: null): EventFilter;
   };
 
   estimateGas: {
     addDeposit(overrides?: PayableOverrides): Promise<BigNumber>;
 
     "addDeposit()"(overrides?: PayableOverrides): Promise<BigNumber>;
+
+    addRecoveror(
+      recoveror: string,
+      data: BytesLike,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "addRecoveror(address,bytes)"(
+      recoveror: string,
+      data: BytesLike,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
 
     disableValidator(
       prevValidator: string,
@@ -829,6 +1099,18 @@ export class SmartAccount extends Contract {
 
     "getNonce()"(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getRecoverorsPaginated(
+      start: string,
+      pageSize: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "getRecoverorsPaginated(address,uint256)"(
+      start: string,
+      pageSize: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getValidatorsPaginated(
       start: string,
       pageSize: BigNumberish,
@@ -855,6 +1137,16 @@ export class SmartAccount extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
+    isRecoverorEnabled(
+      recoveror: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "isRecoverorEnabled(address)"(
+      recoveror: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     isValidatorEnabled(
       validator: string,
       overrides?: CallOverrides
@@ -863,6 +1155,30 @@ export class SmartAccount extends Contract {
     "isValidatorEnabled(address)"(
       validator: string,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    recovery(
+      validator: string,
+      data: BytesLike,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "recovery(address,bytes)"(
+      validator: string,
+      data: BytesLike,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    removeRecoveror(
+      prevRecoveror: string,
+      recoveror: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "removeRecoveror(address,address)"(
+      prevRecoveror: string,
+      recoveror: string,
+      overrides?: Overrides
     ): Promise<BigNumber>;
 
     setFallbackHandler(
@@ -930,6 +1246,18 @@ export class SmartAccount extends Contract {
     addDeposit(overrides?: PayableOverrides): Promise<PopulatedTransaction>;
 
     "addDeposit()"(overrides?: PayableOverrides): Promise<PopulatedTransaction>;
+
+    addRecoveror(
+      recoveror: string,
+      data: BytesLike,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "addRecoveror(address,bytes)"(
+      recoveror: string,
+      data: BytesLike,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
 
     disableValidator(
       prevValidator: string,
@@ -1003,6 +1331,18 @@ export class SmartAccount extends Contract {
 
     "getNonce()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    getRecoverorsPaginated(
+      start: string,
+      pageSize: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "getRecoverorsPaginated(address,uint256)"(
+      start: string,
+      pageSize: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     getValidatorsPaginated(
       start: string,
       pageSize: BigNumberish,
@@ -1029,6 +1369,16 @@ export class SmartAccount extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
+    isRecoverorEnabled(
+      recoveror: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "isRecoverorEnabled(address)"(
+      recoveror: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     isValidatorEnabled(
       validator: string,
       overrides?: CallOverrides
@@ -1037,6 +1387,30 @@ export class SmartAccount extends Contract {
     "isValidatorEnabled(address)"(
       validator: string,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    recovery(
+      validator: string,
+      data: BytesLike,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "recovery(address,bytes)"(
+      validator: string,
+      data: BytesLike,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    removeRecoveror(
+      prevRecoveror: string,
+      recoveror: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "removeRecoveror(address,address)"(
+      prevRecoveror: string,
+      recoveror: string,
+      overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
     setFallbackHandler(

@@ -31,6 +31,17 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "ErrorValidator",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
         name: "validator",
         type: "address",
       },

@@ -7,6 +7,8 @@ import "../libraries/LinkedAddressList.sol";
 import "../interfaces/IRecoveror.sol";
 
 abstract contract RecoveryManager is Authority {
+    error ErrorRecoveror(address);
+
     using LinkedAddressList for mapping(address => address);
 
     event AddedRecoveror(address recoveror);
@@ -31,5 +33,13 @@ abstract contract RecoveryManager is Authority {
     function removeRecoveror(address prevRecoveror, address recoveror) external onlySelf {
         recoverors.remove(prevRecoveror, recoveror);
         emit RemovedRecoveror(recoveror);
+    }
+
+    function isRecoverorEnabled(address recoveror) public view returns (bool) {
+        return recoverors.contains(recoveror);
+    }
+
+    function _setupRecoverors() internal {
+        recoverors.setup();
     }
 }
