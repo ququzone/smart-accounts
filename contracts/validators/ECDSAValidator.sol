@@ -28,6 +28,19 @@ contract ECDSAValidator is IValidator {
         return 0;
     }
 
+    function validateUserOp(UserOperation calldata userOp, bytes32 userOpHash, uint256)
+        external
+        payable
+        returns (uint256) 
+    {
+        address _owner = owner[userOp.sender];
+        bytes32 hash = ECDSA.toEthSignedMessageHash(userOpHash);
+        if (_owner != ECDSA.recover(hash, userOp.signature)) {
+            return Contants.SIG_VALIDATION_FAILED;
+        }
+        return 0;
+    }
+
     function enable(bytes calldata data) external override {
         address _owner = address(bytes20(data[0:20]));
         address oldOwner = owner[msg.sender];
