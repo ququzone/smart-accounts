@@ -16,11 +16,11 @@ contract OwnerSessionKeyValidator is IValidator {
     string public constant override NAME = "Owner Session Key Validator";
     string public constant override VERSION = "0.0.1";
 
-    event OwnerChanged(address indexed account, address indexed oldOwner, address indexed newOwner);
+    event NewSessionKey(address indexed account, address indexed sessionKey, uint48 validUntil, uint48 validAfter);
 
-    mapping(address sessionKey => mapping(address kernel => SessionKeyStorage)) public sessionKeyStorage;
+    mapping(address sessionKey => mapping(address account => SessionKeyStorage)) public sessionKeyStorage;
 
-    function validateSignature(address, bytes32 userOpHash, bytes calldata signature)
+    function validateSignature(address account, bytes32 userOpHash, bytes calldata signature)
         external
         payable
         override
@@ -29,7 +29,7 @@ contract OwnerSessionKeyValidator is IValidator {
         bytes32 hash = ECDSA.toEthSignedMessageHash(userOpHash);
         address recovered = ECDSA.recover(hash, signature);
 
-        SessionKeyStorage storage sessionKey = sessionKeyStorage[recovered][msg.sender];
+        SessionKeyStorage storage sessionKey = sessionKeyStorage[recovered][account];
         if (sessionKey.validUntil == 0) {
             // we do not allow validUntil == 0 here
             return Contants.SIG_VALIDATION_FAILED;
@@ -43,5 +43,7 @@ contract OwnerSessionKeyValidator is IValidator {
         uint48 validAfter = uint48(bytes6(data[26:32]));
         require(validUntil > validAfter, "OwnerSessionKeyValidator: invalid validUntil/validAfter"); // we do not allow validUntil == 0 here use validUntil == 2**48-1 instead
         sessionKeyStorage[sessionKey][msg.sender] = SessionKeyStorage(validUntil, validAfter);
+
+        emit NewSessionKey(msg.sender, sessionKey, validUntil, validAfter);
     }
 }
