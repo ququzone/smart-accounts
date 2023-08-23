@@ -1,6 +1,7 @@
 # Compiler files
 cache/
 out/
+types/
 foundry-out/
 
 # Ignores development broadcast logs
