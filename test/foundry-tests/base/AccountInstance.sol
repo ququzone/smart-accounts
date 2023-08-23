@@ -5,7 +5,7 @@ import "@account-abstraction/contracts/core/EntryPoint.sol";
 
 import "../../../contracts/SmartAccountFactory.sol";
 
-contract AccountInstence {
+contract AccountInstance {
     SmartAccountFactory public accountFactory;
     SmartAccount public account;
     EntryPoint public entryPoint;

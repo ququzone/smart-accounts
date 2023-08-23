@@ -5,12 +5,12 @@ import "forge-std/Test.sol";
 
 import "../../contracts/handler/DefaultCallbackHandler.sol";
 import "../../contracts/validators/ECDSAValidator.sol";
-import "./base/AccountInstence.sol";
+import "./base/AccountInstance.sol";
 
 contract CreateAccountTest is Test {
     address public accountOwner;
     uint256 public accountOwnerPrivateKey;
-    AccountInstence public accountInstence;
+    AccountInstance public accountInstance;
 
     function setUp() public {
         (accountOwner, accountOwnerPrivateKey) = makeAddrAndKey("owner");
@@ -24,9 +24,9 @@ contract CreateAccountTest is Test {
         _validators[0] = address(validator);
         bytes[] memory _data = new bytes[](1);
         _data[0] = abi.encodePacked(accountOwner);
-        accountInstence = new AccountInstence(address(handler), _validators, _data, 0);
+        accountInstance = new AccountInstance(address(handler), _validators, _data, 0);
 
-        SmartAccount account = accountInstence.account();
+        SmartAccount account = accountInstance.account();
 
         (address[] memory validators, address next) = account.getValidatorsPaginated(Contants.SENTINEL, 5);
         assertEq(validators.length, 1);
