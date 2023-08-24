@@ -38,6 +38,7 @@ export type { Metadata } from "./Metadata";
 export type { SmartAccount } from "./SmartAccount";
 export type { SmartAccountFactory } from "./SmartAccountFactory";
 export type { EcdsaValidator } from "./EcdsaValidator";
+export type { OwnerSessionKeyValidator } from "./OwnerSessionKeyValidator";
 
 export { BaseAccount__factory } from "./factories/BaseAccount__factory";
 export { EntryPoint__factory } from "./factories/EntryPoint__factory";
@@ -76,3 +77,4 @@ export { Metadata__factory } from "./factories/Metadata__factory";
 export { SmartAccount__factory } from "./factories/SmartAccount__factory";
 export { SmartAccountFactory__factory } from "./factories/SmartAccountFactory__factory";
 export { EcdsaValidator__factory } from "./factories/EcdsaValidator__factory";
+export { OwnerSessionKeyValidator__factory } from "./factories/OwnerSessionKeyValidator__factory";
