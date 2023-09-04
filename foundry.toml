@@ -2,7 +2,7 @@
 src = 'contracts'
 out = 'foundry-out'
 libs = ['lib']
-solc_version = '0.8.19'
+auto_detect_solc = true
 optimizer_runs = 800
 via_ir = false
 ffi = true

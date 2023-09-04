@@ -29,20 +29,31 @@ export default {
     },
   },
   solidity: {
-    version: foundryConfig.default.solc_version,
-    settings: {
-      viaIR: foundryConfig.default.via_ir,
-      optimizer: {
-        enabled: true,
-        runs: foundryConfig.default.optimizer_runs,
-      },
-      metadata: {
-        // do not include the metadata hash, since this is machine dependent
-        // and we want all generated code to be deterministic
-        // https://docs.soliditylang.org/en/v0.8.20/metadata.html
-        bytecodeHash: 'none',
-      },
-    },
+    compilers: [{
+      version: "0.8.19",
+      settings: {
+        viaIR: foundryConfig.default.via_ir,
+        optimizer: {
+          enabled: true,
+          runs: foundryConfig.default.optimizer_runs,
+        },
+        metadata: {
+          bytecodeHash: 'none',
+        },
+      }
+    }, {
+      version: "0.7.6",
+      settings: {
+        viaIR: foundryConfig.default.via_ir,
+        optimizer: {
+          enabled: true,
+          runs: foundryConfig.default.optimizer_runs,
+        },
+        metadata: {
+          bytecodeHash: 'none',
+        },
+      }
+    }]
   },
   typechain: {
     outDir: "types"
