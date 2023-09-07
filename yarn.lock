@@ -3765,7 +3765,7 @@ ethereumjs-util@^5.0.0, ethereumjs-util@^5.0.1, ethereumjs-util@^5.1.1, ethereum
     rlp "^2.0.0"
     safe-buffer "^5.1.1"
 
-ethereumjs-util@^7.0.2, ethereumjs-util@^7.1.0:
+ethereumjs-util@^7.0.2, ethereumjs-util@^7.1.0, ethereumjs-util@^7.1.5:
   version "7.1.5"
   resolved "https://registry.yarnpkg.com/ethereumjs-util/-/ethereumjs-util-7.1.5.tgz#9ecf04861e4fbbeed7465ece5f23317ad1129181"
   integrity sha512-SDl5kKrQAudFBUe5OJM9Ac6WmMyYmXX/6sTmLZ3ffG2eY6ZIGBes3pEDxNN6V72WyOw4CPD5RomKdsa8DAAwLg==
@@ -8583,10 +8583,10 @@ use@^3.1.0:
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
   integrity sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==
 
-userop@^0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/userop/-/userop-0.3.2.tgz#bc76f9839f1665648d991f49ea37c36e08c84bef"
-  integrity sha512-7WbjoH0Brv1nUcB1RbC+l4wmt8a+bu06R/4H5nJKVhnzIkXUYoaj/WG/S/iMvlBna3Dbiev4Qv/o807Xj1HIzA==
+userop@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/userop/-/userop-0.3.3.tgz#e78e97fa2bcc9682d532766ee6c4dc086aa24ddf"
+  integrity sha512-7rPYqo5SJVVzUg9CPF3m03iXcMlXGRdkwtmhBlkHIroX8ftOSjlgwX7qDDv+uU1pumKQoqE5gNh3ydet9oFJ1Q==
   dependencies:
     ethers "^5.7.2"
 
