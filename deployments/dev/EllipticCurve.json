@@ -1,0 +1,583 @@
+{
+  "address": "0xA301eCD54d9D1Ac089ee9c65d5B4Fc412A0bc2A2",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "x0",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "y0",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "x1",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "y1",
+          "type": "uint256"
+        }
+      ],
+      "name": "add",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "x1",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "y1",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "x2",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "y2",
+          "type": "uint256"
+        }
+      ],
+      "name": "addAndReturnProjectivePoint",
+      "outputs": [
+        {
+          "internalType": "uint256[3]",
+          "name": "P",
+          "type": "uint256[3]"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "x0",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "y0",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "z0",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "x1",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "y1",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "z1",
+          "type": "uint256"
+        }
+      ],
+      "name": "addProj",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "x2",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "y2",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "z2",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "x",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "y",
+          "type": "uint256"
+        }
+      ],
+      "name": "isOnCurve",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "x0",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "y0",
+          "type": "uint256"
+        }
+      ],
+      "name": "isZeroCurve",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "isZero",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "scalar",
+          "type": "uint256"
+        }
+      ],
+      "name": "multipleGeneratorByScalar",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "x0",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "y0",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "exp",
+          "type": "uint256"
+        }
+      ],
+      "name": "multiplyPowerBase2",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "x0",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "y0",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "scalar",
+          "type": "uint256"
+        }
+      ],
+      "name": "multiplyScalar",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "x1",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "y1",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "x0",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "y0",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "z0",
+          "type": "uint256"
+        }
+      ],
+      "name": "toAffinePoint",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "x1",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "y1",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "x0",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "y0",
+          "type": "uint256"
+        }
+      ],
+      "name": "toProjectivePoint",
+      "outputs": [
+        {
+          "internalType": "uint256[3]",
+          "name": "P",
+          "type": "uint256[3]"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "x0",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "y0",
+          "type": "uint256"
+        }
+      ],
+      "name": "twice",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "x0",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "y0",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "z0",
+          "type": "uint256"
+        }
+      ],
+      "name": "twiceProj",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "x1",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "y1",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "z1",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "message",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256[2]",
+          "name": "rs",
+          "type": "uint256[2]"
+        },
+        {
+          "internalType": "uint256[2]",
+          "name": "Q",
+          "type": "uint256[2]"
+        }
+      ],
+      "name": "validateSignature",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "message",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes",
+          "name": "signature",
+          "type": "bytes"
+        },
+        {
+          "internalType": "bytes",
+          "name": "publicKey",
+          "type": "bytes"
+        }
+      ],
+      "name": "validateSignature",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "zeroAffine",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "x",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "y",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "zeroProj",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "x",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "y",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "z",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0x6d7772c9ec772ff932f247a19e09691522975714f0ba4d937f65da077f4f3768",
+  "receipt": {
+    "to": "0x4e59b44847b379578588920cA78FbF26c0B4956C",
+    "from": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "contractAddress": null,
+    "transactionIndex": 0,
+    "gasUsed": "975238",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0x7733ab091389a3561a95fb97f7d4ee6a5035dc2491eea9f06d3fd4249f256525",
+    "transactionHash": "0x6d7772c9ec772ff932f247a19e09691522975714f0ba4d937f65da077f4f3768",
+    "logs": [],
+    "blockNumber": 6,
+    "cumulativeGasUsed": "975238",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "numDeployments": 1,
+  "solcInputHash": "d9d4142f1ad9e9b0a276647899fa3cac",
+  "metadata": "{\"compiler\":{\"version\":\"0.7.6+commit.7338295f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"x0\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"y0\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"x1\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"y1\",\"type\":\"uint256\"}],\"name\":\"add\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"x1\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"y1\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"x2\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"y2\",\"type\":\"uint256\"}],\"name\":\"addAndReturnProjectivePoint\",\"outputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"P\",\"type\":\"uint256[3]\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"x0\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"y0\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"z0\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"x1\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"y1\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"z1\",\"type\":\"uint256\"}],\"name\":\"addProj\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"x2\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"y2\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"z2\",\"type\":\"uint256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"x\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"y\",\"type\":\"uint256\"}],\"name\":\"isOnCurve\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"x0\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"y0\",\"type\":\"uint256\"}],\"name\":\"isZeroCurve\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"isZero\",\"type\":\"bool\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"scalar\",\"type\":\"uint256\"}],\"name\":\"multipleGeneratorByScalar\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"x0\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"y0\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"exp\",\"type\":\"uint256\"}],\"name\":\"multiplyPowerBase2\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"x0\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"y0\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"scalar\",\"type\":\"uint256\"}],\"name\":\"multiplyScalar\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"x1\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"y1\",\"type\":\"uint256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"x0\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"y0\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"z0\",\"type\":\"uint256\"}],\"name\":\"toAffinePoint\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"x1\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"y1\",\"type\":\"uint256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"x0\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"y0\",\"type\":\"uint256\"}],\"name\":\"toProjectivePoint\",\"outputs\":[{\"internalType\":\"uint256[3]\",\"name\":\"P\",\"type\":\"uint256[3]\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"x0\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"y0\",\"type\":\"uint256\"}],\"name\":\"twice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"x0\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"y0\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"z0\",\"type\":\"uint256\"}],\"name\":\"twiceProj\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"x1\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"y1\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"z1\",\"type\":\"uint256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"message\",\"type\":\"bytes32\"},{\"internalType\":\"uint256[2]\",\"name\":\"rs\",\"type\":\"uint256[2]\"},{\"internalType\":\"uint256[2]\",\"name\":\"Q\",\"type\":\"uint256[2]\"}],\"name\":\"validateSignature\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"message\",\"type\":\"bytes32\"},{\"internalType\":\"bytes\",\"name\":\"signature\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"publicKey\",\"type\":\"bytes\"}],\"name\":\"validateSignature\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"zeroAffine\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"x\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"y\",\"type\":\"uint256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"zeroProj\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"x\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"y\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"z\",\"type\":\"uint256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"Tilman Drerup;\",\"details\":\"NOTE: To disambiguate public keys when verifying signatures, activate          condition 'rs[1] > lowSmax' in validateSignature().\",\"kind\":\"dev\",\"methods\":{\"add(uint256,uint256,uint256,uint256)\":{\"details\":\"Add two elliptic curve points in affine coordinates.\"},\"addAndReturnProjectivePoint(uint256,uint256,uint256,uint256)\":{\"details\":\"Add two points in affine coordinates and return projective point.\"},\"addProj(uint256,uint256,uint256,uint256,uint256,uint256)\":{\"details\":\"Add two elliptic curve points in projective coordinates. See https://www.nayuki.io/page/elliptic-curve-point-addition-in-projective-coordinates\"},\"isOnCurve(uint256,uint256)\":{\"details\":\"Check if a point in affine coordinates is on the curve.\"},\"isZeroCurve(uint256,uint256)\":{\"details\":\"Check if the curve is the zero curve.\"},\"multipleGeneratorByScalar(uint256)\":{\"details\":\"Multiply the curve's generator point by a scalar.\"},\"multiplyPowerBase2(uint256,uint256,uint256)\":{\"details\":\"Multiply an elliptic curve point by a 2 power base (i.e., (2^exp)*P)).\"},\"multiplyScalar(uint256,uint256,uint256)\":{\"details\":\"Multiply an elliptic curve point by a scalar.\"},\"toAffinePoint(uint256,uint256,uint256)\":{\"details\":\"Transform from projective to affine coordinates.\"},\"toProjectivePoint(uint256,uint256)\":{\"details\":\"Transform affine coordinates into projective coordinates.\"},\"twice(uint256,uint256)\":{\"details\":\"Double an elliptic curve point in affine coordinates.\"},\"twiceProj(uint256,uint256,uint256)\":{\"details\":\"Double an elliptic curve point in projective coordinates. See https://www.nayuki.io/page/elliptic-curve-point-addition-in-projective-coordinates\"},\"validateSignature(bytes32,uint256[2],uint256[2])\":{\"details\":\"Validate combination of message, signature, and public key.\"},\"zeroAffine()\":{\"details\":\"Return the zero curve in affine coordinates.\"},\"zeroProj()\":{\"details\":\"Return the zero curve in projective coordinates.\"}},\"title\":\"EllipticCurve\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"notice\":\"Implements elliptic curve math; Parametrized for SECP256R1.          Includes components of code by Andreas Olofsson, Alexander Vlasov          (https://github.com/BANKEX/CurveArithmetics), and Avi Asayag          (https://github.com/orbs-network/elliptic-curve-solidity)\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/validators/p256/EllipticCurve.sol\":\"EllipticCurve\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"none\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":800},\"remappings\":[]},\"sources\":{\"contracts/validators/p256/EllipticCurve.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity 0.7.6;\\n\\n/**\\n * @title   EllipticCurve\\n *\\n * @author  Tilman Drerup;\\n *\\n * @notice  Implements elliptic curve math; Parametrized for SECP256R1.\\n *\\n *          Includes components of code by Andreas Olofsson, Alexander Vlasov\\n *          (https://github.com/BANKEX/CurveArithmetics), and Avi Asayag\\n *          (https://github.com/orbs-network/elliptic-curve-solidity)\\n *\\n * @dev     NOTE: To disambiguate public keys when verifying signatures, activate\\n *          condition 'rs[1] > lowSmax' in validateSignature().\\n */\\ncontract EllipticCurve {\\n    // Set parameters for curve.\\n    uint256 constant a = 0xFFFFFFFF00000001000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFC;\\n    uint256 constant b = 0x5AC635D8AA3A93E7B3EBBD55769886BC651D06B0CC53B0F63BCE3C3E27D2604B;\\n    uint256 constant gx = 0x6B17D1F2E12C4247F8BCE6E563A440F277037D812DEB33A0F4A13945D898C296;\\n    uint256 constant gy = 0x4FE342E2FE1A7F9B8EE7EB4A7C0F9E162BCE33576B315ECECBB6406837BF51F5;\\n    uint256 constant p = 0xFFFFFFFF00000001000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFF;\\n    uint256 constant n = 0xFFFFFFFF00000000FFFFFFFFFFFFFFFFBCE6FAADA7179E84F3B9CAC2FC632551;\\n\\n    uint256 constant lowSmax = 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5D576E7357A4501DDFE92F46681B20A0;\\n\\n    /**\\n     * @dev Inverse of u in the field of modulo m.\\n     */\\n    function inverseMod(uint256 u, uint256 m) internal pure returns (uint256) {\\n        if (u == 0 || u == m || m == 0) return 0;\\n        if (u > m) u = u % m;\\n\\n        int256 t1;\\n        int256 t2 = 1;\\n        uint256 r1 = m;\\n        uint256 r2 = u;\\n        uint256 q;\\n\\n        while (r2 != 0) {\\n            q = r1 / r2;\\n            (t1, t2, r1, r2) = (t2, t1 - int256(q) * t2, r2, r1 - q * r2);\\n        }\\n\\n        if (t1 < 0) return (m - uint256(-t1));\\n\\n        return uint256(t1);\\n    }\\n\\n    /**\\n     * @dev Transform affine coordinates into projective coordinates.\\n     */\\n    function toProjectivePoint(uint256 x0, uint256 y0) public pure returns (uint256[3] memory P) {\\n        P[2] = addmod(0, 1, p);\\n        P[0] = mulmod(x0, P[2], p);\\n        P[1] = mulmod(y0, P[2], p);\\n    }\\n\\n    /**\\n     * @dev Add two points in affine coordinates and return projective point.\\n     */\\n    function addAndReturnProjectivePoint(uint256 x1, uint256 y1, uint256 x2, uint256 y2)\\n        public\\n        pure\\n        returns (uint256[3] memory P)\\n    {\\n        uint256 x;\\n        uint256 y;\\n        (x, y) = add(x1, y1, x2, y2);\\n        P = toProjectivePoint(x, y);\\n    }\\n\\n    /**\\n     * @dev Transform from projective to affine coordinates.\\n     */\\n    function toAffinePoint(uint256 x0, uint256 y0, uint256 z0) public pure returns (uint256 x1, uint256 y1) {\\n        uint256 z0Inv;\\n        z0Inv = inverseMod(z0, p);\\n        x1 = mulmod(x0, z0Inv, p);\\n        y1 = mulmod(y0, z0Inv, p);\\n    }\\n\\n    /**\\n     * @dev Return the zero curve in projective coordinates.\\n     */\\n    function zeroProj() public pure returns (uint256 x, uint256 y, uint256 z) {\\n        return (0, 1, 0);\\n    }\\n\\n    /**\\n     * @dev Return the zero curve in affine coordinates.\\n     */\\n    function zeroAffine() public pure returns (uint256 x, uint256 y) {\\n        return (0, 0);\\n    }\\n\\n    /**\\n     * @dev Check if the curve is the zero curve.\\n     */\\n    function isZeroCurve(uint256 x0, uint256 y0) public pure returns (bool isZero) {\\n        if (x0 == 0 && y0 == 0) {\\n            return true;\\n        }\\n        return false;\\n    }\\n\\n    /**\\n     * @dev Check if a point in affine coordinates is on the curve.\\n     */\\n    function isOnCurve(uint256 x, uint256 y) public pure returns (bool) {\\n        if (0 == x || x == p || 0 == y || y == p) {\\n            return false;\\n        }\\n\\n        uint256 LHS = mulmod(y, y, p); // y^2\\n        uint256 RHS = mulmod(mulmod(x, x, p), x, p); // x^3\\n\\n        if (a != 0) {\\n            RHS = addmod(RHS, mulmod(x, a, p), p); // x^3 + a*x\\n        }\\n        if (b != 0) {\\n            RHS = addmod(RHS, b, p); // x^3 + a*x + b\\n        }\\n\\n        return LHS == RHS;\\n    }\\n\\n    /**\\n     * @dev Double an elliptic curve point in projective coordinates. See\\n     * https://www.nayuki.io/page/elliptic-curve-point-addition-in-projective-coordinates\\n     */\\n    function twiceProj(uint256 x0, uint256 y0, uint256 z0) public pure returns (uint256 x1, uint256 y1, uint256 z1) {\\n        uint256 t;\\n        uint256 u;\\n        uint256 v;\\n        uint256 w;\\n\\n        if (isZeroCurve(x0, y0)) {\\n            return zeroProj();\\n        }\\n\\n        u = mulmod(y0, z0, p);\\n        u = mulmod(u, 2, p);\\n\\n        v = mulmod(u, x0, p);\\n        v = mulmod(v, y0, p);\\n        v = mulmod(v, 2, p);\\n\\n        x0 = mulmod(x0, x0, p);\\n        t = mulmod(x0, 3, p);\\n\\n        z0 = mulmod(z0, z0, p);\\n        z0 = mulmod(z0, a, p);\\n        t = addmod(t, z0, p);\\n\\n        w = mulmod(t, t, p);\\n        x0 = mulmod(2, v, p);\\n        w = addmod(w, p - x0, p);\\n\\n        x0 = addmod(v, p - w, p);\\n        x0 = mulmod(t, x0, p);\\n        y0 = mulmod(y0, u, p);\\n        y0 = mulmod(y0, y0, p);\\n        y0 = mulmod(2, y0, p);\\n        y1 = addmod(x0, p - y0, p);\\n\\n        x1 = mulmod(u, w, p);\\n\\n        z1 = mulmod(u, u, p);\\n        z1 = mulmod(z1, u, p);\\n    }\\n\\n    /**\\n     * @dev Add two elliptic curve points in projective coordinates. See\\n     * https://www.nayuki.io/page/elliptic-curve-point-addition-in-projective-coordinates\\n     */\\n    function addProj(uint256 x0, uint256 y0, uint256 z0, uint256 x1, uint256 y1, uint256 z1)\\n        public\\n        pure\\n        returns (uint256 x2, uint256 y2, uint256 z2)\\n    {\\n        uint256 t0;\\n        uint256 t1;\\n        uint256 u0;\\n        uint256 u1;\\n\\n        if (isZeroCurve(x0, y0)) {\\n            return (x1, y1, z1);\\n        } else if (isZeroCurve(x1, y1)) {\\n            return (x0, y0, z0);\\n        }\\n\\n        t0 = mulmod(y0, z1, p);\\n        t1 = mulmod(y1, z0, p);\\n\\n        u0 = mulmod(x0, z1, p);\\n        u1 = mulmod(x1, z0, p);\\n\\n        if (u0 == u1) {\\n            if (t0 == t1) {\\n                return twiceProj(x0, y0, z0);\\n            } else {\\n                return zeroProj();\\n            }\\n        }\\n\\n        (x2, y2, z2) = addProj2(mulmod(z0, z1, p), u0, u1, t1, t0);\\n    }\\n\\n    /**\\n     * @dev Helper function that splits addProj to avoid too many local variables.\\n     */\\n    function addProj2(uint256 v, uint256 u0, uint256 u1, uint256 t1, uint256 t0)\\n        private\\n        pure\\n        returns (uint256 x2, uint256 y2, uint256 z2)\\n    {\\n        uint256 u;\\n        uint256 u2;\\n        uint256 u3;\\n        uint256 w;\\n        uint256 t;\\n\\n        t = addmod(t0, p - t1, p);\\n        u = addmod(u0, p - u1, p);\\n        u2 = mulmod(u, u, p);\\n\\n        w = mulmod(t, t, p);\\n        w = mulmod(w, v, p);\\n        u1 = addmod(u1, u0, p);\\n        u1 = mulmod(u1, u2, p);\\n        w = addmod(w, p - u1, p);\\n\\n        x2 = mulmod(u, w, p);\\n\\n        u3 = mulmod(u2, u, p);\\n        u0 = mulmod(u0, u2, p);\\n        u0 = addmod(u0, p - w, p);\\n        t = mulmod(t, u0, p);\\n        t0 = mulmod(t0, u3, p);\\n\\n        y2 = addmod(t, p - t0, p);\\n\\n        z2 = mulmod(u3, v, p);\\n    }\\n\\n    /**\\n     * @dev Add two elliptic curve points in affine coordinates.\\n     */\\n    function add(uint256 x0, uint256 y0, uint256 x1, uint256 y1) public pure returns (uint256, uint256) {\\n        uint256 z0;\\n\\n        (x0, y0, z0) = addProj(x0, y0, 1, x1, y1, 1);\\n\\n        return toAffinePoint(x0, y0, z0);\\n    }\\n\\n    /**\\n     * @dev Double an elliptic curve point in affine coordinates.\\n     */\\n    function twice(uint256 x0, uint256 y0) public pure returns (uint256, uint256) {\\n        uint256 z0;\\n\\n        (x0, y0, z0) = twiceProj(x0, y0, 1);\\n\\n        return toAffinePoint(x0, y0, z0);\\n    }\\n\\n    /**\\n     * @dev Multiply an elliptic curve point by a 2 power base (i.e., (2^exp)*P)).\\n     */\\n    function multiplyPowerBase2(uint256 x0, uint256 y0, uint256 exp) public pure returns (uint256, uint256) {\\n        uint256 base2X = x0;\\n        uint256 base2Y = y0;\\n        uint256 base2Z = 1;\\n\\n        for (uint256 i = 0; i < exp; i++) {\\n            (base2X, base2Y, base2Z) = twiceProj(base2X, base2Y, base2Z);\\n        }\\n\\n        return toAffinePoint(base2X, base2Y, base2Z);\\n    }\\n\\n    /**\\n     * @dev Multiply an elliptic curve point by a scalar.\\n     */\\n    function multiplyScalar(uint256 x0, uint256 y0, uint256 scalar) public pure returns (uint256 x1, uint256 y1) {\\n        if (scalar == 0) {\\n            return zeroAffine();\\n        } else if (scalar == 1) {\\n            return (x0, y0);\\n        } else if (scalar == 2) {\\n            return twice(x0, y0);\\n        }\\n\\n        uint256 base2X = x0;\\n        uint256 base2Y = y0;\\n        uint256 base2Z = 1;\\n        uint256 z1 = 1;\\n        x1 = x0;\\n        y1 = y0;\\n\\n        if (scalar % 2 == 0) {\\n            x1 = y1 = 0;\\n        }\\n\\n        scalar = scalar >> 1;\\n\\n        while (scalar > 0) {\\n            (base2X, base2Y, base2Z) = twiceProj(base2X, base2Y, base2Z);\\n\\n            if (scalar % 2 == 1) {\\n                (x1, y1, z1) = addProj(base2X, base2Y, base2Z, x1, y1, z1);\\n            }\\n\\n            scalar = scalar >> 1;\\n        }\\n\\n        return toAffinePoint(x1, y1, z1);\\n    }\\n\\n    /**\\n     * @dev Multiply the curve's generator point by a scalar.\\n     */\\n    function multipleGeneratorByScalar(uint256 scalar) public pure returns (uint256, uint256) {\\n        return multiplyScalar(gx, gy, scalar);\\n    }\\n\\n    /**\\n     * @dev Validate combination of message, signature, and public key.\\n     */\\n    function validateSignature(bytes32 message, uint256[2] memory rs, uint256[2] memory Q) public pure returns (bool) {\\n        // To disambiguate between public key solutions, include comment below.\\n        if (rs[0] == 0 || rs[0] >= n || rs[1] == 0) {\\n            // || rs[1] > lowSmax)\\n            return false;\\n        }\\n        if (!isOnCurve(Q[0], Q[1])) {\\n            return false;\\n        }\\n\\n        uint256 x1;\\n        uint256 x2;\\n        uint256 y1;\\n        uint256 y2;\\n\\n        uint256 sInv = inverseMod(rs[1], n);\\n        (x1, y1) = multiplyScalar(gx, gy, mulmod(uint256(message), sInv, n));\\n        (x2, y2) = multiplyScalar(Q[0], Q[1], mulmod(rs[0], sInv, n));\\n        uint256[3] memory P = addAndReturnProjectivePoint(x1, y1, x2, y2);\\n\\n        if (P[2] == 0) {\\n            return false;\\n        }\\n\\n        uint256 Px = inverseMod(P[2], p);\\n        Px = mulmod(P[0], mulmod(Px, Px, p), p);\\n\\n        return Px % n == rs[0];\\n    }\\n\\n    function validateSignature(bytes32 message, bytes calldata signature, bytes calldata publicKey)\\n        public\\n        pure\\n        returns (bool)\\n    {\\n        uint256[2] memory rs;\\n        uint256[2] memory Q;\\n\\n        (rs[0], rs[1]) = abi.decode(signature, (uint256, uint256));\\n        (Q[0], Q[1]) = abi.decode(publicKey, (uint256, uint256));\\n\\n        return validateSignature(message, rs, Q);\\n    }\\n}\\n\",\"keccak256\":\"0xa4af59e9f392c3d649821a3a0047bdec486c33ce3ddd9781783d3b6dd542c27a\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b506110a8806100206000396000f3fe608060405234801561001057600080fd5b50600436106101005760003560e01c806372fb4a1411610097578063c30cfa2d11610066578063c30cfa2d1461040d578063c80edca414610430578063e022d77c14610459578063f214aba01461048857610100565b806372fb4a14146102f05780637ec8da8d1461031957806384dfba461461033c578063ae7e17f01461034457610100565b806314c67060116100d357806314c6706014610211578063322b24aa14610237578063675ca04314610260578063713eca281461028957610100565b806304e960d71461010557806309d3ef31146101955780630afb4ddc146101d15780630b0dbcfa146101ee575b600080fd5b610181600480360360a081101561011b57600080fd5b60408051808201825283359392830192916060830191906020840190600290839083908082843760009201919091525050604080518082018252929594938181019392509060029083908390808284376000920191909152509194506104c39350505050565b604080519115158252519081900360200190f35b6101b8600480360360408110156101ab57600080fd5b50803590602001356106a3565b6040805192835260208301919091528051918290030190f35b6101b8600480360360208110156101e757600080fd5b50356106d2565b6101816004803603604081101561020457600080fd5b5080359060200135610729565b610219610825565b60408051938452602084019290925282820152519081900360600190f35b6101b86004803603606081101561024d57600080fd5b508035906020810135906040013561082f565b6101b86004803603606081101561027657600080fd5b5080359060208101359060400135610876565b6102b86004803603608081101561029f57600080fd5b50803590602081013590604081013590606001356108c6565b6040518082606080838360005b838110156102dd5781810151838201526020016102c5565b5050505090500191505060405180910390f35b6101b86004803603606081101561030657600080fd5b50803590602081013590604001356108f7565b6102b86004803603604081101561032f57600080fd5b50803590602001356109b9565b6101b8610a12565b6101816004803603606081101561035a57600080fd5b8135919081019060408101602082013564010000000081111561037c57600080fd5b82018360208201111561038e57600080fd5b803590602001918460018302840111640100000000831117156103b057600080fd5b9193909290916020810190356401000000008111156103ce57600080fd5b8201836020820111156103e057600080fd5b8035906020019184600183028401116401000000008311171561040257600080fd5b509092509050610a18565b6101816004803603604081101561042357600080fd5b5080359060200135610a7d565b6102196004803603606081101561044657600080fd5b5080359060208101359060400135610aa1565b6101b86004803603608081101561046f57600080fd5b5080359060208101359060408101359060600135610ced565b610219600480360360c081101561049e57600080fd5b5080359060208101359060408101359060608101359060808101359060a00135610d22565b815160009015806104f2575082517bffffffff00000000000000004319055258e8617b0c46353d039cdaae1911155b806104ff57506020830151155b1561050c5750600061069c565b8151602083015161051d9190610729565b6105295750600061069c565b60008080808061055d88600160200201517bffffffff00000000000000004319055258e8617b0c46353d039cdaae19610e27565b90506105ca7f6b17d1f2e12c4247f8bce6e563a440f277037d812deb33a0f4a13945d898c2967f4fe342e2fe1a7f9b8ee7eb4a7c0f9e162bce33576b315ececbb6406837bf51f57bffffffff00000000000000004319055258e8617b0c46353d039cdaae19848d096108f7565b885160208a01518b51939850919550610607929091907bffffffff00000000000000004319055258e8617b0c46353d039cdaae19908590096108f7565b9094509150600061061a868587866108c6565b6040810151909150610635576000965050505050505061069c565b60006106568260026020020151600160601b63ffffffff60c01b0319610e27565b9050600160601b63ffffffff60c01b0319808283098351098a517bffffffff00000000000000004319055258e8617b0c46353d039cdaae19909106149750505050505050505b9392505050565b60008060006106b485856001610aa1565b919650945090506106c6858583610876565b92509250509250929050565b6000806107207f6b17d1f2e12c4247f8bce6e563a440f277037d812deb33a0f4a13945d898c2967f4fe342e2fe1a7f9b8ee7eb4a7c0f9e162bce33576b315ececbb6406837bf51f5856108f7565b91509150915091565b60008215806107455750600160601b63ffffffff60c01b031983145b8061074e575081155b806107665750600160601b63ffffffff60c01b031982145b156107735750600061081f565b6000600160601b63ffffffff60c01b031983840990506000600160601b63ffffffff60c01b031985600160601b63ffffffff60c01b0319878809099050600160601b63ffffffff60c01b0319807fffffffff00000001000000000000000000000000fffffffffffffffffffffffc870982089050600160601b63ffffffff60c01b03197f5ac635d8aa3a93e7b3ebbd55769886bc651d06b0cc53b0f63bce3c3e27d2604b820890501490505b92915050565b6000600181909192565b60008084846001835b8681101561085a5761084b848484610aa1565b91955093509150600101610838565b50610866838383610876565b945094505050505b935093915050565b600080600061089384600160601b63ffffffff60c01b0319610e27565b9050600160601b63ffffffff60c01b03198187099250600160601b63ffffffff60c01b0319818609915050935093915050565b6108ce61105f565b6000806108dd87878787610ced565b90925090506108ec82826109b9565b979650505050505050565b6000808261091057610907610a12565b9150915061086e565b826001141561092357508390508261086e565b82600214156109365761090785856106a3565b508390508281816001806002870661095057600094508495505b600187901c96505b861561099e57610969848484610aa1565b9195509350915060028706600114156109925761098a848484898986610d22565b919750955090505b600187901c9650610958565b6109a9868683610876565b9550955050505050935093915050565b6109c161105f565b600160601b63ffffffff60c01b0319600160000860408201819052600160601b63ffffffff60c01b031990840981526040810151600160601b63ffffffff60c01b0319908309602082015292915050565b60008091565b6000610a2261107d565b610a2a61107d565b86866040811015610a3a57600080fd5b506020808201359084015235825284846040811015610a5857600080fd5b5060208082013590830152358152610a718883836104c3565b98975050505050505050565b600082158015610a8b575081155b15610a985750600161081f565b50600092915050565b6000806000806000806000610ab68a8a610a7d565b15610ad257610ac3610825565b96509650965050505050610ce4565b600160601b63ffffffff60c01b0319888a099250600160601b63ffffffff60c01b0319600284099250600160601b63ffffffff60c01b03198a84099150600160601b63ffffffff60c01b03198983099150600160601b63ffffffff60c01b0319600283099150600160601b63ffffffff60c01b03198a8b099950600160601b63ffffffff60c01b031960038b099350600160601b63ffffffff60c01b03198889099750600160601b63ffffffff60c01b03197fffffffff00000001000000000000000000000000fffffffffffffffffffffffc89099750600160601b63ffffffff60c01b03198885089350600160601b63ffffffff60c01b03198485099050600160601b63ffffffff60c01b0319826002099950600160601b63ffffffff60c01b03198a600160601b63ffffffff60c01b03190382089050600160601b63ffffffff60c01b031981600160601b63ffffffff60c01b03190383089950600160601b63ffffffff60c01b03198a85099950600160601b63ffffffff60c01b0319838a099850600160601b63ffffffff60c01b0319898a099850600160601b63ffffffff60c01b0319896002099850600160601b63ffffffff60c01b031989600160601b63ffffffff60c01b0319038b089550600160601b63ffffffff60c01b03198184099650600160601b63ffffffff60c01b03198384099450600160601b63ffffffff60c01b03198386099450505050505b93509350939050565b6000806000610d028787600188886001610d22565b91985096509050610d14878783610876565b925092505094509492505050565b6000806000806000806000610d378d8d610a7d565b15610d4e5789898996509650965050505050610e1b565b610d588a8a610a7d565b15610d6f578c8c8c96509650965050505050610e1b565b600160601b63ffffffff60c01b0319888d099350600160601b63ffffffff60c01b03198b8a099250600160601b63ffffffff60c01b0319888e099150600160601b63ffffffff60c01b03198b8b09905080821415610df15782841415610de957610dda8d8d8d610aa1565b96509650965050505050610e1b565b610dda610825565b610e0f600160601b63ffffffff60c01b0319898d0983838688610eb6565b91985096509450505050505b96509650969350505050565b6000821580610e3557508183145b80610e3e575081155b15610e4b5750600061081f565b81831115610e6057818381610e5c57fe5b0692505b600060018385835b8115610e9157818381610e7757fe5b949594048581029094039391928383029003919050610e68565b6000851215610eaa57505050506000038203905061081f565b50929695505050505050565b600080808080808080600160601b63ffffffff60c01b03198a600160601b63ffffffff60c01b0319038a089050600160601b63ffffffff60c01b03198b600160601b63ffffffff60c01b0319038d089450600160601b63ffffffff60c01b03198586099350600160601b63ffffffff60c01b03198182099150600160601b63ffffffff60c01b03198d83099150600160601b63ffffffff60c01b03198c8c089a50600160601b63ffffffff60c01b0319848c099a50600160601b63ffffffff60c01b03198b600160601b63ffffffff60c01b03190383089150600160601b63ffffffff60c01b03198286099750600160601b63ffffffff60c01b03198585099250600160601b63ffffffff60c01b0319848d099b50600160601b63ffffffff60c01b031982600160601b63ffffffff60c01b0319038d089b50600160601b63ffffffff60c01b03198c82099050600160601b63ffffffff60c01b0319838a099850600160601b63ffffffff60c01b031989600160601b63ffffffff60c01b03190382089650600160601b63ffffffff60c01b03198d840995505050505050955095509592505050565b60405180606001604052806003906020820280368337509192915050565b6040518060400160405280600290602082028036833750919291505056fea164736f6c6343000706000a",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106101005760003560e01c806372fb4a1411610097578063c30cfa2d11610066578063c30cfa2d1461040d578063c80edca414610430578063e022d77c14610459578063f214aba01461048857610100565b806372fb4a14146102f05780637ec8da8d1461031957806384dfba461461033c578063ae7e17f01461034457610100565b806314c67060116100d357806314c6706014610211578063322b24aa14610237578063675ca04314610260578063713eca281461028957610100565b806304e960d71461010557806309d3ef31146101955780630afb4ddc146101d15780630b0dbcfa146101ee575b600080fd5b610181600480360360a081101561011b57600080fd5b60408051808201825283359392830192916060830191906020840190600290839083908082843760009201919091525050604080518082018252929594938181019392509060029083908390808284376000920191909152509194506104c39350505050565b604080519115158252519081900360200190f35b6101b8600480360360408110156101ab57600080fd5b50803590602001356106a3565b6040805192835260208301919091528051918290030190f35b6101b8600480360360208110156101e757600080fd5b50356106d2565b6101816004803603604081101561020457600080fd5b5080359060200135610729565b610219610825565b60408051938452602084019290925282820152519081900360600190f35b6101b86004803603606081101561024d57600080fd5b508035906020810135906040013561082f565b6101b86004803603606081101561027657600080fd5b5080359060208101359060400135610876565b6102b86004803603608081101561029f57600080fd5b50803590602081013590604081013590606001356108c6565b6040518082606080838360005b838110156102dd5781810151838201526020016102c5565b5050505090500191505060405180910390f35b6101b86004803603606081101561030657600080fd5b50803590602081013590604001356108f7565b6102b86004803603604081101561032f57600080fd5b50803590602001356109b9565b6101b8610a12565b6101816004803603606081101561035a57600080fd5b8135919081019060408101602082013564010000000081111561037c57600080fd5b82018360208201111561038e57600080fd5b803590602001918460018302840111640100000000831117156103b057600080fd5b9193909290916020810190356401000000008111156103ce57600080fd5b8201836020820111156103e057600080fd5b8035906020019184600183028401116401000000008311171561040257600080fd5b509092509050610a18565b6101816004803603604081101561042357600080fd5b5080359060200135610a7d565b6102196004803603606081101561044657600080fd5b5080359060208101359060400135610aa1565b6101b86004803603608081101561046f57600080fd5b5080359060208101359060408101359060600135610ced565b610219600480360360c081101561049e57600080fd5b5080359060208101359060408101359060608101359060808101359060a00135610d22565b815160009015806104f2575082517bffffffff00000000000000004319055258e8617b0c46353d039cdaae1911155b806104ff57506020830151155b1561050c5750600061069c565b8151602083015161051d9190610729565b6105295750600061069c565b60008080808061055d88600160200201517bffffffff00000000000000004319055258e8617b0c46353d039cdaae19610e27565b90506105ca7f6b17d1f2e12c4247f8bce6e563a440f277037d812deb33a0f4a13945d898c2967f4fe342e2fe1a7f9b8ee7eb4a7c0f9e162bce33576b315ececbb6406837bf51f57bffffffff00000000000000004319055258e8617b0c46353d039cdaae19848d096108f7565b885160208a01518b51939850919550610607929091907bffffffff00000000000000004319055258e8617b0c46353d039cdaae19908590096108f7565b9094509150600061061a868587866108c6565b6040810151909150610635576000965050505050505061069c565b60006106568260026020020151600160601b63ffffffff60c01b0319610e27565b9050600160601b63ffffffff60c01b0319808283098351098a517bffffffff00000000000000004319055258e8617b0c46353d039cdaae19909106149750505050505050505b9392505050565b60008060006106b485856001610aa1565b919650945090506106c6858583610876565b92509250509250929050565b6000806107207f6b17d1f2e12c4247f8bce6e563a440f277037d812deb33a0f4a13945d898c2967f4fe342e2fe1a7f9b8ee7eb4a7c0f9e162bce33576b315ececbb6406837bf51f5856108f7565b91509150915091565b60008215806107455750600160601b63ffffffff60c01b031983145b8061074e575081155b806107665750600160601b63ffffffff60c01b031982145b156107735750600061081f565b6000600160601b63ffffffff60c01b031983840990506000600160601b63ffffffff60c01b031985600160601b63ffffffff60c01b0319878809099050600160601b63ffffffff60c01b0319807fffffffff00000001000000000000000000000000fffffffffffffffffffffffc870982089050600160601b63ffffffff60c01b03197f5ac635d8aa3a93e7b3ebbd55769886bc651d06b0cc53b0f63bce3c3e27d2604b820890501490505b92915050565b6000600181909192565b60008084846001835b8681101561085a5761084b848484610aa1565b91955093509150600101610838565b50610866838383610876565b945094505050505b935093915050565b600080600061089384600160601b63ffffffff60c01b0319610e27565b9050600160601b63ffffffff60c01b03198187099250600160601b63ffffffff60c01b0319818609915050935093915050565b6108ce61105f565b6000806108dd87878787610ced565b90925090506108ec82826109b9565b979650505050505050565b6000808261091057610907610a12565b9150915061086e565b826001141561092357508390508261086e565b82600214156109365761090785856106a3565b508390508281816001806002870661095057600094508495505b600187901c96505b861561099e57610969848484610aa1565b9195509350915060028706600114156109925761098a848484898986610d22565b919750955090505b600187901c9650610958565b6109a9868683610876565b9550955050505050935093915050565b6109c161105f565b600160601b63ffffffff60c01b0319600160000860408201819052600160601b63ffffffff60c01b031990840981526040810151600160601b63ffffffff60c01b0319908309602082015292915050565b60008091565b6000610a2261107d565b610a2a61107d565b86866040811015610a3a57600080fd5b506020808201359084015235825284846040811015610a5857600080fd5b5060208082013590830152358152610a718883836104c3565b98975050505050505050565b600082158015610a8b575081155b15610a985750600161081f565b50600092915050565b6000806000806000806000610ab68a8a610a7d565b15610ad257610ac3610825565b96509650965050505050610ce4565b600160601b63ffffffff60c01b0319888a099250600160601b63ffffffff60c01b0319600284099250600160601b63ffffffff60c01b03198a84099150600160601b63ffffffff60c01b03198983099150600160601b63ffffffff60c01b0319600283099150600160601b63ffffffff60c01b03198a8b099950600160601b63ffffffff60c01b031960038b099350600160601b63ffffffff60c01b03198889099750600160601b63ffffffff60c01b03197fffffffff00000001000000000000000000000000fffffffffffffffffffffffc89099750600160601b63ffffffff60c01b03198885089350600160601b63ffffffff60c01b03198485099050600160601b63ffffffff60c01b0319826002099950600160601b63ffffffff60c01b03198a600160601b63ffffffff60c01b03190382089050600160601b63ffffffff60c01b031981600160601b63ffffffff60c01b03190383089950600160601b63ffffffff60c01b03198a85099950600160601b63ffffffff60c01b0319838a099850600160601b63ffffffff60c01b0319898a099850600160601b63ffffffff60c01b0319896002099850600160601b63ffffffff60c01b031989600160601b63ffffffff60c01b0319038b089550600160601b63ffffffff60c01b03198184099650600160601b63ffffffff60c01b03198384099450600160601b63ffffffff60c01b03198386099450505050505b93509350939050565b6000806000610d028787600188886001610d22565b91985096509050610d14878783610876565b925092505094509492505050565b6000806000806000806000610d378d8d610a7d565b15610d4e5789898996509650965050505050610e1b565b610d588a8a610a7d565b15610d6f578c8c8c96509650965050505050610e1b565b600160601b63ffffffff60c01b0319888d099350600160601b63ffffffff60c01b03198b8a099250600160601b63ffffffff60c01b0319888e099150600160601b63ffffffff60c01b03198b8b09905080821415610df15782841415610de957610dda8d8d8d610aa1565b96509650965050505050610e1b565b610dda610825565b610e0f600160601b63ffffffff60c01b0319898d0983838688610eb6565b91985096509450505050505b96509650969350505050565b6000821580610e3557508183145b80610e3e575081155b15610e4b5750600061081f565b81831115610e6057818381610e5c57fe5b0692505b600060018385835b8115610e9157818381610e7757fe5b949594048581029094039391928383029003919050610e68565b6000851215610eaa57505050506000038203905061081f565b50929695505050505050565b600080808080808080600160601b63ffffffff60c01b03198a600160601b63ffffffff60c01b0319038a089050600160601b63ffffffff60c01b03198b600160601b63ffffffff60c01b0319038d089450600160601b63ffffffff60c01b03198586099350600160601b63ffffffff60c01b03198182099150600160601b63ffffffff60c01b03198d83099150600160601b63ffffffff60c01b03198c8c089a50600160601b63ffffffff60c01b0319848c099a50600160601b63ffffffff60c01b03198b600160601b63ffffffff60c01b03190383089150600160601b63ffffffff60c01b03198286099750600160601b63ffffffff60c01b03198585099250600160601b63ffffffff60c01b0319848d099b50600160601b63ffffffff60c01b031982600160601b63ffffffff60c01b0319038d089b50600160601b63ffffffff60c01b03198c82099050600160601b63ffffffff60c01b0319838a099850600160601b63ffffffff60c01b031989600160601b63ffffffff60c01b03190382089650600160601b63ffffffff60c01b03198d840995505050505050955095509592505050565b60405180606001604052806003906020820280368337509192915050565b6040518060400160405280600290602082028036833750919291505056fea164736f6c6343000706000a",
+  "devdoc": {
+    "author": "Tilman Drerup;",
+    "details": "NOTE: To disambiguate public keys when verifying signatures, activate          condition 'rs[1] > lowSmax' in validateSignature().",
+    "kind": "dev",
+    "methods": {
+      "add(uint256,uint256,uint256,uint256)": {
+        "details": "Add two elliptic curve points in affine coordinates."
+      },
+      "addAndReturnProjectivePoint(uint256,uint256,uint256,uint256)": {
+        "details": "Add two points in affine coordinates and return projective point."
+      },
+      "addProj(uint256,uint256,uint256,uint256,uint256,uint256)": {
+        "details": "Add two elliptic curve points in projective coordinates. See https://www.nayuki.io/page/elliptic-curve-point-addition-in-projective-coordinates"
+      },
+      "isOnCurve(uint256,uint256)": {
+        "details": "Check if a point in affine coordinates is on the curve."
+      },
+      "isZeroCurve(uint256,uint256)": {
+        "details": "Check if the curve is the zero curve."
+      },
+      "multipleGeneratorByScalar(uint256)": {
+        "details": "Multiply the curve's generator point by a scalar."
+      },
+      "multiplyPowerBase2(uint256,uint256,uint256)": {
+        "details": "Multiply an elliptic curve point by a 2 power base (i.e., (2^exp)*P))."
+      },
+      "multiplyScalar(uint256,uint256,uint256)": {
+        "details": "Multiply an elliptic curve point by a scalar."
+      },
+      "toAffinePoint(uint256,uint256,uint256)": {
+        "details": "Transform from projective to affine coordinates."
+      },
+      "toProjectivePoint(uint256,uint256)": {
+        "details": "Transform affine coordinates into projective coordinates."
+      },
+      "twice(uint256,uint256)": {
+        "details": "Double an elliptic curve point in affine coordinates."
+      },
+      "twiceProj(uint256,uint256,uint256)": {
+        "details": "Double an elliptic curve point in projective coordinates. See https://www.nayuki.io/page/elliptic-curve-point-addition-in-projective-coordinates"
+      },
+      "validateSignature(bytes32,uint256[2],uint256[2])": {
+        "details": "Validate combination of message, signature, and public key."
+      },
+      "zeroAffine()": {
+        "details": "Return the zero curve in affine coordinates."
+      },
+      "zeroProj()": {
+        "details": "Return the zero curve in projective coordinates."
+      }
+    },
+    "title": "EllipticCurve",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "notice": "Implements elliptic curve math; Parametrized for SECP256R1.          Includes components of code by Andreas Olofsson, Alexander Vlasov          (https://github.com/BANKEX/CurveArithmetics), and Avi Asayag          (https://github.com/orbs-network/elliptic-curve-solidity)",
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [],
+    "types": null
+  }
+}
