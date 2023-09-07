@@ -13,7 +13,9 @@ import {
   UserOperationMiddlewareFn,
   Presets,
 } from 'userop'
-import { BytesLike } from 'ethers'
+import { BigNumberish, BytesLike } from 'ethers'
+import { arrayify, defaultAbiCoder } from 'ethers/lib/utils'
+import { OpToJSON } from 'userop/dist/utils'
 
 export const ERC4337 = {
   EntryPoint: '0x7873addD5b8537b236d53bA195493890c65A887C',
@@ -29,8 +31,20 @@ export interface Signer {
 export const Signature =
   (signer: Signer): UserOperationMiddlewareFn =>
   async (ctx) => {
-    ctx.op.signature = await signer.sign(ctx.getUserOpHash())
+    ctx.op.signature = defaultAbiCoder.encode(
+      ['address', 'bytes'],
+      [signer.address(), arrayify(await signer.sign(ctx.getUserOpHash()))],
+    )
   }
+
+interface GasEstimate {
+  preVerificationGas: BigNumberish
+  verificationGasLimit: BigNumberish
+  callGasLimit: BigNumberish
+
+  // TODO: remove this with EntryPoint v0.7
+  verificationGas: BigNumberish
+}
 
 export class SmartAccount extends UserOperationBuilder {
   private signer: Signer
@@ -80,16 +94,15 @@ export class SmartAccount extends UserOperationBuilder {
     const base = instance
       .useDefaults({
         sender: instance.proxy.address,
-        signature: await instance.signer.sign(ethers.utils.keccak256('0xdead')),
       })
       .useMiddleware(instance.resolveAccount)
       .useMiddleware(Presets.Middleware.getGasPrice(instance.provider))
 
-    const withPM = opts?.paymasterMiddleware
-      ? base.useMiddleware(opts.paymasterMiddleware)
-      : base.useMiddleware(Presets.Middleware.estimateUserOperationGas(instance.provider))
+    if (opts?.paymasterMiddleware) {
+      base.useMiddleware(opts.paymasterMiddleware)
+    }
 
-    return withPM.useMiddleware(Signature(instance.signer))
+    return base.useMiddleware(Signature(instance.signer))
   }
 
   execute(to: string, value: ethers.BigNumberish, data: ethers.BytesLike) {

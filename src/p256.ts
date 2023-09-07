@@ -41,6 +41,7 @@ export class P2565Signer implements Signer {
   }
 
   async sign(opHash: string): Promise<string> {
+    console.log(`opHash: ${opHash}`)
     const result = sign(this.keyPair, Buffer.from(opHash.substring(2), 'hex'))
     return result.signature
   }

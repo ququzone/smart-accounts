@@ -8,7 +8,7 @@
     "compile": "hardhat compile",
     "test": "hardhat test",
     "snapshots": "UPDATE_SNAPSHOT=1 hardhat test",
-    "lint:fix": "forge fmt contracts/ && forge fmt test/ && prettier --write '{src,deploy,test}/**/*.ts'",
+    "lint:fix": "forge fmt contracts/ && forge fmt test/ && prettier --write '{src,scripts,deploy,test}/**/*.ts'",
     "lint": "forge fmt --check && prettier --check 'test/**/*.ts'"
   },
   "devDependencies": {
@@ -34,6 +34,7 @@
     "@account-abstraction/contracts": "^0.6.0",
     "@openzeppelin/contracts": "^4.9.3",
     "dotenv": "^16.3.1",
+    "ec-pem": "^0.18.0",
     "ethereumjs-util": "^7.1.5",
     "userop": "^0.3.3"
   }

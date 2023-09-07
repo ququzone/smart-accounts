@@ -31,8 +31,8 @@ contract P256Validator is IValidator {
     }
 
     function enable(bytes calldata data) external override {
-        pks[msg.sender] = data;
         bytes memory old = pks[msg.sender];
+        pks[msg.sender] = data;
         emit PkChanged(msg.sender, old, data);
     }
 }
