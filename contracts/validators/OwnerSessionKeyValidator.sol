@@ -6,13 +6,14 @@ import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "../interfaces/IValidator.sol";
 import "../common/Contants.sol";
 import "../common/Helpers.sol";
+import "./BaseValidator.sol";
 
 struct SessionKeyStorage {
     uint48 validUntil;
     uint48 validAfter;
 }
 
-contract OwnerSessionKeyValidator is IValidator {
+contract OwnerSessionKeyValidator is BaseValidator {
     string public constant override NAME = "Owner Session Key Validator";
     string public constant override VERSION = "0.0.1";
 

@@ -3,10 +3,10 @@ pragma solidity 0.8.19;
 
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
-import "../interfaces/IValidator.sol";
 import "../common/Contants.sol";
+import "./BaseValidator.sol";
 
-contract ECDSAValidator is IValidator {
+contract ECDSAValidator is BaseValidator {
     string public constant override NAME = "ECDSA Validator";
     string public constant override VERSION = "0.0.1";
 

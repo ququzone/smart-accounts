@@ -3,6 +3,7 @@ pragma solidity 0.8.19;
 
 library LinkedAddressList {
     address internal constant SENTINEL = address(0x1);
+    uint160 internal constant SENTINEL_UINT = 1;
 
     function page(mapping(address => address) storage target, address start, uint256 pageSize)
         internal

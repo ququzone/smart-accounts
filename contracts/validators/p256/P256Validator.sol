@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import "../../interfaces/IValidator.sol";
 import "../../common/Contants.sol";
+import "../BaseValidator.sol";
 import "./ISecp256r1.sol";
 
-contract P256Validator is IValidator {
+contract P256Validator is BaseValidator {
     string public constant override NAME = "P256 Validator";
     string public constant override VERSION = "0.0.1";
 
