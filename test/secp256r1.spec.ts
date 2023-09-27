@@ -3,14 +3,14 @@ import { ethers } from 'hardhat'
 // @ts-ignore
 import ecPem from 'ec-pem'
 import crypto from 'crypto'
-import { EllipticCurve } from '../types'
+import { Secp256R1 } from '../types'
 import { sign } from '../src/p256'
 
 describe('Secp256r1 tests', () => {
-  let secp256r1: EllipticCurve
+  let secp256r1: Secp256R1
 
   before(async () => {
-    secp256r1 = (await (await ethers.getContractFactory('EllipticCurve')).deploy()) as EllipticCurve
+    secp256r1 = (await (await ethers.getContractFactory('Secp256r1')).deploy()) as Secp256R1
   })
 
   it('validate secp256r1 signature', async () => {

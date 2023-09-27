@@ -9,7 +9,7 @@ const deploy: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const chainId = (await ethers.provider.getNetwork()).chainId
 
-  let secp256r1Contract = 'EllipticCurve'
+  let secp256r1Contract = 'Secp256r1'
   if (chainId == 4689 || chainId == 4690) {
     secp256r1Contract = 'Secp256r1IoTeX'
   }
