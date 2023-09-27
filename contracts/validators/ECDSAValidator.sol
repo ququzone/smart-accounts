@@ -28,10 +28,14 @@ contract ECDSAValidator is BaseValidator {
         return 0;
     }
 
-    function enable(bytes calldata data) external override {
+    function enable(bytes calldata data) external payable override {
         address _owner = address(bytes20(data[0:20]));
         address oldOwner = owner[msg.sender];
         owner[msg.sender] = _owner;
         emit OwnerChanged(msg.sender, oldOwner, _owner);
+    }
+
+    function validCaller(address caller, bytes calldata) external view override returns (bool) {
+        return owner[msg.sender] == caller;
     }
 }

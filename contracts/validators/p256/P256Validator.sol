@@ -30,9 +30,13 @@ contract P256Validator is BaseValidator {
         return Contants.SIG_VALIDATION_FAILED;
     }
 
-    function enable(bytes calldata data) external override {
+    function enable(bytes calldata data) external payable override {
         bytes memory old = pks[msg.sender];
         pks[msg.sender] = data;
         emit PkChanged(msg.sender, old, data);
+    }
+
+    function validCaller(address, bytes calldata) external pure override returns (bool) {
+        revert("not implemented");
     }
 }

@@ -38,7 +38,7 @@ contract OwnerSessionKeyValidator is BaseValidator {
         validationData = _packValidationData(false, sessionKey.validUntil, sessionKey.validAfter);
     }
 
-    function enable(bytes calldata data) external override {
+    function enable(bytes calldata data) external payable override {
         address sessionKey = address(bytes20(data[0:20]));
         uint48 validUntil = uint48(bytes6(data[20:26]));
         uint48 validAfter = uint48(bytes6(data[26:32]));
@@ -46,5 +46,16 @@ contract OwnerSessionKeyValidator is BaseValidator {
         sessionKeyStorage[sessionKey][msg.sender] = SessionKeyStorage(validUntil, validAfter);
 
         emit NewSessionKey(msg.sender, sessionKey, validUntil, validAfter);
+    }
+
+    function validCaller(address caller, bytes calldata) external view override returns (bool) {
+        SessionKeyStorage storage sessionKey = sessionKeyStorage[caller][msg.sender];
+        if (block.timestamp <= sessionKey.validAfter) {
+            return false;
+        }
+        if (block.timestamp > sessionKey.validUntil) {
+            return false;
+        }
+        return true;
     }
 }

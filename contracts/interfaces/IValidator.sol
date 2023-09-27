@@ -9,5 +9,7 @@ interface IValidator is Metadata {
         payable
         returns (uint256 validationData);
 
-    function enable(bytes calldata data) external;
+    function validCaller(address caller, bytes calldata data) external view returns (bool);
+
+    function enable(bytes calldata data) external payable;
 }
