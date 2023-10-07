@@ -2,16 +2,18 @@ import { DeployFunction } from 'hardhat-deploy/types'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 
 const deploy: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
-  const { deployments, getNamedAccounts } = hre
+  const { deployments, getNamedAccounts, network } = hre
   const { deployer } = await getNamedAccounts()
   const { deploy } = deployments
 
-  await deploy('EntryPoint', {
-    from: deployer,
-    args: [],
-    log: true,
-    deterministicDeployment: false,
-  })
+  if (network.name == 'dev') {
+    await deploy('EntryPoint', {
+      from: deployer,
+      args: [],
+      log: true,
+      deterministicDeployment: false,
+    })
+  }
 }
 
 deploy.tags = ['entrypoint', 'core']

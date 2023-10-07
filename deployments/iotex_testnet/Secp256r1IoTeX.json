@@ -1,0 +1,70 @@
+{
+  "address": "0xebB3F7930b044f4F85263e1Ed99490CA1D5414b2",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "message",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes",
+          "name": "signature",
+          "type": "bytes"
+        },
+        {
+          "internalType": "bytes",
+          "name": "publicKey",
+          "type": "bytes"
+        }
+      ],
+      "name": "validateSignature",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "result",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0x8232ecc16147392bcd21ca496d6db43423e06407c5b94f11f4dc2dbe27240cc1",
+  "receipt": {
+    "to": "0x355BE1cbfFBf803fdb17E0CB207D051cD9816916",
+    "from": "0x7c029553644F5E9442cb576c1056e0f7663Db1Fa",
+    "contractAddress": null,
+    "transactionIndex": 0,
+    "gasUsed": "184114",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0xac3f87707ecb2eaa41abd1a317ab3dd1d9631ff2fc69fb012c8c67d59d233515",
+    "transactionHash": "0x8232ecc16147392bcd21ca496d6db43423e06407c5b94f11f4dc2dbe27240cc1",
+    "logs": [],
+    "blockNumber": 22646251,
+    "cumulativeGasUsed": "184114",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "numDeployments": 1,
+  "solcInputHash": "e7b5f1c1bc37ac4da0d4db039ee1af4c",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.19+commit.7dd6d404\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"message\",\"type\":\"bytes32\"},{\"internalType\":\"bytes\",\"name\":\"signature\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"publicKey\",\"type\":\"bytes\"}],\"name\":\"validateSignature\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"result\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/validators/p256/Secp256r1IoTeX.sol\":\"Secp256r1IoTeX\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"none\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":800},\"remappings\":[]},\"sources\":{\"contracts/validators/p256/ISecp256r1.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity 0.8.19;\\n\\ninterface ISecp256r1 {\\n    function validateSignature(bytes32 message, bytes calldata signature, bytes calldata publicKey)\\n        external\\n        view\\n        returns (bool);\\n}\\n\",\"keccak256\":\"0x2c27d09b504eebfad02daf6a774b8df8bf29c51077f288bf6dd5464b4a18d177\",\"license\":\"MIT\"},\"contracts/validators/p256/Secp256r1IoTeX.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.19;\\n\\nimport \\\"./ISecp256r1.sol\\\";\\n\\ncontract Secp256r1IoTeX is ISecp256r1 {\\n    function validateSignature(bytes32 message, bytes calldata signature, bytes calldata publicKey)\\n        external\\n        view\\n        override\\n        returns (bool result)\\n    {\\n        bytes32 rs0;\\n        bytes32 rs1;\\n        bytes32 Q0;\\n        bytes32 Q1;\\n\\n        (rs0, rs1) = abi.decode(signature, (bytes32, bytes32));\\n        (Q0, Q1) = abi.decode(publicKey, (bytes32, bytes32));\\n\\n        bytes1 out;\\n        assembly {\\n            // free memory pointer\\n            let input := mload(0x40)\\n\\n            mstore(input, message)\\n            mstore(add(input, 0x20), rs0)\\n            mstore(add(input, 0x40), rs1)\\n            mstore(add(input, 0x60), \\\"\\\\x04\\\")\\n            mstore(add(input, 0x61), Q0)\\n            mstore(add(input, 0x81), Q1)\\n            let success := staticcall(gas(), 0x8001, input, 0xa1, out, 0x1)\\n            switch success\\n            case 0 { revert(0x0, 0x0) }\\n            default { result := mload(out) }\\n        }\\n    }\\n}\\n\",\"keccak256\":\"0x584fafd72e5b4c6cfe511f9027bced97255c6189e850ef814e570b698508e2f6\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b506101c3806100206000396000f3fe608060405234801561001057600080fd5b506004361061002b5760003560e01c8063ae7e17f014610030575b600080fd5b61004361003e36600461011a565b610057565b604051901515815260200160405180910390f35b600080808080610069888a018a610194565b909450925061007a86880188610194565b809250819350505060006040518b8152856020820152846040820152600160fa1b606082015283606182015282608182015260018260a1836180015afa905080801561002b575050519a9950505050505050505050565b60008083601f8401126100e357600080fd5b50813567ffffffffffffffff8111156100fb57600080fd5b60208301915083602082850101111561011357600080fd5b9250929050565b60008060008060006060868803121561013257600080fd5b85359450602086013567ffffffffffffffff8082111561015157600080fd5b61015d89838a016100d1565b9096509450604088013591508082111561017657600080fd5b50610183888289016100d1565b969995985093965092949392505050565b600080604083850312156101a757600080fd5b5050803592602090910135915056fea164736f6c6343000813000a",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b506004361061002b5760003560e01c8063ae7e17f014610030575b600080fd5b61004361003e36600461011a565b610057565b604051901515815260200160405180910390f35b600080808080610069888a018a610194565b909450925061007a86880188610194565b809250819350505060006040518b8152856020820152846040820152600160fa1b606082015283606182015282608182015260018260a1836180015afa905080801561002b575050519a9950505050505050505050565b60008083601f8401126100e357600080fd5b50813567ffffffffffffffff8111156100fb57600080fd5b60208301915083602082850101111561011357600080fd5b9250929050565b60008060008060006060868803121561013257600080fd5b85359450602086013567ffffffffffffffff8082111561015157600080fd5b61015d89838a016100d1565b9096509450604088013591508082111561017657600080fd5b50610183888289016100d1565b969995985093965092949392505050565b600080604083850312156101a757600080fd5b5050803592602090910135915056fea164736f6c6343000813000a",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [],
+    "types": null
+  }
+}
