@@ -25,15 +25,15 @@ export const sign = (keyPair: any, message: any) => {
 
 export class P2565Signer implements Signer {
   private keyPair: any
-  private signerAddr: string
+  private validatorAddr: string
 
   constructor(keyPair: any, address: string) {
     this.keyPair = keyPair
-    this.signerAddr = address
+    this.validatorAddr = address
   }
 
   address(): string {
-    return this.signerAddr
+    return this.validatorAddr
   }
 
   async data(): Promise<BytesLike> {
