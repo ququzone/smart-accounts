@@ -25,6 +25,12 @@ const deploy: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     log: true,
     deterministicDeployment: true,
   })
+  await deploy('WebauthnValidator', {
+    from: deployer,
+    args: [secp256r1.address],
+    log: true,
+    deterministicDeployment: true,
+  })
 }
 
 deploy.tags = ['secp256r1', 'validator']

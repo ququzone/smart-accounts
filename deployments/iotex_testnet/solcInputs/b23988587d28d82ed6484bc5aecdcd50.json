@@ -1,0 +1,61 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "@openzeppelin/contracts/utils/introspection/IERC165.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n// OpenZeppelin Contracts v4.4.1 (utils/introspection/IERC165.sol)\n\npragma solidity ^0.8.0;\n\n/**\n * @dev Interface of the ERC165 standard, as defined in the\n * https://eips.ethereum.org/EIPS/eip-165[EIP].\n *\n * Implementers can declare support of contract interfaces, which can then be\n * queried by others ({ERC165Checker}).\n *\n * For an implementation, see {ERC165}.\n */\ninterface IERC165 {\n    /**\n     * @dev Returns true if this contract implements the interface defined by\n     * `interfaceId`. See the corresponding\n     * https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified[EIP section]\n     * to learn more about how these ids are created.\n     *\n     * This function call must use less than 30 000 gas.\n     */\n    function supportsInterface(bytes4 interfaceId) external view returns (bool);\n}\n"
+    },
+    "contracts/common/Contants.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.19;\n\nlibrary Contants {\n    address internal constant SENTINEL = address(0x1);\n\n    uint256 internal constant SIG_VALIDATION_FAILED = 1;\n}\n"
+    },
+    "contracts/interfaces/IValidator.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.19;\n\nimport \"./Metadata.sol\";\n\ninterface IValidator is Metadata {\n    function validateSignature(address account, bytes32 userOpHash, bytes calldata signature)\n        external\n        payable\n        returns (uint256 validationData);\n\n    function validCaller(address caller, bytes calldata data) external view returns (bool);\n\n    function enable(bytes calldata data) external payable;\n}\n"
+    },
+    "contracts/interfaces/Metadata.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.19;\n\nimport \"@openzeppelin/contracts/utils/introspection/IERC165.sol\";\n\ninterface Metadata is IERC165 {\n    function NAME() external view returns (string memory);\n    function VERSION() external view returns (string memory);\n}\n"
+    },
+    "contracts/validators/BaseValidator.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.19;\n\nimport \"../interfaces/IValidator.sol\";\n\nabstract contract BaseValidator is IValidator {\n    function supportsInterface(bytes4 interfaceId) external pure returns (bool) {\n        return interfaceId == type(IValidator).interfaceId;\n    }\n}\n"
+    },
+    "contracts/validators/p256/Base64.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.19;\n\nlibrary Base64 {\n    /**\n     * @dev Base64 Encoding/Decoding Table\n     */\n    string internal constant _TABLE = \"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_\";\n\n    /**\n     * @dev Converts a `bytes` to its Bytes64 `string` representation.\n     */\n    function encode(bytes memory data) internal pure returns (string memory) {\n        /**\n         * Inspired by Brecht Devos (Brechtpd) implementation - MIT licence\n         * https://github.com/Brechtpd/base64/blob/e78d9fd951e7b0977ddca77d92dc85183770daf4/base64.sol\n         */\n        if (data.length == 0) return \"\";\n\n        // Loads the table into memory\n        string memory table = _TABLE;\n\n        // Encoding takes 3 bytes chunks of binary data from `bytes` data parameter\n        // and split into 4 numbers of 6 bits.\n        // The final Base64 length should be `bytes` data length multiplied by 4/3 rounded up\n        // - `data.length + 2`  -> Round up\n        // - `/ 3`              -> Number of 3-bytes chunks\n        // - `4 *`              -> 4 characters for each chunk\n        uint256 newlength = data.length * 8 / 6;\n        if (data.length % 6 > 0) {\n            newlength++;\n        }\n        string memory result = new string(newlength);\n\n        /// @solidity memory-safe-assembly\n        assembly {\n            // Prepare the lookup table (skip the first \"length\" byte)\n            let tablePtr := add(table, 1)\n\n            // Prepare result pointer, jump over length\n            let resultPtr := add(result, 32)\n            // let targetLength := add(resultPtr, newlength)\n\n            // Run over the input, 3 bytes at a time\n            for {\n                let dataPtr := data\n                let endPtr := add(data, mload(data))\n            } lt(dataPtr, endPtr) {} {\n                // Advance 3 bytes\n                dataPtr := add(dataPtr, 3)\n                let input := mload(dataPtr)\n\n                // To write each character, shift the 3 bytes (18 bits) chunk\n                // 4 times in blocks of 6 bits for each character (18, 12, 6, 0)\n                // and apply logical AND with 0x3F which is the number of\n                // the previous character in the ASCII table prior to the Base64 Table\n                // The result is then added to the table to get the character to write,\n                // and finally write it in the result pointer but with a left shift\n                // of 256 (1 byte) - 8 (1 ASCII char) = 248 bits\n                mstore8(resultPtr, mload(add(tablePtr, and(shr(18, input), 0x3F))))\n                resultPtr := add(resultPtr, 1)\n\n                mstore8(resultPtr, mload(add(tablePtr, and(shr(12, input), 0x3F))))\n                resultPtr := add(resultPtr, 1)\n\n                mstore8(resultPtr, mload(add(tablePtr, and(shr(6, input), 0x3F))))\n                resultPtr := add(resultPtr, 1)\n\n                mstore8(resultPtr, mload(add(tablePtr, and(input, 0x3F))))\n                resultPtr := add(resultPtr, 1)\n            }\n        }\n\n        return result;\n    }\n}\n"
+    },
+    "contracts/validators/p256/ISecp256r1.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.19;\n\ninterface ISecp256r1 {\n    function validateSignature(bytes32 message, bytes calldata signature, bytes calldata publicKey)\n        external\n        view\n        returns (bool);\n}\n"
+    },
+    "contracts/validators/p256/P256Validator.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.19;\n\nimport \"../../common/Contants.sol\";\nimport \"../BaseValidator.sol\";\nimport \"./ISecp256r1.sol\";\nimport \"./Base64.sol\";\n\ncontract P256Validator is BaseValidator {\n    string public constant override NAME = \"P256 Validator\";\n    string public constant override VERSION = \"0.0.1\";\n\n    event PkChanged(address indexed account, bytes oldPk, bytes newPk);\n\n    ISecp256r1 public immutable impl;\n    mapping(address => bytes) public pks;\n\n    constructor(ISecp256r1 _impl) {\n        impl = _impl;\n    }\n\n    function validateSignature(address account, bytes32 userOpHash, bytes calldata signature)\n        external\n        payable\n        override\n        returns (uint256 validationData)\n    {\n        if (impl.validateSignature(sha256(abi.encode(userOpHash)), signature, pks[account])) {\n            return 0;\n        }\n        return Contants.SIG_VALIDATION_FAILED;\n    }\n\n    function enable(bytes calldata data) external payable override {\n        bytes memory old = pks[msg.sender];\n        pks[msg.sender] = data;\n        emit PkChanged(msg.sender, old, data);\n    }\n\n    function validCaller(address, bytes calldata) external pure override returns (bool) {\n        revert(\"not implemented\");\n    }\n}\n"
+    },
+    "contracts/validators/p256/WebauthnValidator.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.19;\n\nimport \"../../common/Contants.sol\";\nimport \"../BaseValidator.sol\";\nimport \"./ISecp256r1.sol\";\nimport \"./Base64.sol\";\n\ncontract WebauthnValidator is BaseValidator {\n    string public constant override NAME = \"Webauthn Validator\";\n    string public constant override VERSION = \"0.0.1\";\n\n    event PkChanged(address indexed account, bytes oldPk, bytes newPk);\n\n    ISecp256r1 public immutable impl;\n    mapping(address => bytes) public pks;\n\n    constructor(ISecp256r1 _impl) {\n        impl = _impl;\n    }\n\n    function validateSignature(address account, bytes32 userOpHash, bytes calldata signature)\n        external\n        payable\n        override\n        returns (uint256 validationData)\n    {\n        bytes memory sig;\n        bytes32 messageHash;\n        {\n            (\n                bytes memory realSig,\n                bytes memory authenticatorData,\n                string memory clientDataJSONPre,\n                string memory clientDataJSONPost\n            ) = abi.decode(signature, (bytes, bytes, string, string));\n\n            string memory clientDataJSON =\n                string.concat(clientDataJSONPre, Base64.encode(bytes.concat(userOpHash)), clientDataJSONPost);\n            bytes32 clientDataHash = sha256(bytes(clientDataJSON));\n            messageHash = sha256(bytes.concat(authenticatorData, clientDataHash));\n            sig = realSig;\n        }\n\n        if (impl.validateSignature(messageHash, sig, pks[account])) {\n            return 0;\n        }\n        return Contants.SIG_VALIDATION_FAILED;\n    }\n\n    function enable(bytes calldata data) external payable override {\n        bytes memory old = pks[msg.sender];\n        pks[msg.sender] = data;\n        emit PkChanged(msg.sender, old, data);\n    }\n\n    function validCaller(address, bytes calldata) external pure override returns (bool) {\n        revert(\"not implemented\");\n    }\n}\n"
+    }
+  },
+  "settings": {
+    "viaIR": false,
+    "optimizer": {
+      "enabled": true,
+      "runs": 800
+    },
+    "metadata": {
+      "bytecodeHash": "none",
+      "useLiteralContent": true
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    }
+  }
+}
