@@ -13,9 +13,8 @@ import {
   UserOperationMiddlewareFn,
   Presets,
 } from 'userop'
-import { BigNumberish, BytesLike } from 'ethers'
-import { arrayify, defaultAbiCoder } from 'ethers/lib/utils'
-import { OpToJSON } from 'userop/dist/utils'
+import { BytesLike } from 'ethers'
+import { arrayify, defaultAbiCoder } from 'ethers/lib/utils'  
 
 export const ERC4337 = {
   EntryPoint: '0x7873addD5b8537b236d53bA195493890c65A887C',
@@ -24,6 +23,7 @@ export const ERC4337 = {
 
 export interface Signer {
   address(): string
+  signatureLength(): number
   data(): Promise<BytesLike>
   sign(opHash: string): Promise<string>
 }
@@ -36,15 +36,6 @@ export const Signature =
       [signer.address(), arrayify(await signer.sign(ctx.getUserOpHash()))],
     )
   }
-
-interface GasEstimate {
-  preVerificationGas: BigNumberish
-  verificationGasLimit: BigNumberish
-  callGasLimit: BigNumberish
-
-  // TODO: remove this with EntryPoint v0.7
-  verificationGas: BigNumberish
-}
 
 export class SmartAccount extends UserOperationBuilder {
   private signer: Signer
@@ -94,6 +85,7 @@ export class SmartAccount extends UserOperationBuilder {
     const base = instance
       .useDefaults({
         sender: instance.proxy.address,
+        signature: '0x' + '0'.repeat(signer.signatureLength()),
       })
       .useMiddleware(instance.resolveAccount)
       .useMiddleware(Presets.Middleware.getGasPrice(instance.provider))

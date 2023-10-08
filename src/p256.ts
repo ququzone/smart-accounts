@@ -32,6 +32,10 @@ export class P2565Signer implements Signer {
     this.validatorAddr = address
   }
 
+  signatureLength(): number {
+    return 128
+  }
+
   address(): string {
     return this.validatorAddr
   }
