@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { ethers } from 'hardhat'
 
-import { EcdsaValidator, EntryPoint, SmartAccountFactory } from '../types'
+import { ECDSAValidator, EntryPoint, SmartAccountFactory } from '../types'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
 import { UserOperationBuilder, UserOperationMiddlewareCtx } from 'userop'
 import { getGasPrice } from 'userop/dist/preset/middleware'
@@ -30,11 +30,11 @@ describe('Smart Account tests', () => {
 
   describe('ECDSA validator account', () => {
     let owner: SignerWithAddress
-    let validator: EcdsaValidator
+    let validator: ECDSAValidator
 
     before(async () => {
       owner = accounts[0]
-      validator = (await (await ethers.getContractFactory('ECDSAValidator')).deploy()) as EcdsaValidator
+      validator = (await (await ethers.getContractFactory('ECDSAValidator')).deploy()) as ECDSAValidator
     })
 
     it('create account use factory', async () => {

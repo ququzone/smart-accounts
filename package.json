@@ -1,6 +1,6 @@
 {
   "name": "smart-accounts",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "author": "ququzone <xueping.yang@gmail.com>",
   "license": "MIT",
   "scripts": {
@@ -12,23 +12,25 @@
     "lint": "forge fmt --check && prettier --check 'test/**/*.ts'"
   },
   "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^1.0.6",
     "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers@^0.3.0-beta.10",
-    "@nomiclabs/hardhat-etherscan": "^2.1.1",
+    "@nomiclabs/hardhat-etherscan": "^2.1.6",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
-    "@typechain/ethers-v5": "^4.0.0",
+    "@typechain/ethers-v5": "^11.1.1",
+    "@typechain/hardhat": "^7.0.0",
     "@types/chai": "^4.2.6",
     "@types/mocha": "^5.2.7",
     "chai": "^4.2.0",
-    "ethereum-waffle": "^3.0.2",
-    "ethers": "^5.0.8",
-    "hardhat": "^2.9.6",
+    "ethereum-waffle": "^3.4.0",
+    "ethers": "^5.4.2",
+    "hardhat": "^2.17.2",
     "hardhat-deploy": "^0.11.37",
-    "hardhat-typechain": "^0.3.5",
     "import-toml": "^1.0.0",
     "prettier": "^3.0.1",
     "solidity-coverage": "^0.8.0",
-    "ts-node": ">=8.0.0",
-    "typescript": ">=4.5.0"
+    "ts-node": "^10.9.1",
+    "typechain": "^8.3.1",
+    "typescript": "^5.0.2"
   },
   "dependencies": {
     "@account-abstraction/contracts": "^0.6.0",
