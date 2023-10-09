@@ -1,4 +1,5 @@
 import crypto from 'crypto'
+import { Buffer } from 'buffer'
 import { bufferToHex, sha256 } from 'ethereumjs-util'
 import { BytesLike, defaultAbiCoder } from 'ethers/lib/utils'
 import { Signer } from './userop-builder'

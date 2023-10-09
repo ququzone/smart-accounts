@@ -1,5 +1,6 @@
 import { expect } from 'chai'
 import { ethers } from 'hardhat'
+import { Buffer } from 'buffer'
 // @ts-ignore
 import ecPem from 'ec-pem'
 import crypto from 'crypto'
