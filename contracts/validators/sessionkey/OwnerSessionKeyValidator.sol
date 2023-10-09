@@ -2,11 +2,11 @@
 pragma solidity 0.8.19;
 
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "@account-abstraction/contracts/core/Helpers.sol";
 
-import "../interfaces/IValidator.sol";
-import "../common/Contants.sol";
-import "../common/Helpers.sol";
-import "./BaseValidator.sol";
+import "../../interfaces/IValidator.sol";
+import "../../common/Contants.sol";
+import "../BaseValidator.sol";
 
 struct SessionKeyStorage {
     uint48 validUntil;
@@ -32,7 +32,6 @@ contract OwnerSessionKeyValidator is BaseValidator {
 
         SessionKeyStorage storage sessionKey = sessionKeyStorage[recovered][account];
         if (sessionKey.validUntil == 0) {
-            // we do not allow validUntil == 0 here
             return Contants.SIG_VALIDATION_FAILED;
         }
         validationData = _packValidationData(false, sessionKey.validUntil, sessionKey.validAfter);
@@ -42,7 +41,7 @@ contract OwnerSessionKeyValidator is BaseValidator {
         address sessionKey = address(bytes20(data[0:20]));
         uint48 validUntil = uint48(bytes6(data[20:26]));
         uint48 validAfter = uint48(bytes6(data[26:32]));
-        require(validUntil > validAfter, "OwnerSessionKeyValidator: invalid validUntil/validAfter"); // we do not allow validUntil == 0 here use validUntil == 2**48-1 instead
+        require(validUntil > validAfter, "OwnerSessionKeyValidator: invalid validUntil/validAfter");
         sessionKeyStorage[sessionKey][msg.sender] = SessionKeyStorage(validUntil, validAfter);
 
         emit NewSessionKey(msg.sender, sessionKey, validUntil, validAfter);

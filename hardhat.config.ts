@@ -5,7 +5,6 @@ import '@typechain/hardhat'
 import 'hardhat-deploy'
 
 import importToml from 'import-toml'
-import { BigNumber } from 'ethers'
 // @ts-ignore
 const foundryConfig = importToml.sync('foundry.toml').profile
 
