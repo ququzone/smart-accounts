@@ -14,7 +14,7 @@ import {
   Presets,
 } from 'userop'
 import { BytesLike } from 'ethers'
-import { arrayify, defaultAbiCoder } from 'ethers/lib/utils'  
+import { arrayify, defaultAbiCoder } from 'ethers/lib/utils'
 
 export const ERC4337 = {
   EntryPoint: '0x7873addD5b8537b236d53bA195493890c65A887C',

@@ -2,7 +2,7 @@
 pragma solidity 0.8.19;
 
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-import "@account-abstraction/contracts/core/Helpers.sol";
+import {_packValidationData} from "@account-abstraction/contracts/core/Helpers.sol";
 
 import "../../interfaces/IValidator.sol";
 import "../../common/Contants.sol";
