@@ -97,6 +97,25 @@ export class SmartAccount extends UserOperationBuilder {
     return base.useMiddleware(Signature(instance.signer))
   }
 
+  public static async new(account: string, signer: Signer, rpcUrl: string, opts?: IPresetBuilderOpts): Promise<SmartAccount> {
+    const instance = new SmartAccount(signer, rpcUrl, opts)
+    instance.proxy = SmartAccount__factory.connect(account, instance.provider)
+
+    const base = instance
+      .useDefaults({
+        sender: instance.proxy.address,
+        signature: '0x' + '0'.repeat(signer.signatureLength()),
+      })
+      .useMiddleware(instance.resolveAccount)
+      .useMiddleware(Presets.Middleware.getGasPrice(instance.provider))
+
+    if (opts?.paymasterMiddleware) {
+      base.useMiddleware(opts.paymasterMiddleware)
+    }
+
+    return base.useMiddleware(Signature(instance.signer))
+  }
+
   execute(to: string, value: ethers.BigNumberish, data: ethers.BytesLike) {
     return this.setCallData(this.proxy.interface.encodeFunctionData('execute', [to, value, data]))
   }
