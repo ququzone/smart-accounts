@@ -1,5 +1,6 @@
 import * as ethers from 'ethers'
 import { Signer } from './userop-builder'
+import { arrayify } from 'ethers/lib/utils'
 
 export class SessionKeySigner implements Signer {
   private signer: ethers.Signer
@@ -23,6 +24,6 @@ export class SessionKeySigner implements Signer {
   }
 
   async sign(opHash: string): Promise<string> {
-    return this.signer.signMessage(opHash)
+    return this.signer.signMessage(arrayify(opHash))
   }
 }
