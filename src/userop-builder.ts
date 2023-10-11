@@ -97,7 +97,12 @@ export class SmartAccount extends UserOperationBuilder {
     return base.useMiddleware(Signature(instance.signer))
   }
 
-  public static async new(account: string, signer: Signer, rpcUrl: string, opts?: IPresetBuilderOpts): Promise<SmartAccount> {
+  public static async new(
+    account: string,
+    signer: Signer,
+    rpcUrl: string,
+    opts?: IPresetBuilderOpts,
+  ): Promise<SmartAccount> {
     const instance = new SmartAccount(signer, rpcUrl, opts)
     instance.proxy = SmartAccount__factory.connect(account, instance.provider)
 

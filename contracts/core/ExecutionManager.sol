@@ -36,7 +36,7 @@ abstract contract ExecutionManager is Authority {
         emit InstalledHook(hook);
     }
 
-    function removeRecoveror(address prevBeforeHook, address prevAfterHook, address hook) external onlySelf {
+    function removeHook(address prevBeforeHook, address prevAfterHook, address hook) external onlySelf {
         IHook _hook = IHook(hook);
 
         if (_hook.hookType() == HookType.Pre) {

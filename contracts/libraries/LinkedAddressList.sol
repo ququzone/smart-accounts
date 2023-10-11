@@ -35,7 +35,9 @@ library LinkedAddressList {
 
     function add(mapping(address => address) storage target, address item) internal {
         require(item != address(0) && item != SENTINEL, "item can't be zero or sentinel");
-        require(target[item] == address(0), "item already added");
+        if (target[item] != address(0)) {
+            return;
+        }
         target[item] = target[SENTINEL];
         target[SENTINEL] = item;
     }
