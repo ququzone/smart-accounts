@@ -271,7 +271,7 @@ contract Secp256r1 is ISecp256r1 {
     {
         uint256[2] memory rs;
         (rs[0], rs[1]) = abi.decode(signature, (uint256, uint256));
-        if (rs[0] >= nn || rs[1] >= nn) {
+        if (rs[0] >= nn || rs[1] >= nn || rs[0]==0 || rs[1]==0) {//check <n and that sig is not null, otherwise (0,0) is accepted for any publickey and message
             return false;
         }
 
