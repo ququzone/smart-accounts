@@ -94,8 +94,6 @@ export type { BaseValidator } from "./contracts/validators/BaseValidator";
 export { BaseValidator__factory } from "./factories/contracts/validators/BaseValidator__factory";
 export type { ECDSAValidator } from "./contracts/validators/ECDSAValidator";
 export { ECDSAValidator__factory } from "./factories/contracts/validators/ECDSAValidator__factory";
-export type { OwnerSessionKeyValidator } from "./contracts/validators/OwnerSessionKeyValidator";
-export { OwnerSessionKeyValidator__factory } from "./factories/contracts/validators/OwnerSessionKeyValidator__factory";
 export type { ISecp256r1 } from "./contracts/validators/p256/ISecp256r1";
 export { ISecp256r1__factory } from "./factories/contracts/validators/p256/ISecp256r1__factory";
 export type { P256Validator } from "./contracts/validators/p256/P256Validator";
@@ -106,3 +104,5 @@ export type { Secp256r1IoTeX } from "./contracts/validators/p256/Secp256r1IoTeX"
 export { Secp256r1IoTeX__factory } from "./factories/contracts/validators/p256/Secp256r1IoTeX__factory";
 export type { WebauthnValidator } from "./contracts/validators/p256/WebauthnValidator";
 export { WebauthnValidator__factory } from "./factories/contracts/validators/p256/WebauthnValidator__factory";
+export type { OwnerSessionKeyValidator } from "./contracts/validators/sessionkey/OwnerSessionKeyValidator";
+export { OwnerSessionKeyValidator__factory } from "./factories/contracts/validators/sessionkey/OwnerSessionKeyValidator__factory";
