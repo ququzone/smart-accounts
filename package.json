@@ -1,6 +1,6 @@
 {
   "name": "smart-accounts",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "types": "./dist/index.d.ts",
   "main": "./dist/index.js",
   "author": "ququzone <xueping.yang@gmail.com>",
