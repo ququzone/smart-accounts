@@ -31,7 +31,7 @@ export interface ExecutionManagerInterface extends utils.Interface {
     "addHook(address,bytes)": FunctionFragment;
     "execute(address,uint256,bytes)": FunctionFragment;
     "executeBatch(address[],uint256[],bytes[])": FunctionFragment;
-    "removeRecoveror(address,address,address)": FunctionFragment;
+    "removeHook(address,address,address)": FunctionFragment;
     "sudo(address,uint256,bytes)": FunctionFragment;
   };
 
@@ -40,7 +40,7 @@ export interface ExecutionManagerInterface extends utils.Interface {
       | "addHook"
       | "execute"
       | "executeBatch"
-      | "removeRecoveror"
+      | "removeHook"
       | "sudo"
   ): FunctionFragment;
 
@@ -57,7 +57,7 @@ export interface ExecutionManagerInterface extends utils.Interface {
     values: [string[], BigNumberish[], BytesLike[]]
   ): string;
   encodeFunctionData(
-    functionFragment: "removeRecoveror",
+    functionFragment: "removeHook",
     values: [string, string, string]
   ): string;
   encodeFunctionData(
@@ -71,10 +71,7 @@ export interface ExecutionManagerInterface extends utils.Interface {
     functionFragment: "executeBatch",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "removeRecoveror",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "removeHook", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "sudo", data: BytesLike): Result;
 
   events: {
@@ -150,7 +147,7 @@ export interface ExecutionManager extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
-    removeRecoveror(
+    removeHook(
       prevBeforeHook: string,
       prevAfterHook: string,
       hook: string,
@@ -185,7 +182,7 @@ export interface ExecutionManager extends BaseContract {
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
-  removeRecoveror(
+  removeHook(
     prevBeforeHook: string,
     prevAfterHook: string,
     hook: string,
@@ -220,7 +217,7 @@ export interface ExecutionManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    removeRecoveror(
+    removeHook(
       prevBeforeHook: string,
       prevAfterHook: string,
       hook: string,
@@ -266,7 +263,7 @@ export interface ExecutionManager extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
-    removeRecoveror(
+    removeHook(
       prevBeforeHook: string,
       prevAfterHook: string,
       hook: string,
@@ -302,7 +299,7 @@ export interface ExecutionManager extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
-    removeRecoveror(
+    removeHook(
       prevBeforeHook: string,
       prevAfterHook: string,
       hook: string,

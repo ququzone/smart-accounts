@@ -138,7 +138,7 @@ const _abi = [
         type: "address",
       },
     ],
-    name: "removeRecoveror",
+    name: "removeHook",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

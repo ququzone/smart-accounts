@@ -2,6 +2,7 @@
 cache/
 out/
 foundry-out/
+dist
 
 # Ignores development broadcast logs
 !/broadcast

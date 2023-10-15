@@ -86,7 +86,7 @@ export interface SmartAccountInterface extends utils.Interface {
     "isRecoverorEnabled(address)": FunctionFragment;
     "isValidatorEnabled(address)": FunctionFragment;
     "recovery(address,bytes)": FunctionFragment;
-    "removeRecoveror(address,address,address)": FunctionFragment;
+    "removeHook(address,address,address)": FunctionFragment;
     "removeRecoveror(address,address)": FunctionFragment;
     "setFallbackHandler(address)": FunctionFragment;
     "sudo(address,uint256,bytes)": FunctionFragment;
@@ -113,8 +113,8 @@ export interface SmartAccountInterface extends utils.Interface {
       | "isRecoverorEnabled"
       | "isValidatorEnabled"
       | "recovery"
-      | "removeRecoveror(address,address,address)"
-      | "removeRecoveror(address,address)"
+      | "removeHook"
+      | "removeRecoveror"
       | "setFallbackHandler"
       | "sudo"
       | "validateUserOp"
@@ -187,11 +187,11 @@ export interface SmartAccountInterface extends utils.Interface {
     values: [string, BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "removeRecoveror(address,address,address)",
+    functionFragment: "removeHook",
     values: [string, string, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "removeRecoveror(address,address)",
+    functionFragment: "removeRecoveror",
     values: [string, string]
   ): string;
   encodeFunctionData(
@@ -255,12 +255,9 @@ export interface SmartAccountInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "recovery", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "removeHook", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "removeRecoveror(address,address,address)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "removeRecoveror(address,address)",
+    functionFragment: "removeRecoveror",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -491,14 +488,14 @@ export interface SmartAccount extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
-    "removeRecoveror(address,address,address)"(
+    removeHook(
       prevBeforeHook: string,
       prevAfterHook: string,
       hook: string,
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
-    "removeRecoveror(address,address)"(
+    removeRecoveror(
       prevRecoveror: string,
       recoveror: string,
       overrides?: Overrides & { from?: string }
@@ -615,14 +612,14 @@ export interface SmartAccount extends BaseContract {
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
-  "removeRecoveror(address,address,address)"(
+  removeHook(
     prevBeforeHook: string,
     prevAfterHook: string,
     hook: string,
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
-  "removeRecoveror(address,address)"(
+  removeRecoveror(
     prevRecoveror: string,
     recoveror: string,
     overrides?: Overrides & { from?: string }
@@ -737,14 +734,14 @@ export interface SmartAccount extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "removeRecoveror(address,address,address)"(
+    removeHook(
       prevBeforeHook: string,
       prevAfterHook: string,
       hook: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "removeRecoveror(address,address)"(
+    removeRecoveror(
       prevRecoveror: string,
       recoveror: string,
       overrides?: CallOverrides
@@ -898,14 +895,14 @@ export interface SmartAccount extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
-    "removeRecoveror(address,address,address)"(
+    removeHook(
       prevBeforeHook: string,
       prevAfterHook: string,
       hook: string,
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
-    "removeRecoveror(address,address)"(
+    removeRecoveror(
       prevRecoveror: string,
       recoveror: string,
       overrides?: Overrides & { from?: string }
@@ -1025,14 +1022,14 @@ export interface SmartAccount extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
-    "removeRecoveror(address,address,address)"(
+    removeHook(
       prevBeforeHook: string,
       prevAfterHook: string,
       hook: string,
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
-    "removeRecoveror(address,address)"(
+    removeRecoveror(
       prevRecoveror: string,
       recoveror: string,
       overrides?: Overrides & { from?: string }
