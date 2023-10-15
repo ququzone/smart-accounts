@@ -3,7 +3,7 @@ import path from 'path'
 // @ts-ignore
 import ecPem from 'ec-pem'
 import { EntryPoint } from '@account-abstraction/contracts'
-import { ethers, deployments } from 'hardhat'
+import { ethers } from 'hardhat'
 import { Client } from 'userop'
 import { SmartAccount } from '../src/userop-builder'
 import { P2565Signer } from '../src/p256'

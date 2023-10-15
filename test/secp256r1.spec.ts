@@ -4,7 +4,7 @@ import { Buffer } from 'buffer'
 // @ts-ignore
 import ecPem from 'ec-pem'
 import crypto from 'crypto'
-import { Secp256r1 } from '../types'
+import { Secp256r1 } from '../src/types'
 import { sign } from '../src/p256'
 
 describe('Secp256r1 tests', () => {

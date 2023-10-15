@@ -11,12 +11,11 @@
     "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "rootDir": "./src",
     "outDir": "./dist",
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true
   },
-  "exclude": ["dist", "tests"],
-  "include": ["./script", "./scripts", "./test", "./src", "./deploy"],
-  "files": ["./hardhat.config.ts"]
+  "exclude": ["dist", "test", "deploy", "scripts", "./hardhat.config.ts", "./hardhat-deterministic-iotex.ts"]
 }

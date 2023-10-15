@@ -72,6 +72,6 @@ export default {
     }]
   },
   typechain: {
-    outDir: "types"
+    outDir: "src/types"
   },
 }

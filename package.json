@@ -1,12 +1,12 @@
 {
   "name": "smart-accounts",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "types": "./dist/index.d.ts",
   "main": "./dist/index.js",
   "author": "ququzone <xueping.yang@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "clean": "rimraf ./artifacts ./cache ./foundry-out ./types",
+    "clean": "rimraf ./artifacts ./cache ./foundry-out ./types ./dist",
     "compile": "hardhat compile",
     "test": "hardhat test",
     "snapshots": "UPDATE_SNAPSHOT=1 hardhat test",

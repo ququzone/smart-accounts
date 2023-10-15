@@ -5,7 +5,7 @@ import {
   SmartAccount__factory,
   SmartAccount as SmartAccountImpl,
   SmartAccountFactory,
-} from '../../types'
+} from '../../src/types'
 import {
   BundlerJsonRpcProvider,
   IPresetBuilderOpts,

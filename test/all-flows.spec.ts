@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { ethers } from 'hardhat'
 
-import { ECDSAValidator, EntryPoint, SmartAccountFactory } from '../types'
+import { ECDSAValidator, EntryPoint, SmartAccountFactory } from '../src/types'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
 import { UserOperationBuilder, UserOperationMiddlewareCtx } from 'userop'
 import { getGasPrice } from 'userop/dist/preset/middleware'
