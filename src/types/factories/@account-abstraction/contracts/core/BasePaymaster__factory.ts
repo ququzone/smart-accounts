@@ -2,12 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers";
-import type { Provider } from "@ethersproject/providers";
+import { Contract, Signer, utils } from 'ethers'
+import type { Provider } from '@ethersproject/providers'
 import type {
   BasePaymaster,
   BasePaymasterInterface,
-} from "../../../../@account-abstraction/contracts/core/BasePaymaster";
+} from '../../../../@account-abstraction/contracts/core/BasePaymaster'
 
 const _abi = [
   {
@@ -15,262 +15,259 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "address",
-        name: "previousOwner",
-        type: "address",
+        internalType: 'address',
+        name: 'previousOwner',
+        type: 'address',
       },
       {
         indexed: true,
-        internalType: "address",
-        name: "newOwner",
-        type: "address",
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
       },
     ],
-    name: "OwnershipTransferred",
-    type: "event",
+    name: 'OwnershipTransferred',
+    type: 'event',
   },
   {
     inputs: [
       {
-        internalType: "uint32",
-        name: "unstakeDelaySec",
-        type: "uint32",
+        internalType: 'uint32',
+        name: 'unstakeDelaySec',
+        type: 'uint32',
       },
     ],
-    name: "addStake",
+    name: 'addStake',
     outputs: [],
-    stateMutability: "payable",
-    type: "function",
+    stateMutability: 'payable',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "deposit",
+    name: 'deposit',
     outputs: [],
-    stateMutability: "payable",
-    type: "function",
+    stateMutability: 'payable',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "entryPoint",
+    name: 'entryPoint',
     outputs: [
       {
-        internalType: "contract IEntryPoint",
-        name: "",
-        type: "address",
+        internalType: 'contract IEntryPoint',
+        name: '',
+        type: 'address',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "getDeposit",
+    name: 'getDeposit',
     outputs: [
       {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "owner",
+    name: 'owner',
     outputs: [
       {
-        internalType: "address",
-        name: "",
-        type: "address",
+        internalType: 'address',
+        name: '',
+        type: 'address',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "enum IPaymaster.PostOpMode",
-        name: "mode",
-        type: "uint8",
+        internalType: 'enum IPaymaster.PostOpMode',
+        name: 'mode',
+        type: 'uint8',
       },
       {
-        internalType: "bytes",
-        name: "context",
-        type: "bytes",
+        internalType: 'bytes',
+        name: 'context',
+        type: 'bytes',
       },
       {
-        internalType: "uint256",
-        name: "actualGasCost",
-        type: "uint256",
+        internalType: 'uint256',
+        name: 'actualGasCost',
+        type: 'uint256',
       },
     ],
-    name: "postOp",
+    name: 'postOp',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "renounceOwnership",
+    name: 'renounceOwnership',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "address",
-        name: "newOwner",
-        type: "address",
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
       },
     ],
-    name: "transferOwnership",
+    name: 'transferOwnership',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "unlockStake",
+    name: 'unlockStake',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [
       {
         components: [
           {
-            internalType: "address",
-            name: "sender",
-            type: "address",
+            internalType: 'address',
+            name: 'sender',
+            type: 'address',
           },
           {
-            internalType: "uint256",
-            name: "nonce",
-            type: "uint256",
+            internalType: 'uint256',
+            name: 'nonce',
+            type: 'uint256',
           },
           {
-            internalType: "bytes",
-            name: "initCode",
-            type: "bytes",
+            internalType: 'bytes',
+            name: 'initCode',
+            type: 'bytes',
           },
           {
-            internalType: "bytes",
-            name: "callData",
-            type: "bytes",
+            internalType: 'bytes',
+            name: 'callData',
+            type: 'bytes',
           },
           {
-            internalType: "uint256",
-            name: "callGasLimit",
-            type: "uint256",
+            internalType: 'uint256',
+            name: 'callGasLimit',
+            type: 'uint256',
           },
           {
-            internalType: "uint256",
-            name: "verificationGasLimit",
-            type: "uint256",
+            internalType: 'uint256',
+            name: 'verificationGasLimit',
+            type: 'uint256',
           },
           {
-            internalType: "uint256",
-            name: "preVerificationGas",
-            type: "uint256",
+            internalType: 'uint256',
+            name: 'preVerificationGas',
+            type: 'uint256',
           },
           {
-            internalType: "uint256",
-            name: "maxFeePerGas",
-            type: "uint256",
+            internalType: 'uint256',
+            name: 'maxFeePerGas',
+            type: 'uint256',
           },
           {
-            internalType: "uint256",
-            name: "maxPriorityFeePerGas",
-            type: "uint256",
+            internalType: 'uint256',
+            name: 'maxPriorityFeePerGas',
+            type: 'uint256',
           },
           {
-            internalType: "bytes",
-            name: "paymasterAndData",
-            type: "bytes",
+            internalType: 'bytes',
+            name: 'paymasterAndData',
+            type: 'bytes',
           },
           {
-            internalType: "bytes",
-            name: "signature",
-            type: "bytes",
+            internalType: 'bytes',
+            name: 'signature',
+            type: 'bytes',
           },
         ],
-        internalType: "struct UserOperation",
-        name: "userOp",
-        type: "tuple",
+        internalType: 'struct UserOperation',
+        name: 'userOp',
+        type: 'tuple',
       },
       {
-        internalType: "bytes32",
-        name: "userOpHash",
-        type: "bytes32",
+        internalType: 'bytes32',
+        name: 'userOpHash',
+        type: 'bytes32',
       },
       {
-        internalType: "uint256",
-        name: "maxCost",
-        type: "uint256",
+        internalType: 'uint256',
+        name: 'maxCost',
+        type: 'uint256',
       },
     ],
-    name: "validatePaymasterUserOp",
+    name: 'validatePaymasterUserOp',
     outputs: [
       {
-        internalType: "bytes",
-        name: "context",
-        type: "bytes",
+        internalType: 'bytes',
+        name: 'context',
+        type: 'bytes',
       },
       {
-        internalType: "uint256",
-        name: "validationData",
-        type: "uint256",
+        internalType: 'uint256',
+        name: 'validationData',
+        type: 'uint256',
       },
     ],
-    stateMutability: "nonpayable",
-    type: "function",
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "address payable",
-        name: "withdrawAddress",
-        type: "address",
+        internalType: 'address payable',
+        name: 'withdrawAddress',
+        type: 'address',
       },
     ],
-    name: "withdrawStake",
+    name: 'withdrawStake',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "address payable",
-        name: "withdrawAddress",
-        type: "address",
+        internalType: 'address payable',
+        name: 'withdrawAddress',
+        type: 'address',
       },
       {
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
       },
     ],
-    name: "withdrawTo",
+    name: 'withdrawTo',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
-] as const;
+] as const
 
 export class BasePaymaster__factory {
-  static readonly abi = _abi;
+  static readonly abi = _abi
   static createInterface(): BasePaymasterInterface {
-    return new utils.Interface(_abi) as BasePaymasterInterface;
+    return new utils.Interface(_abi) as BasePaymasterInterface
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): BasePaymaster {
-    return new Contract(address, _abi, signerOrProvider) as BasePaymaster;
+  static connect(address: string, signerOrProvider: Signer | Provider): BasePaymaster {
+    return new Contract(address, _abi, signerOrProvider) as BasePaymaster
   }
 }

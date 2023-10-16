@@ -11,193 +11,136 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers";
-import type { FunctionFragment, Result } from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
-import type {
-  TypedEventFilter,
-  TypedEvent,
-  TypedListener,
-  OnEvent,
-} from "../../common";
+} from 'ethers'
+import type { FunctionFragment, Result } from '@ethersproject/abi'
+import type { Listener, Provider } from '@ethersproject/providers'
+import type { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from '../../common'
 
 export interface IRecoverorInterface extends utils.Interface {
   functions: {
-    "NAME()": FunctionFragment;
-    "VERSION()": FunctionFragment;
-    "bind(bytes)": FunctionFragment;
-    "recover(bytes,address,bytes)": FunctionFragment;
-    "supportsInterface(bytes4)": FunctionFragment;
-  };
+    'NAME()': FunctionFragment
+    'VERSION()': FunctionFragment
+    'bind(bytes)': FunctionFragment
+    'recover(bytes,address,bytes)': FunctionFragment
+    'supportsInterface(bytes4)': FunctionFragment
+  }
 
-  getFunction(
-    nameOrSignatureOrTopic:
-      | "NAME"
-      | "VERSION"
-      | "bind"
-      | "recover"
-      | "supportsInterface"
-  ): FunctionFragment;
+  getFunction(nameOrSignatureOrTopic: 'NAME' | 'VERSION' | 'bind' | 'recover' | 'supportsInterface'): FunctionFragment
 
-  encodeFunctionData(functionFragment: "NAME", values?: undefined): string;
-  encodeFunctionData(functionFragment: "VERSION", values?: undefined): string;
-  encodeFunctionData(functionFragment: "bind", values: [BytesLike]): string;
-  encodeFunctionData(
-    functionFragment: "recover",
-    values: [BytesLike, string, BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "supportsInterface",
-    values: [BytesLike]
-  ): string;
+  encodeFunctionData(functionFragment: 'NAME', values?: undefined): string
+  encodeFunctionData(functionFragment: 'VERSION', values?: undefined): string
+  encodeFunctionData(functionFragment: 'bind', values: [BytesLike]): string
+  encodeFunctionData(functionFragment: 'recover', values: [BytesLike, string, BytesLike]): string
+  encodeFunctionData(functionFragment: 'supportsInterface', values: [BytesLike]): string
 
-  decodeFunctionResult(functionFragment: "NAME", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "VERSION", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "bind", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "recover", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "supportsInterface",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: 'NAME', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'VERSION', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'bind', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'recover', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'supportsInterface', data: BytesLike): Result
 
-  events: {};
+  events: {}
 }
 
 export interface IRecoveror extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this;
-  attach(addressOrName: string): this;
-  deployed(): Promise<this>;
+  connect(signerOrProvider: Signer | Provider | string): this
+  attach(addressOrName: string): this
+  deployed(): Promise<this>
 
-  interface: IRecoverorInterface;
+  interface: IRecoverorInterface
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>;
+    toBlock?: string | number | undefined,
+  ): Promise<Array<TEvent>>
 
-  listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
-  listeners(eventName?: string): Array<Listener>;
-  removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
-  ): this;
-  removeAllListeners(eventName?: string): this;
-  off: OnEvent<this>;
-  on: OnEvent<this>;
-  once: OnEvent<this>;
-  removeListener: OnEvent<this>;
+  listeners<TEvent extends TypedEvent>(eventFilter?: TypedEventFilter<TEvent>): Array<TypedListener<TEvent>>
+  listeners(eventName?: string): Array<Listener>
+  removeAllListeners<TEvent extends TypedEvent>(eventFilter: TypedEventFilter<TEvent>): this
+  removeAllListeners(eventName?: string): this
+  off: OnEvent<this>
+  on: OnEvent<this>
+  once: OnEvent<this>
+  removeListener: OnEvent<this>
 
   functions: {
-    NAME(overrides?: CallOverrides): Promise<[string]>;
+    NAME(overrides?: CallOverrides): Promise<[string]>
 
-    VERSION(overrides?: CallOverrides): Promise<[string]>;
+    VERSION(overrides?: CallOverrides): Promise<[string]>
 
-    bind(
-      data: BytesLike,
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
+    bind(data: BytesLike, overrides?: Overrides & { from?: string }): Promise<ContractTransaction>
 
     recover(
       proof: BytesLike,
       validator: string,
       data: BytesLike,
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
+      overrides?: Overrides & { from?: string },
+    ): Promise<ContractTransaction>
 
-    supportsInterface(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-  };
+    supportsInterface(interfaceId: BytesLike, overrides?: CallOverrides): Promise<[boolean]>
+  }
 
-  NAME(overrides?: CallOverrides): Promise<string>;
+  NAME(overrides?: CallOverrides): Promise<string>
 
-  VERSION(overrides?: CallOverrides): Promise<string>;
+  VERSION(overrides?: CallOverrides): Promise<string>
 
-  bind(
-    data: BytesLike,
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
+  bind(data: BytesLike, overrides?: Overrides & { from?: string }): Promise<ContractTransaction>
 
   recover(
     proof: BytesLike,
     validator: string,
     data: BytesLike,
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
+    overrides?: Overrides & { from?: string },
+  ): Promise<ContractTransaction>
 
-  supportsInterface(
-    interfaceId: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
+  supportsInterface(interfaceId: BytesLike, overrides?: CallOverrides): Promise<boolean>
 
   callStatic: {
-    NAME(overrides?: CallOverrides): Promise<string>;
+    NAME(overrides?: CallOverrides): Promise<string>
 
-    VERSION(overrides?: CallOverrides): Promise<string>;
+    VERSION(overrides?: CallOverrides): Promise<string>
 
-    bind(data: BytesLike, overrides?: CallOverrides): Promise<void>;
+    bind(data: BytesLike, overrides?: CallOverrides): Promise<void>
 
-    recover(
-      proof: BytesLike,
-      validator: string,
-      data: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    recover(proof: BytesLike, validator: string, data: BytesLike, overrides?: CallOverrides): Promise<void>
 
-    supportsInterface(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-  };
+    supportsInterface(interfaceId: BytesLike, overrides?: CallOverrides): Promise<boolean>
+  }
 
-  filters: {};
+  filters: {}
 
   estimateGas: {
-    NAME(overrides?: CallOverrides): Promise<BigNumber>;
+    NAME(overrides?: CallOverrides): Promise<BigNumber>
 
-    VERSION(overrides?: CallOverrides): Promise<BigNumber>;
+    VERSION(overrides?: CallOverrides): Promise<BigNumber>
 
-    bind(
-      data: BytesLike,
-      overrides?: Overrides & { from?: string }
-    ): Promise<BigNumber>;
+    bind(data: BytesLike, overrides?: Overrides & { from?: string }): Promise<BigNumber>
 
     recover(
       proof: BytesLike,
       validator: string,
       data: BytesLike,
-      overrides?: Overrides & { from?: string }
-    ): Promise<BigNumber>;
+      overrides?: Overrides & { from?: string },
+    ): Promise<BigNumber>
 
-    supportsInterface(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-  };
+    supportsInterface(interfaceId: BytesLike, overrides?: CallOverrides): Promise<BigNumber>
+  }
 
   populateTransaction: {
-    NAME(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    NAME(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    VERSION(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    VERSION(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    bind(
-      data: BytesLike,
-      overrides?: Overrides & { from?: string }
-    ): Promise<PopulatedTransaction>;
+    bind(data: BytesLike, overrides?: Overrides & { from?: string }): Promise<PopulatedTransaction>
 
     recover(
       proof: BytesLike,
       validator: string,
       data: BytesLike,
-      overrides?: Overrides & { from?: string }
-    ): Promise<PopulatedTransaction>;
+      overrides?: Overrides & { from?: string },
+    ): Promise<PopulatedTransaction>
 
-    supportsInterface(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-  };
+    supportsInterface(interfaceId: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>
+  }
 }

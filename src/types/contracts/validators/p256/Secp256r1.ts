@@ -21,24 +21,16 @@ import type {
 
 export interface Secp256r1Interface extends utils.Interface {
   functions: {
-    "nn()": FunctionFragment;
-    "pp()": FunctionFragment;
     "validateSignature(bytes32,bytes,bytes)": FunctionFragment;
   };
 
-  getFunction(
-    nameOrSignatureOrTopic: "nn" | "pp" | "validateSignature"
-  ): FunctionFragment;
+  getFunction(nameOrSignatureOrTopic: "validateSignature"): FunctionFragment;
 
-  encodeFunctionData(functionFragment: "nn", values?: undefined): string;
-  encodeFunctionData(functionFragment: "pp", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "validateSignature",
     values: [BytesLike, BytesLike, BytesLike]
   ): string;
 
-  decodeFunctionResult(functionFragment: "nn", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "pp", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "validateSignature",
     data: BytesLike
@@ -74,21 +66,13 @@ export interface Secp256r1 extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    nn(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    pp(overrides?: CallOverrides): Promise<[BigNumber]>;
-
     validateSignature(
       message: BytesLike,
       signature: BytesLike,
       publicKey: BytesLike,
       overrides?: CallOverrides
-    ): Promise<[boolean]>;
+    ): Promise<[boolean] & { result: boolean }>;
   };
-
-  nn(overrides?: CallOverrides): Promise<BigNumber>;
-
-  pp(overrides?: CallOverrides): Promise<BigNumber>;
 
   validateSignature(
     message: BytesLike,
@@ -98,10 +82,6 @@ export interface Secp256r1 extends BaseContract {
   ): Promise<boolean>;
 
   callStatic: {
-    nn(overrides?: CallOverrides): Promise<BigNumber>;
-
-    pp(overrides?: CallOverrides): Promise<BigNumber>;
-
     validateSignature(
       message: BytesLike,
       signature: BytesLike,
@@ -113,10 +93,6 @@ export interface Secp256r1 extends BaseContract {
   filters: {};
 
   estimateGas: {
-    nn(overrides?: CallOverrides): Promise<BigNumber>;
-
-    pp(overrides?: CallOverrides): Promise<BigNumber>;
-
     validateSignature(
       message: BytesLike,
       signature: BytesLike,
@@ -126,10 +102,6 @@ export interface Secp256r1 extends BaseContract {
   };
 
   populateTransaction: {
-    nn(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    pp(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     validateSignature(
       message: BytesLike,
       signature: BytesLike,

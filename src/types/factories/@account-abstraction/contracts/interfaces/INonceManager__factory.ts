@@ -2,62 +2,59 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers";
-import type { Provider } from "@ethersproject/providers";
+import { Contract, Signer, utils } from 'ethers'
+import type { Provider } from '@ethersproject/providers'
 import type {
   INonceManager,
   INonceManagerInterface,
-} from "../../../../@account-abstraction/contracts/interfaces/INonceManager";
+} from '../../../../@account-abstraction/contracts/interfaces/INonceManager'
 
 const _abi = [
   {
     inputs: [
       {
-        internalType: "address",
-        name: "sender",
-        type: "address",
+        internalType: 'address',
+        name: 'sender',
+        type: 'address',
       },
       {
-        internalType: "uint192",
-        name: "key",
-        type: "uint192",
+        internalType: 'uint192',
+        name: 'key',
+        type: 'uint192',
       },
     ],
-    name: "getNonce",
+    name: 'getNonce',
     outputs: [
       {
-        internalType: "uint256",
-        name: "nonce",
-        type: "uint256",
+        internalType: 'uint256',
+        name: 'nonce',
+        type: 'uint256',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "uint192",
-        name: "key",
-        type: "uint192",
+        internalType: 'uint192',
+        name: 'key',
+        type: 'uint192',
       },
     ],
-    name: "incrementNonce",
+    name: 'incrementNonce',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
-] as const;
+] as const
 
 export class INonceManager__factory {
-  static readonly abi = _abi;
+  static readonly abi = _abi
   static createInterface(): INonceManagerInterface {
-    return new utils.Interface(_abi) as INonceManagerInterface;
+    return new utils.Interface(_abi) as INonceManagerInterface
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): INonceManager {
-    return new Contract(address, _abi, signerOrProvider) as INonceManager;
+  static connect(address: string, signerOrProvider: Signer | Provider): INonceManager {
+    return new Contract(address, _abi, signerOrProvider) as INonceManager
   }
 }

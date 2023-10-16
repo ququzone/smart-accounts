@@ -3,283 +3,382 @@ pragma solidity 0.8.19;
 
 import "./ISecp256r1.sol";
 
+/**
+ * This contract based on daimo-eth's implementation:
+ * https://github.com/daimo-eth/p256-verifier
+ */
 contract Secp256r1 is ISecp256r1 {
-    struct JPoint {
-        uint256 x;
-        uint256 y;
-        uint256 z;
-    }
-
-    uint256 constant gx = 0x6B17D1F2E12C4247F8BCE6E563A440F277037D812DEB33A0F4A13945D898C296;
-    uint256 constant gy = 0x4FE342E2FE1A7F9B8EE7EB4A7C0F9E162BCE33576B315ECECBB6406837BF51F5;
-    uint256 public constant pp = 0xFFFFFFFF00000001000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFF;
-
-    uint256 public constant nn = 0xFFFFFFFF00000000FFFFFFFFFFFFFFFFBCE6FAADA7179E84F3B9CAC2FC632551;
-    uint256 constant a = 0xFFFFFFFF00000001000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFC;
-    uint256 constant b = 0x5AC635D8AA3A93E7B3EBBD55769886BC651D06B0CC53B0F63BCE3C3E27D2604B;
-    uint256 constant MOST_SIGNIFICANT = 0xc000000000000000000000000000000000000000000000000000000000000000;
-
-    function verifyWithPrecompute(JPoint[16] memory points, uint256 r, uint256 s, uint256 e)
-        internal
-        view
-        returns (bool)
-    {
-        if (r >= nn || s >= nn) {
-            return false;
-        }
-
-        uint256 w = _primemod(s, nn);
-
-        uint256 u1 = mulmod(e, w, nn);
-        uint256 u2 = mulmod(r, w, nn);
-
-        uint256 x;
-        uint256 y;
-
-        (x, y) = ShamirMultJacobian(points, u1, u2);
-        return (x == r);
-    }
-
-    /*
-     * Strauss Shamir trick for EC multiplication
-     * https://stackoverflow.com/questions/50993471/ec-scalar-multiplication-with-strauss-shamir-method
-     * we optimise on this a bit to do with 2 bits at a time rather than a single bit
-     * the individual points for a single pass are precomputed
-     * overall this reduces the number of additions while keeping the same number of doublings
-     */
-    function ShamirMultJacobian(JPoint[16] memory points, uint256 u1, uint256 u2)
-        internal
-        view
-        returns (uint256, uint256)
-    {
-        uint256 x = 0;
-        uint256 y = 0;
-        uint256 z = 0;
-        uint256 bits = 128;
-        uint256 index = 0;
-
-        while (bits > 0) {
-            if (z > 0) {
-                (x, y, z) = _modifiedJacobianDouble(x, y, z);
-                (x, y, z) = _modifiedJacobianDouble(x, y, z);
-            }
-            index = ((u1 & MOST_SIGNIFICANT) >> 252) | ((u2 & MOST_SIGNIFICANT) >> 254);
-            if (index > 0) {
-                (x, y, z) = _jAdd(x, y, z, points[index].x, points[index].y, points[index].z);
-            }
-            u1 <<= 2;
-            u2 <<= 2;
-            bits--;
-        }
-        (x, y) = _affineFromJacobian(x, y, z);
-        return (x, y);
-    }
-
-    function _preComputeJacobianPoints(uint256 x, uint256 y) internal pure returns (JPoint[16] memory points) {
-        points[0] = JPoint(0, 0, 0);
-        points[1] = JPoint(x, y, 1); // u2
-        points[2] = _jPointDouble(points[1]);
-        points[3] = _jPointAdd(points[1], points[2]);
-
-        points[4] = JPoint(gx, gy, 1); // u1Points[1]
-        points[5] = _jPointAdd(points[4], points[1]);
-        points[6] = _jPointAdd(points[4], points[2]);
-        points[7] = _jPointAdd(points[4], points[3]);
-
-        points[8] = _jPointDouble(points[4]); // u1Points[2]
-        points[9] = _jPointAdd(points[8], points[1]);
-        points[10] = _jPointAdd(points[8], points[2]);
-        points[11] = _jPointAdd(points[8], points[3]);
-
-        points[12] = _jPointAdd(points[4], points[8]); // u1Points[3]
-        points[13] = _jPointAdd(points[12], points[1]);
-        points[14] = _jPointAdd(points[12], points[2]);
-        points[15] = _jPointAdd(points[12], points[3]);
-    }
-
-    function _jPointAdd(JPoint memory p1, JPoint memory p2) internal pure returns (JPoint memory) {
-        uint256 x;
-        uint256 y;
-        uint256 z;
-        (x, y, z) = _jAdd(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
-        return JPoint(x, y, z);
-    }
-
-    function _jPointDouble(JPoint memory p) internal pure returns (JPoint memory) {
-        uint256 x;
-        uint256 y;
-        uint256 z;
-        (x, y, z) = _modifiedJacobianDouble(p.x, p.y, p.z);
-        return JPoint(x, y, z);
-    }
-
-    /* _affineFromJacobian
-     * @desription returns affine coordinates from a jacobian input follows
-     * golang elliptic/crypto library
-     */
-    function _affineFromJacobian(uint256 x, uint256 y, uint256 z) internal view returns (uint256 ax, uint256 ay) {
-        if (z == 0) {
-            return (0, 0);
-        }
-
-        uint256 zinv = _primemod(z, pp);
-        uint256 zinvsq = mulmod(zinv, zinv, pp);
-
-        ax = mulmod(x, zinvsq, pp);
-        ay = mulmod(y, mulmod(zinvsq, zinv, pp), pp);
-    }
-
-    /*
-     * _jAdd
-     * @description performs double Jacobian as defined below:
-     * https://hyperelliptic.org/EFD/g1p/auto-code/shortw/jacobian-3/doubling/mdbl-2007-bl.op3
-     */
-    function _jAdd(uint256 p1, uint256 p2, uint256 p3, uint256 q1, uint256 q2, uint256 q3)
-        internal
-        pure
-        returns (uint256 r1, uint256 r2, uint256 r3)
-    {
-        if (p3 == 0) {
-            r1 = q1;
-            r2 = q2;
-            r3 = q3;
-
-            return (r1, r2, r3);
-        } else if (q3 == 0) {
-            r1 = p1;
-            r2 = p2;
-            r3 = p3;
-
-            return (r1, r2, r3);
-        }
-
-        assembly {
-            let pd := 0xFFFFFFFF00000001000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFF
-            let z1z1 := mulmod(p3, p3, pd) // Z1Z1 = Z1^2
-            let z2z2 := mulmod(q3, q3, pd) // Z2Z2 = Z2^2
-
-            let u1 := mulmod(p1, z2z2, pd) // U1 = X1*Z2Z2
-            let u2 := mulmod(q1, z1z1, pd) // U2 = X2*Z1Z1
-
-            let s1 := mulmod(p2, mulmod(z2z2, q3, pd), pd) // S1 = Y1*Z2*Z2Z2
-            let s2 := mulmod(q2, mulmod(z1z1, p3, pd), pd) // S2 = Y2*Z1*Z1Z1
-
-            let p3q3 := addmod(p3, q3, pd)
-
-            if lt(u2, u1) { u2 := add(pd, u2) } // u2 = u2+pd
-
-            let h := sub(u2, u1) // H = U2-U1
-
-            let i := mulmod(0x02, h, pd)
-            i := mulmod(i, i, pd) // I = (2*H)^2
-
-            let j := mulmod(h, i, pd) // J = H*I
-            if lt(s2, s1) { s2 := add(pd, s2) } // u2 = u2+pd
-
-            let rr := mulmod(0x02, sub(s2, s1), pd) // r = 2*(S2-S1)
-            r1 := mulmod(rr, rr, pd) // X3 = R^2
-
-            let v := mulmod(u1, i, pd) // V = U1*I
-            let j2v := addmod(j, mulmod(0x02, v, pd), pd)
-            if lt(r1, j2v) { r1 := add(pd, r1) } // X3 = X3+pd
-
-            r1 := sub(r1, j2v)
-
-            // Y3 = r*(V-X3)-2*S1*J
-            let s12j := mulmod(mulmod(0x02, s1, pd), j, pd)
-
-            if lt(v, r1) { v := add(pd, v) }
-            r2 := mulmod(rr, sub(v, r1), pd)
-
-            if lt(r2, s12j) { r2 := add(pd, r2) }
-            r2 := sub(r2, s12j)
-
-            // Z3 = ((Z1+Z2)^2-Z1Z1-Z2Z2)*H
-            z1z1 := addmod(z1z1, z2z2, pd)
-            j2v := mulmod(p3q3, p3q3, pd)
-            if lt(j2v, z1z1) { j2v := add(pd, j2v) }
-            r3 := mulmod(sub(j2v, z1z1), h, pd)
-        }
-        return (r1, r2, r3);
-    }
-
-    // Point doubling on the modified jacobian coordinates
-    // http://point-at-infinity.org/ecc/Prime_Curve_Modified_Jacobian_Coordinates.html
-    function _modifiedJacobianDouble(uint256 x, uint256 y, uint256 z)
-        internal
-        pure
-        returns (uint256 x3, uint256 y3, uint256 z3)
-    {
-        assembly {
-            let pd := 0xFFFFFFFF00000001000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFF
-            let z2 := mulmod(z, z, pd)
-            let az4 :=
-                mulmod(0xFFFFFFFF00000001000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFC, mulmod(z2, z2, pd), pd)
-            let y2 := mulmod(y, y, pd)
-            let s := mulmod(0x04, mulmod(x, y2, pd), pd)
-            let u := mulmod(0x08, mulmod(y2, y2, pd), pd)
-            let m := addmod(mulmod(0x03, mulmod(x, x, pd), pd), az4, pd)
-            let twos := mulmod(0x02, s, pd)
-            let m2 := mulmod(m, m, pd)
-            if lt(m2, twos) { m2 := add(pd, m2) }
-            x3 := sub(m2, twos)
-            if lt(s, x3) { s := add(pd, s) }
-            y3 := mulmod(m, sub(s, x3), pd)
-            if lt(y3, u) { y3 := add(pd, y3) }
-            y3 := sub(y3, u)
-            z3 := mulmod(0x02, mulmod(y, z, pd), pd)
-        }
-    }
-
-    // Fermats little theorem https://en.wikipedia.org/wiki/Fermat%27s_little_theorem
-    // a^(p-1) = 1 mod p
-    // a^(-1) ≅ a^(p-2) (mod p)
-    // we then use the precompile bigModExp to compute a^(-1)
-    function _primemod(uint256 value, uint256 p) internal view returns (uint256 ret) {
-        ret = modexp(value, p - 2, p);
-        return ret;
-    }
-
-    // Wrapper for built-in BigNumber_modexp (contract 0x5) as described here. https://github.com/ethereum/EIPs/pull/198
-    function modexp(uint256 _base, uint256 _exp, uint256 _mod) internal view returns (uint256 ret) {
-        // bigModExp(_base, _exp, _mod);
-        assembly {
-            if gt(_base, _mod) { _base := mod(_base, _mod) }
-            // Free memory pointer is always stored at 0x40
-            let freemem := mload(0x40)
-
-            mstore(freemem, 0x20)
-            mstore(add(freemem, 0x20), 0x20)
-            mstore(add(freemem, 0x40), 0x20)
-
-            mstore(add(freemem, 0x60), _base)
-            mstore(add(freemem, 0x80), _exp)
-            mstore(add(freemem, 0xa0), _mod)
-
-            let success := staticcall(1500, 0x5, freemem, 0xc0, freemem, 0x20)
-            switch success
-            case 0 { revert(0x0, 0x0) }
-            default { ret := mload(freemem) }
-        }
-    }
-
     function validateSignature(bytes32 message, bytes calldata signature, bytes calldata publicKey)
         external
         view
         override
-        returns (bool)
+        returns (bool result)
     {
         uint256[2] memory rs;
         (rs[0], rs[1]) = abi.decode(signature, (uint256, uint256));
-        if (rs[0] >= nn || rs[1] >= nn || rs[0] == 0 || rs[1] == 0) {
-            //check <n and that sig is not null, otherwise (0,0) is accepted for any publickey and message
+        uint256[2] memory Q;
+        (Q[0], Q[1]) = abi.decode(publicKey, (uint256, uint256));
+        return ecdsa_verify(message, rs[0], rs[1], Q);
+    }
+
+    // Parameters for the sec256r1 (P256) elliptic curve
+    // Curve prime field modulus
+    uint256 constant p = 0xFFFFFFFF00000001000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFF;
+    // Short weierstrass first coefficient
+    uint256 constant a = // The assumption a == -3 (mod p) is used throughout the codebase
+     0xFFFFFFFF00000001000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFC;
+    // Short weierstrass second coefficient
+    uint256 constant b = 0x5AC635D8AA3A93E7B3EBBD55769886BC651D06B0CC53B0F63BCE3C3E27D2604B;
+    // Generating point affine coordinates
+    uint256 constant GX = 0x6B17D1F2E12C4247F8BCE6E563A440F277037D812DEB33A0F4A13945D898C296;
+    uint256 constant GY = 0x4FE342E2FE1A7F9B8EE7EB4A7C0F9E162BCE33576B315ECECBB6406837BF51F5;
+    // Curve order (number of points)
+    uint256 constant n = 0xFFFFFFFF00000000FFFFFFFFFFFFFFFFBCE6FAADA7179E84F3B9CAC2FC632551;
+    // -2 mod p constant, used to speed up inversion and doubling (avoid negation)
+    uint256 constant minus_2modp = 0xFFFFFFFF00000001000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFD;
+    // -2 mod n constant, used to speed up inversion
+    uint256 constant minus_2modn = 0xFFFFFFFF00000000FFFFFFFFFFFFFFFFBCE6FAADA7179E84F3B9CAC2FC63254F;
+
+    /**
+     * @dev ECDSA verification given signature and public key.
+     */
+    function ecdsa_verify(bytes32 message_hash, uint256 r, uint256 s, uint256[2] memory pubKey)
+        private
+        view
+        returns (bool)
+    {
+        // Check r and s are in the scalar field
+        if (r == 0 || r >= n || s == 0 || s >= n) {
             return false;
         }
 
-        uint256[2] memory Q;
-        (Q[0], Q[1]) = abi.decode(publicKey, (uint256, uint256));
+        if (!ecAff_isValidPubkey(pubKey[0], pubKey[1])) {
+            return false;
+        }
 
-        JPoint[16] memory points = _preComputeJacobianPoints(Q[0], Q[1]);
-        return verifyWithPrecompute(points, rs[0], rs[1], uint256(message));
+        uint256 sInv = nModInv(s);
+
+        uint256 scalar_u = mulmod(uint256(message_hash), sInv, n); // (h * s^-1) in scalar field
+        uint256 scalar_v = mulmod(r, sInv, n); // (r * s^-1) in scalar field
+
+        uint256 r_x = ecZZ_mulmuladd(pubKey[0], pubKey[1], scalar_u, scalar_v);
+        return r_x % n == r;
+    }
+
+    /**
+     * @dev Check if a point in affine coordinates is on the curve
+     * Reject 0 point at infinity.
+     */
+    function ecAff_isValidPubkey(uint256 x, uint256 y) internal pure returns (bool) {
+        if (x >= p || y >= p || (x == 0 && y == 0)) {
+            return false;
+        }
+
+        return ecAff_satisfiesCurveEqn(x, y);
+    }
+
+    function ecAff_satisfiesCurveEqn(uint256 x, uint256 y) internal pure returns (bool) {
+        uint256 LHS = mulmod(y, y, p); // y^2
+        uint256 RHS = addmod(mulmod(mulmod(x, x, p), x, p), mulmod(a, x, p), p); // x^3 + a x
+        RHS = addmod(RHS, b, p); // x^3 + a*x + b
+
+        return LHS == RHS;
+    }
+
+    /**
+     * @dev Computation of uG + vQ using Strauss-Shamir's trick, G basepoint, Q public key
+     * returns tuple of (x coordinate of uG + vQ, boolean that is false if internal precompile staticcall fail)
+     * Strauss-Shamir is described well in https://stackoverflow.com/a/50994362
+     */
+    function ecZZ_mulmuladd(
+        uint256 QX,
+        uint256 QY, // affine rep for input point Q
+        uint256 scalar_u,
+        uint256 scalar_v
+    ) internal view returns (uint256 X) {
+        uint256 zz = 1;
+        uint256 zzz = 1;
+        uint256 Y;
+        uint256 HX;
+        uint256 HY;
+
+        if (scalar_u == 0 && scalar_v == 0) return 0;
+
+        // H = g + Q
+        (HX, HY) = ecAff_add(GX, GY, QX, QY);
+
+        int256 index = 255;
+        uint256 bitpair;
+
+        // Find the first bit index that's active in either scalar_u or scalar_v.
+        while (index >= 0) {
+            bitpair = compute_bitpair(uint256(index), scalar_u, scalar_v);
+            index--;
+            if (bitpair != 0) break;
+        }
+
+        // initialise (X, Y) depending on the first active bitpair.
+        // invariant(bitpair != 0); // bitpair == 0 is only possible if u and v are 0.
+
+        if (bitpair == 1) {
+            (X, Y) = (GX, GY);
+        } else if (bitpair == 2) {
+            (X, Y) = (QX, QY);
+        } else if (bitpair == 3) {
+            (X, Y) = (HX, HY);
+        }
+
+        uint256 TX;
+        uint256 TY;
+        while (index >= 0) {
+            (X, Y, zz, zzz) = ecZZ_double_zz(X, Y, zz, zzz);
+
+            bitpair = compute_bitpair(uint256(index), scalar_u, scalar_v);
+            index--;
+
+            if (bitpair == 0) {
+                continue;
+            } else if (bitpair == 1) {
+                (TX, TY) = (GX, GY);
+            } else if (bitpair == 2) {
+                (TX, TY) = (QX, QY);
+            } else {
+                (TX, TY) = (HX, HY);
+            }
+
+            (X, Y, zz, zzz) = ecZZ_dadd_affine(X, Y, zz, zzz, TX, TY);
+        }
+
+        uint256 zzInv = pModInv(zz); // If zz = 0, zzInv = 0.
+        X = mulmod(X, zzInv, p); // X/zz
+    }
+
+    /**
+     * @dev Compute the bits at `index` of u and v and return
+     * them as 2 bit concatenation. The bit at index 0 is on
+     * if the `index`th bit of scalar_u is on and the bit at
+     * index 1 is on if the `index`th bit of scalar_v is on.
+     * Examples:
+     * - compute_bitpair(0, 1, 1) == 3
+     * - compute_bitpair(0, 1, 0) == 1
+     * - compute_bitpair(0, 0, 1) == 2
+     */
+    function compute_bitpair(uint256 index, uint256 scalar_u, uint256 scalar_v) internal pure returns (uint256 ret) {
+        ret = (((scalar_v >> index) & 1) << 1) + ((scalar_u >> index) & 1);
+    }
+
+    /**
+     * @dev Add two elliptic curve points in affine coordinates
+     * Assumes points are on the EC
+     */
+    function ecAff_add(uint256 x1, uint256 y1, uint256 x2, uint256 y2) internal view returns (uint256, uint256) {
+        // invariant(ecAff_IsZero(x1, y1) || ecAff_isOnCurve(x1, y1));
+        // invariant(ecAff_IsZero(x2, y2) || ecAff_isOnCurve(x2, y2));
+
+        uint256 zz1;
+        uint256 zzz1;
+
+        if (ecAff_IsInf(x1, y1)) return (x2, y2);
+        if (ecAff_IsInf(x2, y2)) return (x1, y1);
+
+        (x1, y1, zz1, zzz1) = ecZZ_dadd_affine(x1, y1, 1, 1, x2, y2);
+
+        return ecZZ_SetAff(x1, y1, zz1, zzz1);
+    }
+
+    /**
+     * @dev Check if a point is the infinity point in affine rep.
+     * Assumes point is on the EC or is the point at infinity.
+     */
+    function ecAff_IsInf(uint256 x, uint256 y) internal pure returns (bool flag) {
+        // invariant((x == 0 && y == 0) || ecAff_isOnCurve(x, y));
+
+        return (x == 0 && y == 0);
+    }
+
+    /**
+     * @dev Check if a point is the infinity point in ZZ rep.
+     * Assumes point is on the EC or is the point at infinity.
+     */
+    function ecZZ_IsInf(uint256 zz, uint256 zzz) internal pure returns (bool flag) {
+        // invariant((zz == 0 && zzz == 0) || ecAff_isOnCurve(x, y) for affine
+        // form of the point)
+
+        return (zz == 0 && zzz == 0);
+    }
+
+    /**
+     * @dev Add a ZZ point to an affine point and return as ZZ rep
+     * Uses madd-2008-s and mdbl-2008-s internally
+     * https://hyperelliptic.org/EFD/g1p/auto-shortw-xyzz-3.html#addition-madd-2008-s
+     * Matches https://github.com/supranational/blst/blob/9c87d4a09d6648e933c818118a4418349804ce7f/src/ec_ops.h#L705 closely
+     * Handles points at infinity gracefully
+     */
+    function ecZZ_dadd_affine(uint256 x1, uint256 y1, uint256 zz1, uint256 zzz1, uint256 x2, uint256 y2)
+        internal
+        pure
+        returns (uint256 x3, uint256 y3, uint256 zz3, uint256 zzz3)
+    {
+        if (ecAff_IsInf(x2, y2)) {
+            // (X2, Y2) is point at infinity
+            if (ecZZ_IsInf(zz1, zzz1)) return ecZZ_PointAtInf();
+            return (x1, y1, zz1, zzz1);
+        } else if (ecZZ_IsInf(zz1, zzz1)) {
+            // (X1, Y1) is point at infinity
+            return (x2, y2, 1, 1);
+        }
+
+        uint256 comp_R = addmod(mulmod(y2, zzz1, p), p - y1, p); // R = S2 - y1 = y2*zzz1 - y1
+        uint256 comp_P = addmod(mulmod(x2, zz1, p), p - x1, p); // P = U2 - x1 = x2*zz1 - x1
+
+        if (comp_P != 0) {
+            // X1 != X2
+            // invariant(x1 != x2);
+            uint256 comp_PP = mulmod(comp_P, comp_P, p); // PP = P^2
+            uint256 comp_PPP = mulmod(comp_PP, comp_P, p); // PPP = P*PP
+            zz3 = mulmod(zz1, comp_PP, p); //// ZZ3 = ZZ1*PP
+            zzz3 = mulmod(zzz1, comp_PPP, p); //// ZZZ3 = ZZZ1*PPP
+            uint256 comp_Q = mulmod(x1, comp_PP, p); // Q = X1*PP
+            x3 = addmod(
+                addmod(mulmod(comp_R, comp_R, p), p - comp_PPP, p), // (R^2) + (-PPP)
+                mulmod(minus_2modp, comp_Q, p), // (-2)*(Q)
+                p
+            ); // R^2 - PPP - 2*Q
+            y3 = addmod(
+                mulmod(addmod(comp_Q, p - x3, p), comp_R, p), //(Q+(-x3))*R
+                mulmod(p - y1, comp_PPP, p), // (-y1)*PPP
+                p
+            ); // R*(Q-x3) - y1*PPP
+        } else if (comp_R == 0) {
+            // X1 == X2 and Y1 == Y2
+            // invariant(x1 == x2 && y1 == y2);
+
+            // Must be affine because (X2, Y2) is affine.
+            (x3, y3, zz3, zzz3) = ecZZ_double_affine(x2, y2);
+        } else {
+            // X1 == X2 and Y1 == -Y2
+            // invariant(x1 == x2 && y1 == p - y2);
+            (x3, y3, zz3, zzz3) = ecZZ_PointAtInf();
+        }
+
+        return (x3, y3, zz3, zzz3);
+    }
+
+    /**
+     * @dev Double a ZZ point
+     * Uses http://hyperelliptic.org/EFD/g1p/auto-shortw-xyzz.html#doubling-dbl-2008-s-1
+     * Handles point at infinity gracefully
+     */
+    function ecZZ_double_zz(uint256 x1, uint256 y1, uint256 zz1, uint256 zzz1)
+        internal
+        pure
+        returns (uint256 x3, uint256 y3, uint256 zz3, uint256 zzz3)
+    {
+        if (ecZZ_IsInf(zz1, zzz1)) return ecZZ_PointAtInf();
+
+        uint256 comp_U = mulmod(2, y1, p); // U = 2*Y1
+        uint256 comp_V = mulmod(comp_U, comp_U, p); // V = U^2
+        uint256 comp_W = mulmod(comp_U, comp_V, p); // W = U*V
+        uint256 comp_S = mulmod(x1, comp_V, p); // S = X1*V
+        uint256 comp_M = addmod(mulmod(3, mulmod(x1, x1, p), p), mulmod(a, mulmod(zz1, zz1, p), p), p); //M = 3*(X1)^2 + a*(zz1)^2
+
+        x3 = addmod(mulmod(comp_M, comp_M, p), mulmod(minus_2modp, comp_S, p), p); // M^2 + (-2)*S
+        y3 = addmod(mulmod(comp_M, addmod(comp_S, p - x3, p), p), mulmod(p - comp_W, y1, p), p); // M*(S+(-X3)) + (-W)*Y1
+        zz3 = mulmod(comp_V, zz1, p); // V*ZZ1
+        zzz3 = mulmod(comp_W, zzz1, p); // W*ZZZ1
+    }
+
+    /**
+     * @dev Double an affine point and return as a ZZ point
+     * Uses http://hyperelliptic.org/EFD/g1p/auto-shortw-xyzz.html#doubling-mdbl-2008-s-1
+     * Handles point at infinity gracefully
+     */
+    function ecZZ_double_affine(uint256 x1, uint256 y1)
+        internal
+        pure
+        returns (uint256 x3, uint256 y3, uint256 zz3, uint256 zzz3)
+    {
+        if (ecAff_IsInf(x1, y1)) return ecZZ_PointAtInf();
+
+        uint256 comp_U = mulmod(2, y1, p); // U = 2*Y1
+        zz3 = mulmod(comp_U, comp_U, p); // V = U^2 = zz3
+        zzz3 = mulmod(comp_U, zz3, p); // W = U*V = zzz3
+        uint256 comp_S = mulmod(x1, zz3, p); // S = X1*V
+        uint256 comp_M = addmod(mulmod(3, mulmod(x1, x1, p), p), a, p); // M = 3*(X1)^2 + a
+
+        x3 = addmod(mulmod(comp_M, comp_M, p), mulmod(minus_2modp, comp_S, p), p); // M^2 + (-2)*S
+        y3 = addmod(mulmod(comp_M, addmod(comp_S, p - x3, p), p), mulmod(p - zzz3, y1, p), p); // M*(S+(-X3)) + (-W)*Y1
+    }
+
+    /**
+     * @dev Convert from ZZ rep to affine rep
+     * Assumes (zz)^(3/2) == zzz (i.e. zz == z^2 and zzz == z^3)
+     * See https://hyperelliptic.org/EFD/g1p/auto-shortw-xyzz-3.html
+     */
+    function ecZZ_SetAff(uint256 x, uint256 y, uint256 zz, uint256 zzz)
+        internal
+        view
+        returns (uint256 x1, uint256 y1)
+    {
+        if (ecZZ_IsInf(zz, zzz)) {
+            (x1, y1) = ecAffine_PointAtInf();
+            return (x1, y1);
+        }
+
+        uint256 zzzInv = pModInv(zzz); // 1 / zzz
+        uint256 zInv = mulmod(zz, zzzInv, p); // 1 / z
+        uint256 zzInv = mulmod(zInv, zInv, p); // 1 / zz
+
+        // invariant(mulmod(FCL_pModInv(zInv), FCL_pModInv(zInv), p) == zz)
+        // invariant(mulmod(mulmod(FCL_pModInv(zInv), FCL_pModInv(zInv), p), FCL_pModInv(zInv), p) == zzz)
+
+        x1 = mulmod(x, zzInv, p); // X / zz
+        y1 = mulmod(y, zzzInv, p); // y = Y / zzz
+    }
+
+    /**
+     * @dev Point at infinity in ZZ rep
+     */
+    function ecZZ_PointAtInf() internal pure returns (uint256, uint256, uint256, uint256) {
+        return (0, 0, 0, 0);
+    }
+
+    /**
+     * @dev Point at infinity in affine rep
+     */
+    function ecAffine_PointAtInf() internal pure returns (uint256, uint256) {
+        return (0, 0);
+    }
+
+    /**
+     * @dev u^-1 mod n
+     */
+    function nModInv(uint256 u) internal view returns (uint256) {
+        return modInv(u, n, minus_2modn);
+    }
+
+    /**
+     * @dev u^-1 mod p
+     */
+    function pModInv(uint256 u) internal view returns (uint256) {
+        return modInv(u, p, minus_2modp);
+    }
+
+    /**
+     * @dev u^-1 mod f = u^(phi(f) - 1) mod f = u^(f-2) mod f for prime f
+     * by Fermat's little theorem, compute u^(f-2) mod f using modexp precompile
+     * Assume f != 0. If u is 0, then u^-1 mod f is undefined mathematically,
+     * but this function returns 0.
+     */
+    function modInv(uint256 u, uint256 f, uint256 minus_2modf) internal view returns (uint256 result) {
+        // invariant(f != 0);
+        // invariant(f prime);
+
+        // This seems like a relatively standard way to use this precompile:
+        // https://github.com/OpenZeppelin/openzeppelin-contracts/pull/3298/files#diff-489d4519a087ca2c75be3315b673587abeca3b302f807643e97efa7de8cb35a5R427
+
+        (bool success, bytes memory ret) = (address(0x05).staticcall(abi.encode(32, 32, 32, u, minus_2modf, f)));
+        assert(success); // precompile should never fail on regular EVM environments
+        result = abi.decode(ret, (uint256));
     }
 }

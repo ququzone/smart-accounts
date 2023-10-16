@@ -2,38 +2,32 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers";
-import type { Provider } from "@ethersproject/providers";
-import type {
-  IBeacon,
-  IBeaconInterface,
-} from "../../../../../@openzeppelin/contracts/proxy/beacon/IBeacon";
+import { Contract, Signer, utils } from 'ethers'
+import type { Provider } from '@ethersproject/providers'
+import type { IBeacon, IBeaconInterface } from '../../../../../@openzeppelin/contracts/proxy/beacon/IBeacon'
 
 const _abi = [
   {
     inputs: [],
-    name: "implementation",
+    name: 'implementation',
     outputs: [
       {
-        internalType: "address",
-        name: "",
-        type: "address",
+        internalType: 'address',
+        name: '',
+        type: 'address',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
-] as const;
+] as const
 
 export class IBeacon__factory {
-  static readonly abi = _abi;
+  static readonly abi = _abi
   static createInterface(): IBeaconInterface {
-    return new utils.Interface(_abi) as IBeaconInterface;
+    return new utils.Interface(_abi) as IBeaconInterface
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): IBeacon {
-    return new Contract(address, _abi, signerOrProvider) as IBeacon;
+  static connect(address: string, signerOrProvider: Signer | Provider): IBeacon {
+    return new Contract(address, _abi, signerOrProvider) as IBeacon
   }
 }

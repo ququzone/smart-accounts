@@ -2,38 +2,35 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers";
-import type { Provider } from "@ethersproject/providers";
+import { Contract, Signer, utils } from 'ethers'
+import type { Provider } from '@ethersproject/providers'
 import type {
   IERC1822Proxiable,
   IERC1822ProxiableInterface,
-} from "../../../../../@openzeppelin/contracts/interfaces/draft-IERC1822.sol/IERC1822Proxiable";
+} from '../../../../../@openzeppelin/contracts/interfaces/draft-IERC1822.sol/IERC1822Proxiable'
 
 const _abi = [
   {
     inputs: [],
-    name: "proxiableUUID",
+    name: 'proxiableUUID',
     outputs: [
       {
-        internalType: "bytes32",
-        name: "",
-        type: "bytes32",
+        internalType: 'bytes32',
+        name: '',
+        type: 'bytes32',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
-] as const;
+] as const
 
 export class IERC1822Proxiable__factory {
-  static readonly abi = _abi;
+  static readonly abi = _abi
   static createInterface(): IERC1822ProxiableInterface {
-    return new utils.Interface(_abi) as IERC1822ProxiableInterface;
+    return new utils.Interface(_abi) as IERC1822ProxiableInterface
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): IERC1822Proxiable {
-    return new Contract(address, _abi, signerOrProvider) as IERC1822Proxiable;
+  static connect(address: string, signerOrProvider: Signer | Provider): IERC1822Proxiable {
+    return new Contract(address, _abi, signerOrProvider) as IERC1822Proxiable
   }
 }

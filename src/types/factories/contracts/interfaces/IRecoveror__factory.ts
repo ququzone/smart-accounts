@@ -2,106 +2,100 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers";
-import type { Provider } from "@ethersproject/providers";
-import type {
-  IRecoveror,
-  IRecoverorInterface,
-} from "../../../contracts/interfaces/IRecoveror";
+import { Contract, Signer, utils } from 'ethers'
+import type { Provider } from '@ethersproject/providers'
+import type { IRecoveror, IRecoverorInterface } from '../../../contracts/interfaces/IRecoveror'
 
 const _abi = [
   {
     inputs: [],
-    name: "NAME",
+    name: 'NAME',
     outputs: [
       {
-        internalType: "string",
-        name: "",
-        type: "string",
+        internalType: 'string',
+        name: '',
+        type: 'string',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [],
-    name: "VERSION",
+    name: 'VERSION',
     outputs: [
       {
-        internalType: "string",
-        name: "",
-        type: "string",
+        internalType: 'string',
+        name: '',
+        type: 'string',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "bytes",
-        name: "data",
-        type: "bytes",
+        internalType: 'bytes',
+        name: 'data',
+        type: 'bytes',
       },
     ],
-    name: "bind",
+    name: 'bind',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "bytes",
-        name: "proof",
-        type: "bytes",
+        internalType: 'bytes',
+        name: 'proof',
+        type: 'bytes',
       },
       {
-        internalType: "address",
-        name: "validator",
-        type: "address",
+        internalType: 'address',
+        name: 'validator',
+        type: 'address',
       },
       {
-        internalType: "bytes",
-        name: "data",
-        type: "bytes",
+        internalType: 'bytes',
+        name: 'data',
+        type: 'bytes',
       },
     ],
-    name: "recover",
+    name: 'recover',
     outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "bytes4",
-        name: "interfaceId",
-        type: "bytes4",
+        internalType: 'bytes4',
+        name: 'interfaceId',
+        type: 'bytes4',
       },
     ],
-    name: "supportsInterface",
+    name: 'supportsInterface',
     outputs: [
       {
-        internalType: "bool",
-        name: "",
-        type: "bool",
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
-] as const;
+] as const
 
 export class IRecoveror__factory {
-  static readonly abi = _abi;
+  static readonly abi = _abi
   static createInterface(): IRecoverorInterface {
-    return new utils.Interface(_abi) as IRecoverorInterface;
+    return new utils.Interface(_abi) as IRecoverorInterface
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): IRecoveror {
-    return new Contract(address, _abi, signerOrProvider) as IRecoveror;
+  static connect(address: string, signerOrProvider: Signer | Provider): IRecoveror {
+    return new Contract(address, _abi, signerOrProvider) as IRecoveror
   }
 }

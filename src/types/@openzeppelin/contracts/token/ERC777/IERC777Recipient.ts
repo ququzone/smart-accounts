@@ -12,61 +12,49 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers";
-import type { FunctionFragment, Result } from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
-import type {
-  TypedEventFilter,
-  TypedEvent,
-  TypedListener,
-  OnEvent,
-} from "../../../../common";
+} from 'ethers'
+import type { FunctionFragment, Result } from '@ethersproject/abi'
+import type { Listener, Provider } from '@ethersproject/providers'
+import type { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from '../../../../common'
 
 export interface IERC777RecipientInterface extends utils.Interface {
   functions: {
-    "tokensReceived(address,address,address,uint256,bytes,bytes)": FunctionFragment;
-  };
+    'tokensReceived(address,address,address,uint256,bytes,bytes)': FunctionFragment
+  }
 
-  getFunction(nameOrSignatureOrTopic: "tokensReceived"): FunctionFragment;
+  getFunction(nameOrSignatureOrTopic: 'tokensReceived'): FunctionFragment
 
   encodeFunctionData(
-    functionFragment: "tokensReceived",
-    values: [string, string, string, BigNumberish, BytesLike, BytesLike]
-  ): string;
+    functionFragment: 'tokensReceived',
+    values: [string, string, string, BigNumberish, BytesLike, BytesLike],
+  ): string
 
-  decodeFunctionResult(
-    functionFragment: "tokensReceived",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: 'tokensReceived', data: BytesLike): Result
 
-  events: {};
+  events: {}
 }
 
 export interface IERC777Recipient extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this;
-  attach(addressOrName: string): this;
-  deployed(): Promise<this>;
+  connect(signerOrProvider: Signer | Provider | string): this
+  attach(addressOrName: string): this
+  deployed(): Promise<this>
 
-  interface: IERC777RecipientInterface;
+  interface: IERC777RecipientInterface
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>;
+    toBlock?: string | number | undefined,
+  ): Promise<Array<TEvent>>
 
-  listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
-  listeners(eventName?: string): Array<Listener>;
-  removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
-  ): this;
-  removeAllListeners(eventName?: string): this;
-  off: OnEvent<this>;
-  on: OnEvent<this>;
-  once: OnEvent<this>;
-  removeListener: OnEvent<this>;
+  listeners<TEvent extends TypedEvent>(eventFilter?: TypedEventFilter<TEvent>): Array<TypedListener<TEvent>>
+  listeners(eventName?: string): Array<Listener>
+  removeAllListeners<TEvent extends TypedEvent>(eventFilter: TypedEventFilter<TEvent>): this
+  removeAllListeners(eventName?: string): this
+  off: OnEvent<this>
+  on: OnEvent<this>
+  once: OnEvent<this>
+  removeListener: OnEvent<this>
 
   functions: {
     tokensReceived(
@@ -76,9 +64,9 @@ export interface IERC777Recipient extends BaseContract {
       amount: BigNumberish,
       userData: BytesLike,
       operatorData: BytesLike,
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
-  };
+      overrides?: Overrides & { from?: string },
+    ): Promise<ContractTransaction>
+  }
 
   tokensReceived(
     operator: string,
@@ -87,8 +75,8 @@ export interface IERC777Recipient extends BaseContract {
     amount: BigNumberish,
     userData: BytesLike,
     operatorData: BytesLike,
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
+    overrides?: Overrides & { from?: string },
+  ): Promise<ContractTransaction>
 
   callStatic: {
     tokensReceived(
@@ -98,11 +86,11 @@ export interface IERC777Recipient extends BaseContract {
       amount: BigNumberish,
       userData: BytesLike,
       operatorData: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-  };
+      overrides?: CallOverrides,
+    ): Promise<void>
+  }
 
-  filters: {};
+  filters: {}
 
   estimateGas: {
     tokensReceived(
@@ -112,9 +100,9 @@ export interface IERC777Recipient extends BaseContract {
       amount: BigNumberish,
       userData: BytesLike,
       operatorData: BytesLike,
-      overrides?: Overrides & { from?: string }
-    ): Promise<BigNumber>;
-  };
+      overrides?: Overrides & { from?: string },
+    ): Promise<BigNumber>
+  }
 
   populateTransaction: {
     tokensReceived(
@@ -124,7 +112,7 @@ export interface IERC777Recipient extends BaseContract {
       amount: BigNumberish,
       userData: BytesLike,
       operatorData: BytesLike,
-      overrides?: Overrides & { from?: string }
-    ): Promise<PopulatedTransaction>;
-  };
+      overrides?: Overrides & { from?: string },
+    ): Promise<PopulatedTransaction>
+  }
 }
