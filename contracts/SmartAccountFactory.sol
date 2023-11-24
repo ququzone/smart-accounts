@@ -27,9 +27,8 @@ contract SmartAccountFactory {
         }
         ret = SmartAccount(
             payable(
-                new ERC1967Proxy{salt : bytes32(salt)}(
-                address(accountImplementation),
-                abi.encodeCall(SmartAccount.initialize, (handler, validators, data))
+                new ERC1967Proxy{salt: bytes32(salt)}(
+                    address(accountImplementation), abi.encodeCall(SmartAccount.initialize, (handler, validators, data))
                 )
             )
         );

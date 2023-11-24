@@ -1,2 +1,2 @@
-typechain/
+src/types/
 lib/forge-std/
