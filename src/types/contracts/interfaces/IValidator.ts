@@ -4,6 +4,7 @@
 import type {
   BaseContract,
   BigNumber,
+  BigNumberish,
   BytesLike,
   CallOverrides,
   ContractTransaction,
@@ -16,6 +17,46 @@ import type { FunctionFragment, Result } from '@ethersproject/abi'
 import type { Listener, Provider } from '@ethersproject/providers'
 import type { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from '../../common'
 
+export type UserOperationStruct = {
+  sender: string
+  nonce: BigNumberish
+  initCode: BytesLike
+  callData: BytesLike
+  callGasLimit: BigNumberish
+  verificationGasLimit: BigNumberish
+  preVerificationGas: BigNumberish
+  maxFeePerGas: BigNumberish
+  maxPriorityFeePerGas: BigNumberish
+  paymasterAndData: BytesLike
+  signature: BytesLike
+}
+
+export type UserOperationStructOutput = [
+  string,
+  BigNumber,
+  string,
+  string,
+  BigNumber,
+  BigNumber,
+  BigNumber,
+  BigNumber,
+  BigNumber,
+  string,
+  string,
+] & {
+  sender: string
+  nonce: BigNumber
+  initCode: string
+  callData: string
+  callGasLimit: BigNumber
+  verificationGasLimit: BigNumber
+  preVerificationGas: BigNumber
+  maxFeePerGas: BigNumber
+  maxPriorityFeePerGas: BigNumber
+  paymasterAndData: string
+  signature: string
+}
+
 export interface IValidatorInterface extends utils.Interface {
   functions: {
     'NAME()': FunctionFragment
@@ -23,7 +64,7 @@ export interface IValidatorInterface extends utils.Interface {
     'enable(bytes)': FunctionFragment
     'supportsInterface(bytes4)': FunctionFragment
     'validCaller(address,bytes)': FunctionFragment
-    'validateSignature(address,bytes32,bytes)': FunctionFragment
+    'validateSignature((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes),bytes32,bytes)': FunctionFragment
   }
 
   getFunction(
@@ -35,7 +76,7 @@ export interface IValidatorInterface extends utils.Interface {
   encodeFunctionData(functionFragment: 'enable', values: [BytesLike]): string
   encodeFunctionData(functionFragment: 'supportsInterface', values: [BytesLike]): string
   encodeFunctionData(functionFragment: 'validCaller', values: [string, BytesLike]): string
-  encodeFunctionData(functionFragment: 'validateSignature', values: [string, BytesLike, BytesLike]): string
+  encodeFunctionData(functionFragment: 'validateSignature', values: [UserOperationStruct, BytesLike, BytesLike]): string
 
   decodeFunctionResult(functionFragment: 'NAME', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'VERSION', data: BytesLike): Result
@@ -81,7 +122,7 @@ export interface IValidator extends BaseContract {
     validCaller(caller: string, data: BytesLike, overrides?: CallOverrides): Promise<[boolean]>
 
     validateSignature(
-      account: string,
+      userOp: UserOperationStruct,
       userOpHash: BytesLike,
       signature: BytesLike,
       overrides?: PayableOverrides & { from?: string },
@@ -99,7 +140,7 @@ export interface IValidator extends BaseContract {
   validCaller(caller: string, data: BytesLike, overrides?: CallOverrides): Promise<boolean>
 
   validateSignature(
-    account: string,
+    userOp: UserOperationStruct,
     userOpHash: BytesLike,
     signature: BytesLike,
     overrides?: PayableOverrides & { from?: string },
@@ -117,7 +158,7 @@ export interface IValidator extends BaseContract {
     validCaller(caller: string, data: BytesLike, overrides?: CallOverrides): Promise<boolean>
 
     validateSignature(
-      account: string,
+      userOp: UserOperationStruct,
       userOpHash: BytesLike,
       signature: BytesLike,
       overrides?: CallOverrides,
@@ -138,7 +179,7 @@ export interface IValidator extends BaseContract {
     validCaller(caller: string, data: BytesLike, overrides?: CallOverrides): Promise<BigNumber>
 
     validateSignature(
-      account: string,
+      userOp: UserOperationStruct,
       userOpHash: BytesLike,
       signature: BytesLike,
       overrides?: PayableOverrides & { from?: string },
@@ -157,7 +198,7 @@ export interface IValidator extends BaseContract {
     validCaller(caller: string, data: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     validateSignature(
-      account: string,
+      userOp: UserOperationStruct,
       userOpHash: BytesLike,
       signature: BytesLike,
       overrides?: PayableOverrides & { from?: string },

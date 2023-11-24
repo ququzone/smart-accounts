@@ -19,7 +19,7 @@ contract WebauthnValidator is BaseValidator {
         impl = _impl;
     }
 
-    function validateSignature(address account, bytes32 userOpHash, bytes calldata signature)
+    function validateSignature(UserOperation calldata userOp, bytes32 userOpHash, bytes calldata signature)
         external
         payable
         override
@@ -42,7 +42,7 @@ contract WebauthnValidator is BaseValidator {
             sig = realSig;
         }
 
-        if (impl.validateSignature(messageHash, sig, pks[account])) {
+        if (impl.validateSignature(messageHash, sig, pks[userOp.sender])) {
             return 0;
         }
         return Contants.SIG_VALIDATION_FAILED;

@@ -14,13 +14,13 @@ contract ECDSAValidator is BaseValidator {
 
     mapping(address => address) public owner;
 
-    function validateSignature(address account, bytes32 userOpHash, bytes calldata signature)
+    function validateSignature(UserOperation calldata userOp, bytes32 userOpHash, bytes calldata signature)
         external
         payable
         override
         returns (uint256 validationData)
     {
-        address _owner = owner[account];
+        address _owner = owner[userOp.sender];
         bytes32 hash = ECDSA.toEthSignedMessageHash(userOpHash);
         if (_owner != ECDSA.recover(hash, signature)) {
             return Contants.SIG_VALIDATION_FAILED;

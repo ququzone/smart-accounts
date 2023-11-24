@@ -13,7 +13,7 @@ import type {
   Signer,
   utils,
 } from 'ethers'
-import type { FunctionFragment, Result, EventFragment } from '@ethersproject/abi'
+import type { FunctionFragment, Result } from '@ethersproject/abi'
 import type { Listener, Provider } from '@ethersproject/providers'
 import type { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from '../../common'
 
@@ -57,32 +57,23 @@ export type UserOperationStructOutput = [
   signature: string
 }
 
-export interface ECDSAValidatorInterface extends utils.Interface {
+export interface OIDCSessionOnlyValidatorInterface extends utils.Interface {
   functions: {
     'NAME()': FunctionFragment
     'VERSION()': FunctionFragment
     'enable(bytes)': FunctionFragment
-    'owner(address)': FunctionFragment
     'supportsInterface(bytes4)': FunctionFragment
     'validCaller(address,bytes)': FunctionFragment
     'validateSignature((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes),bytes32,bytes)': FunctionFragment
   }
 
   getFunction(
-    nameOrSignatureOrTopic:
-      | 'NAME'
-      | 'VERSION'
-      | 'enable'
-      | 'owner'
-      | 'supportsInterface'
-      | 'validCaller'
-      | 'validateSignature',
+    nameOrSignatureOrTopic: 'NAME' | 'VERSION' | 'enable' | 'supportsInterface' | 'validCaller' | 'validateSignature',
   ): FunctionFragment
 
   encodeFunctionData(functionFragment: 'NAME', values?: undefined): string
   encodeFunctionData(functionFragment: 'VERSION', values?: undefined): string
   encodeFunctionData(functionFragment: 'enable', values: [BytesLike]): string
-  encodeFunctionData(functionFragment: 'owner', values: [string]): string
   encodeFunctionData(functionFragment: 'supportsInterface', values: [BytesLike]): string
   encodeFunctionData(functionFragment: 'validCaller', values: [string, BytesLike]): string
   encodeFunctionData(functionFragment: 'validateSignature', values: [UserOperationStruct, BytesLike, BytesLike]): string
@@ -90,33 +81,19 @@ export interface ECDSAValidatorInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: 'NAME', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'VERSION', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'enable', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'owner', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'supportsInterface', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'validCaller', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'validateSignature', data: BytesLike): Result
 
-  events: {
-    'OwnerChanged(address,address,address)': EventFragment
-  }
-
-  getEvent(nameOrSignatureOrTopic: 'OwnerChanged'): EventFragment
+  events: {}
 }
 
-export interface OwnerChangedEventObject {
-  account: string
-  oldOwner: string
-  newOwner: string
-}
-export type OwnerChangedEvent = TypedEvent<[string, string, string], OwnerChangedEventObject>
-
-export type OwnerChangedEventFilter = TypedEventFilter<OwnerChangedEvent>
-
-export interface ECDSAValidator extends BaseContract {
+export interface OIDCSessionOnlyValidator extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this
   attach(addressOrName: string): this
   deployed(): Promise<this>
 
-  interface: ECDSAValidatorInterface
+  interface: OIDCSessionOnlyValidatorInterface
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -140,11 +117,9 @@ export interface ECDSAValidator extends BaseContract {
 
     enable(data: BytesLike, overrides?: PayableOverrides & { from?: string }): Promise<ContractTransaction>
 
-    owner(arg0: string, overrides?: CallOverrides): Promise<[string]>
-
     supportsInterface(interfaceId: BytesLike, overrides?: CallOverrides): Promise<[boolean]>
 
-    validCaller(caller: string, arg1: BytesLike, overrides?: CallOverrides): Promise<[boolean]>
+    validCaller(caller: string, data: BytesLike, overrides?: CallOverrides): Promise<[boolean]>
 
     validateSignature(
       userOp: UserOperationStruct,
@@ -160,11 +135,9 @@ export interface ECDSAValidator extends BaseContract {
 
   enable(data: BytesLike, overrides?: PayableOverrides & { from?: string }): Promise<ContractTransaction>
 
-  owner(arg0: string, overrides?: CallOverrides): Promise<string>
-
   supportsInterface(interfaceId: BytesLike, overrides?: CallOverrides): Promise<boolean>
 
-  validCaller(caller: string, arg1: BytesLike, overrides?: CallOverrides): Promise<boolean>
+  validCaller(caller: string, data: BytesLike, overrides?: CallOverrides): Promise<boolean>
 
   validateSignature(
     userOp: UserOperationStruct,
@@ -180,11 +153,9 @@ export interface ECDSAValidator extends BaseContract {
 
     enable(data: BytesLike, overrides?: CallOverrides): Promise<void>
 
-    owner(arg0: string, overrides?: CallOverrides): Promise<string>
-
     supportsInterface(interfaceId: BytesLike, overrides?: CallOverrides): Promise<boolean>
 
-    validCaller(caller: string, arg1: BytesLike, overrides?: CallOverrides): Promise<boolean>
+    validCaller(caller: string, data: BytesLike, overrides?: CallOverrides): Promise<boolean>
 
     validateSignature(
       userOp: UserOperationStruct,
@@ -194,14 +165,7 @@ export interface ECDSAValidator extends BaseContract {
     ): Promise<BigNumber>
   }
 
-  filters: {
-    'OwnerChanged(address,address,address)'(
-      account?: string | null,
-      oldOwner?: string | null,
-      newOwner?: string | null,
-    ): OwnerChangedEventFilter
-    OwnerChanged(account?: string | null, oldOwner?: string | null, newOwner?: string | null): OwnerChangedEventFilter
-  }
+  filters: {}
 
   estimateGas: {
     NAME(overrides?: CallOverrides): Promise<BigNumber>
@@ -210,11 +174,9 @@ export interface ECDSAValidator extends BaseContract {
 
     enable(data: BytesLike, overrides?: PayableOverrides & { from?: string }): Promise<BigNumber>
 
-    owner(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
-
     supportsInterface(interfaceId: BytesLike, overrides?: CallOverrides): Promise<BigNumber>
 
-    validCaller(caller: string, arg1: BytesLike, overrides?: CallOverrides): Promise<BigNumber>
+    validCaller(caller: string, data: BytesLike, overrides?: CallOverrides): Promise<BigNumber>
 
     validateSignature(
       userOp: UserOperationStruct,
@@ -231,11 +193,9 @@ export interface ECDSAValidator extends BaseContract {
 
     enable(data: BytesLike, overrides?: PayableOverrides & { from?: string }): Promise<PopulatedTransaction>
 
-    owner(arg0: string, overrides?: CallOverrides): Promise<PopulatedTransaction>
-
     supportsInterface(interfaceId: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    validCaller(caller: string, arg1: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>
+    validCaller(caller: string, data: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     validateSignature(
       userOp: UserOperationStruct,

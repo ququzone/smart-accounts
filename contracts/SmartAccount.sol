@@ -56,7 +56,7 @@ contract SmartAccount is
         if (!isValidatorEnabled(validator)) {
             return SIG_VALIDATION_FAILED;
         }
-        return IValidator(validator).validateSignature(userOp.sender, userOpHash, signature);
+        return IValidator(validator).validateSignature(userOp, userOpHash, signature);
     }
 
     function recovery(address validator, bytes calldata data) external {
