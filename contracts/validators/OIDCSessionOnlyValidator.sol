@@ -6,6 +6,13 @@ import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "../common/Contants.sol";
 import "./BaseValidator.sol";
 
+interface IVerifier {
+    function verifyProof(uint256[2] memory a, uint256[2][2] memory b, uint256[2] memory c, uint256[2] memory input)
+        external
+        view
+        returns (bool r);
+}
+
 // OIDC ZK based validator that can only to add session validator
 contract OIDCSessionOnlyValidator is BaseValidator {
     string public constant override NAME = "OIDC Validator";
