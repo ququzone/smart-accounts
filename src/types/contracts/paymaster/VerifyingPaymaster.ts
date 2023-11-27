@@ -13,24 +13,33 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from 'ethers'
-import type { FunctionFragment, Result, EventFragment } from '@ethersproject/abi'
-import type { Listener, Provider } from '@ethersproject/providers'
-import type { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from '../../common'
+} from "ethers";
+import type {
+  FunctionFragment,
+  Result,
+  EventFragment,
+} from "@ethersproject/abi";
+import type { Listener, Provider } from "@ethersproject/providers";
+import type {
+  TypedEventFilter,
+  TypedEvent,
+  TypedListener,
+  OnEvent,
+} from "../../common";
 
 export type UserOperationStruct = {
-  sender: string
-  nonce: BigNumberish
-  initCode: BytesLike
-  callData: BytesLike
-  callGasLimit: BigNumberish
-  verificationGasLimit: BigNumberish
-  preVerificationGas: BigNumberish
-  maxFeePerGas: BigNumberish
-  maxPriorityFeePerGas: BigNumberish
-  paymasterAndData: BytesLike
-  signature: BytesLike
-}
+  sender: string;
+  nonce: BigNumberish;
+  initCode: BytesLike;
+  callData: BytesLike;
+  callGasLimit: BigNumberish;
+  verificationGasLimit: BigNumberish;
+  preVerificationGas: BigNumberish;
+  maxFeePerGas: BigNumberish;
+  maxPriorityFeePerGas: BigNumberish;
+  paymasterAndData: BytesLike;
+  signature: BytesLike;
+};
 
 export type UserOperationStructOutput = [
   string,
@@ -43,459 +52,615 @@ export type UserOperationStructOutput = [
   BigNumber,
   BigNumber,
   string,
-  string,
+  string
 ] & {
-  sender: string
-  nonce: BigNumber
-  initCode: string
-  callData: string
-  callGasLimit: BigNumber
-  verificationGasLimit: BigNumber
-  preVerificationGas: BigNumber
-  maxFeePerGas: BigNumber
-  maxPriorityFeePerGas: BigNumber
-  paymasterAndData: string
-  signature: string
-}
+  sender: string;
+  nonce: BigNumber;
+  initCode: string;
+  callData: string;
+  callGasLimit: BigNumber;
+  verificationGasLimit: BigNumber;
+  preVerificationGas: BigNumber;
+  maxFeePerGas: BigNumber;
+  maxPriorityFeePerGas: BigNumber;
+  paymasterAndData: string;
+  signature: string;
+};
 
 export interface VerifyingPaymasterInterface extends utils.Interface {
   functions: {
-    'addStake(uint32)': FunctionFragment
-    'changeSigner(address)': FunctionFragment
-    'deposit()': FunctionFragment
-    'entryPoint()': FunctionFragment
-    'getDeposit()': FunctionFragment
-    'getHash((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes),uint48,uint48)': FunctionFragment
-    'owner()': FunctionFragment
-    'parsePaymasterAndData(bytes)': FunctionFragment
-    'postOp(uint8,bytes,uint256)': FunctionFragment
-    'renounceOwnership()': FunctionFragment
-    'senderNonce(address)': FunctionFragment
-    'signer()': FunctionFragment
-    'transferOwnership(address)': FunctionFragment
-    'unlockStake()': FunctionFragment
-    'validatePaymasterUserOp((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes),bytes32,uint256)': FunctionFragment
-    'withdrawStake(address)': FunctionFragment
-    'withdrawTo(address,uint256)': FunctionFragment
-  }
+    "addStake(uint32)": FunctionFragment;
+    "changeSigner(address)": FunctionFragment;
+    "deposit()": FunctionFragment;
+    "entryPoint()": FunctionFragment;
+    "getDeposit()": FunctionFragment;
+    "getHash((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes),uint48,uint48)": FunctionFragment;
+    "owner()": FunctionFragment;
+    "parsePaymasterAndData(bytes)": FunctionFragment;
+    "postOp(uint8,bytes,uint256)": FunctionFragment;
+    "renounceOwnership()": FunctionFragment;
+    "senderNonce(address)": FunctionFragment;
+    "signer()": FunctionFragment;
+    "transferOwnership(address)": FunctionFragment;
+    "unlockStake()": FunctionFragment;
+    "validatePaymasterUserOp((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes),bytes32,uint256)": FunctionFragment;
+    "withdrawStake(address)": FunctionFragment;
+    "withdrawTo(address,uint256)": FunctionFragment;
+  };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | 'addStake'
-      | 'changeSigner'
-      | 'deposit'
-      | 'entryPoint'
-      | 'getDeposit'
-      | 'getHash'
-      | 'owner'
-      | 'parsePaymasterAndData'
-      | 'postOp'
-      | 'renounceOwnership'
-      | 'senderNonce'
-      | 'signer'
-      | 'transferOwnership'
-      | 'unlockStake'
-      | 'validatePaymasterUserOp'
-      | 'withdrawStake'
-      | 'withdrawTo',
-  ): FunctionFragment
+      | "addStake"
+      | "changeSigner"
+      | "deposit"
+      | "entryPoint"
+      | "getDeposit"
+      | "getHash"
+      | "owner"
+      | "parsePaymasterAndData"
+      | "postOp"
+      | "renounceOwnership"
+      | "senderNonce"
+      | "signer"
+      | "transferOwnership"
+      | "unlockStake"
+      | "validatePaymasterUserOp"
+      | "withdrawStake"
+      | "withdrawTo"
+  ): FunctionFragment;
 
-  encodeFunctionData(functionFragment: 'addStake', values: [BigNumberish]): string
-  encodeFunctionData(functionFragment: 'changeSigner', values: [string]): string
-  encodeFunctionData(functionFragment: 'deposit', values?: undefined): string
-  encodeFunctionData(functionFragment: 'entryPoint', values?: undefined): string
-  encodeFunctionData(functionFragment: 'getDeposit', values?: undefined): string
-  encodeFunctionData(functionFragment: 'getHash', values: [UserOperationStruct, BigNumberish, BigNumberish]): string
-  encodeFunctionData(functionFragment: 'owner', values?: undefined): string
-  encodeFunctionData(functionFragment: 'parsePaymasterAndData', values: [BytesLike]): string
-  encodeFunctionData(functionFragment: 'postOp', values: [BigNumberish, BytesLike, BigNumberish]): string
-  encodeFunctionData(functionFragment: 'renounceOwnership', values?: undefined): string
-  encodeFunctionData(functionFragment: 'senderNonce', values: [string]): string
-  encodeFunctionData(functionFragment: 'signer', values?: undefined): string
-  encodeFunctionData(functionFragment: 'transferOwnership', values: [string]): string
-  encodeFunctionData(functionFragment: 'unlockStake', values?: undefined): string
   encodeFunctionData(
-    functionFragment: 'validatePaymasterUserOp',
-    values: [UserOperationStruct, BytesLike, BigNumberish],
-  ): string
-  encodeFunctionData(functionFragment: 'withdrawStake', values: [string]): string
-  encodeFunctionData(functionFragment: 'withdrawTo', values: [string, BigNumberish]): string
+    functionFragment: "addStake",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "changeSigner",
+    values: [string]
+  ): string;
+  encodeFunctionData(functionFragment: "deposit", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "entryPoint",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getDeposit",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getHash",
+    values: [UserOperationStruct, BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "parsePaymasterAndData",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "postOp",
+    values: [BigNumberish, BytesLike, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "renounceOwnership",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "senderNonce", values: [string]): string;
+  encodeFunctionData(functionFragment: "signer", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "transferOwnership",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "unlockStake",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "validatePaymasterUserOp",
+    values: [UserOperationStruct, BytesLike, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawStake",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawTo",
+    values: [string, BigNumberish]
+  ): string;
 
-  decodeFunctionResult(functionFragment: 'addStake', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'changeSigner', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'deposit', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'entryPoint', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'getDeposit', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'getHash', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'owner', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'parsePaymasterAndData', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'postOp', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'renounceOwnership', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'senderNonce', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'signer', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'transferOwnership', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'unlockStake', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'validatePaymasterUserOp', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'withdrawStake', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'withdrawTo', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: "addStake", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "changeSigner",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "entryPoint", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "getDeposit", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "getHash", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "parsePaymasterAndData",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "postOp", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "renounceOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "senderNonce",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "signer", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "transferOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "unlockStake",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "validatePaymasterUserOp",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawStake",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "withdrawTo", data: BytesLike): Result;
 
   events: {
-    'OwnershipTransferred(address,address)': EventFragment
-    'SignerChanged(address)': EventFragment
-  }
+    "OwnershipTransferred(address,address)": EventFragment;
+    "SignerChanged(address)": EventFragment;
+  };
 
-  getEvent(nameOrSignatureOrTopic: 'OwnershipTransferred'): EventFragment
-  getEvent(nameOrSignatureOrTopic: 'SignerChanged'): EventFragment
+  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SignerChanged"): EventFragment;
 }
 
 export interface OwnershipTransferredEventObject {
-  previousOwner: string
-  newOwner: string
+  previousOwner: string;
+  newOwner: string;
 }
-export type OwnershipTransferredEvent = TypedEvent<[string, string], OwnershipTransferredEventObject>
+export type OwnershipTransferredEvent = TypedEvent<
+  [string, string],
+  OwnershipTransferredEventObject
+>;
 
-export type OwnershipTransferredEventFilter = TypedEventFilter<OwnershipTransferredEvent>
+export type OwnershipTransferredEventFilter =
+  TypedEventFilter<OwnershipTransferredEvent>;
 
 export interface SignerChangedEventObject {
-  signer: string
+  signer: string;
 }
-export type SignerChangedEvent = TypedEvent<[string], SignerChangedEventObject>
+export type SignerChangedEvent = TypedEvent<[string], SignerChangedEventObject>;
 
-export type SignerChangedEventFilter = TypedEventFilter<SignerChangedEvent>
+export type SignerChangedEventFilter = TypedEventFilter<SignerChangedEvent>;
 
 export interface VerifyingPaymaster extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this
-  attach(addressOrName: string): this
-  deployed(): Promise<this>
+  connect(signerOrProvider: Signer | Provider | string): this;
+  attach(addressOrName: string): this;
+  deployed(): Promise<this>;
 
-  interface: VerifyingPaymasterInterface
+  interface: VerifyingPaymasterInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined,
-  ): Promise<Array<TEvent>>
+    toBlock?: string | number | undefined
+  ): Promise<Array<TEvent>>;
 
-  listeners<TEvent extends TypedEvent>(eventFilter?: TypedEventFilter<TEvent>): Array<TypedListener<TEvent>>
-  listeners(eventName?: string): Array<Listener>
-  removeAllListeners<TEvent extends TypedEvent>(eventFilter: TypedEventFilter<TEvent>): this
-  removeAllListeners(eventName?: string): this
-  off: OnEvent<this>
-  on: OnEvent<this>
-  once: OnEvent<this>
-  removeListener: OnEvent<this>
+  listeners<TEvent extends TypedEvent>(
+    eventFilter?: TypedEventFilter<TEvent>
+  ): Array<TypedListener<TEvent>>;
+  listeners(eventName?: string): Array<Listener>;
+  removeAllListeners<TEvent extends TypedEvent>(
+    eventFilter: TypedEventFilter<TEvent>
+  ): this;
+  removeAllListeners(eventName?: string): this;
+  off: OnEvent<this>;
+  on: OnEvent<this>;
+  once: OnEvent<this>;
+  removeListener: OnEvent<this>;
 
   functions: {
     addStake(
       unstakeDelaySec: BigNumberish,
-      overrides?: PayableOverrides & { from?: string },
-    ): Promise<ContractTransaction>
+      overrides?: PayableOverrides & { from?: string }
+    ): Promise<ContractTransaction>;
 
-    changeSigner(_signer: string, overrides?: Overrides & { from?: string }): Promise<ContractTransaction>
+    changeSigner(
+      _signer: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
 
-    deposit(overrides?: PayableOverrides & { from?: string }): Promise<ContractTransaction>
+    deposit(
+      overrides?: PayableOverrides & { from?: string }
+    ): Promise<ContractTransaction>;
 
-    entryPoint(overrides?: CallOverrides): Promise<[string]>
+    entryPoint(overrides?: CallOverrides): Promise<[string]>;
 
-    getDeposit(overrides?: CallOverrides): Promise<[BigNumber]>
+    getDeposit(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     getHash(
       userOp: UserOperationStruct,
       validUntil: BigNumberish,
       validAfter: BigNumberish,
-      overrides?: CallOverrides,
-    ): Promise<[string]>
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
-    owner(overrides?: CallOverrides): Promise<[string]>
+    owner(overrides?: CallOverrides): Promise<[string]>;
 
     parsePaymasterAndData(
       paymasterAndData: BytesLike,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<
       [number, number, string] & {
-        validUntil: number
-        validAfter: number
-        signature: string
+        validUntil: number;
+        validAfter: number;
+        signature: string;
       }
-    >
+    >;
 
     postOp(
       mode: BigNumberish,
       context: BytesLike,
       actualGasCost: BigNumberish,
-      overrides?: Overrides & { from?: string },
-    ): Promise<ContractTransaction>
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
 
-    renounceOwnership(overrides?: Overrides & { from?: string }): Promise<ContractTransaction>
+    renounceOwnership(
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
 
-    senderNonce(arg0: string, overrides?: CallOverrides): Promise<[BigNumber]>
+    senderNonce(arg0: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    signer(overrides?: CallOverrides): Promise<[string]>
+    signer(overrides?: CallOverrides): Promise<[string]>;
 
-    transferOwnership(newOwner: string, overrides?: Overrides & { from?: string }): Promise<ContractTransaction>
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
 
-    unlockStake(overrides?: Overrides & { from?: string }): Promise<ContractTransaction>
+    unlockStake(
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
 
     validatePaymasterUserOp(
       userOp: UserOperationStruct,
       userOpHash: BytesLike,
       maxCost: BigNumberish,
-      overrides?: Overrides & { from?: string },
-    ): Promise<ContractTransaction>
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
 
-    withdrawStake(withdrawAddress: string, overrides?: Overrides & { from?: string }): Promise<ContractTransaction>
+    withdrawStake(
+      withdrawAddress: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
 
     withdrawTo(
       withdrawAddress: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string },
-    ): Promise<ContractTransaction>
-  }
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+  };
 
   addStake(
     unstakeDelaySec: BigNumberish,
-    overrides?: PayableOverrides & { from?: string },
-  ): Promise<ContractTransaction>
+    overrides?: PayableOverrides & { from?: string }
+  ): Promise<ContractTransaction>;
 
-  changeSigner(_signer: string, overrides?: Overrides & { from?: string }): Promise<ContractTransaction>
+  changeSigner(
+    _signer: string,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
 
-  deposit(overrides?: PayableOverrides & { from?: string }): Promise<ContractTransaction>
+  deposit(
+    overrides?: PayableOverrides & { from?: string }
+  ): Promise<ContractTransaction>;
 
-  entryPoint(overrides?: CallOverrides): Promise<string>
+  entryPoint(overrides?: CallOverrides): Promise<string>;
 
-  getDeposit(overrides?: CallOverrides): Promise<BigNumber>
+  getDeposit(overrides?: CallOverrides): Promise<BigNumber>;
 
   getHash(
     userOp: UserOperationStruct,
     validUntil: BigNumberish,
     validAfter: BigNumberish,
-    overrides?: CallOverrides,
-  ): Promise<string>
+    overrides?: CallOverrides
+  ): Promise<string>;
 
-  owner(overrides?: CallOverrides): Promise<string>
+  owner(overrides?: CallOverrides): Promise<string>;
 
   parsePaymasterAndData(
     paymasterAndData: BytesLike,
-    overrides?: CallOverrides,
+    overrides?: CallOverrides
   ): Promise<
     [number, number, string] & {
-      validUntil: number
-      validAfter: number
-      signature: string
+      validUntil: number;
+      validAfter: number;
+      signature: string;
     }
-  >
+  >;
 
   postOp(
     mode: BigNumberish,
     context: BytesLike,
     actualGasCost: BigNumberish,
-    overrides?: Overrides & { from?: string },
-  ): Promise<ContractTransaction>
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
 
-  renounceOwnership(overrides?: Overrides & { from?: string }): Promise<ContractTransaction>
+  renounceOwnership(
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
 
-  senderNonce(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
+  senderNonce(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-  transferOwnership(newOwner: string, overrides?: Overrides & { from?: string }): Promise<ContractTransaction>
+  transferOwnership(
+    newOwner: string,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
 
-  unlockStake(overrides?: Overrides & { from?: string }): Promise<ContractTransaction>
+  unlockStake(
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
 
   validatePaymasterUserOp(
     userOp: UserOperationStruct,
     userOpHash: BytesLike,
     maxCost: BigNumberish,
-    overrides?: Overrides & { from?: string },
-  ): Promise<ContractTransaction>
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
 
-  withdrawStake(withdrawAddress: string, overrides?: Overrides & { from?: string }): Promise<ContractTransaction>
+  withdrawStake(
+    withdrawAddress: string,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
 
   withdrawTo(
     withdrawAddress: string,
     amount: BigNumberish,
-    overrides?: Overrides & { from?: string },
-  ): Promise<ContractTransaction>
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
 
   callStatic: {
-    addStake(unstakeDelaySec: BigNumberish, overrides?: CallOverrides): Promise<void>
+    addStake(
+      unstakeDelaySec: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    changeSigner(_signer: string, overrides?: CallOverrides): Promise<void>
+    changeSigner(_signer: string, overrides?: CallOverrides): Promise<void>;
 
-    deposit(overrides?: CallOverrides): Promise<void>
+    deposit(overrides?: CallOverrides): Promise<void>;
 
-    entryPoint(overrides?: CallOverrides): Promise<string>
+    entryPoint(overrides?: CallOverrides): Promise<string>;
 
-    getDeposit(overrides?: CallOverrides): Promise<BigNumber>
+    getDeposit(overrides?: CallOverrides): Promise<BigNumber>;
 
     getHash(
       userOp: UserOperationStruct,
       validUntil: BigNumberish,
       validAfter: BigNumberish,
-      overrides?: CallOverrides,
-    ): Promise<string>
+      overrides?: CallOverrides
+    ): Promise<string>;
 
-    owner(overrides?: CallOverrides): Promise<string>
+    owner(overrides?: CallOverrides): Promise<string>;
 
     parsePaymasterAndData(
       paymasterAndData: BytesLike,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<
       [number, number, string] & {
-        validUntil: number
-        validAfter: number
-        signature: string
+        validUntil: number;
+        validAfter: number;
+        signature: string;
       }
-    >
+    >;
 
     postOp(
       mode: BigNumberish,
       context: BytesLike,
       actualGasCost: BigNumberish,
-      overrides?: CallOverrides,
-    ): Promise<void>
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    renounceOwnership(overrides?: CallOverrides): Promise<void>
+    renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
-    senderNonce(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
+    senderNonce(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    signer(overrides?: CallOverrides): Promise<string>
+    signer(overrides?: CallOverrides): Promise<string>;
 
-    transferOwnership(newOwner: string, overrides?: CallOverrides): Promise<void>
+    transferOwnership(
+      newOwner: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    unlockStake(overrides?: CallOverrides): Promise<void>
-
-    validatePaymasterUserOp(
-      userOp: UserOperationStruct,
-      userOpHash: BytesLike,
-      maxCost: BigNumberish,
-      overrides?: CallOverrides,
-    ): Promise<[string, BigNumber] & { context: string; validationData: BigNumber }>
-
-    withdrawStake(withdrawAddress: string, overrides?: CallOverrides): Promise<void>
-
-    withdrawTo(withdrawAddress: string, amount: BigNumberish, overrides?: CallOverrides): Promise<void>
-  }
-
-  filters: {
-    'OwnershipTransferred(address,address)'(
-      previousOwner?: string | null,
-      newOwner?: string | null,
-    ): OwnershipTransferredEventFilter
-    OwnershipTransferred(previousOwner?: string | null, newOwner?: string | null): OwnershipTransferredEventFilter
-
-    'SignerChanged(address)'(signer?: string | null): SignerChangedEventFilter
-    SignerChanged(signer?: string | null): SignerChangedEventFilter
-  }
-
-  estimateGas: {
-    addStake(unstakeDelaySec: BigNumberish, overrides?: PayableOverrides & { from?: string }): Promise<BigNumber>
-
-    changeSigner(_signer: string, overrides?: Overrides & { from?: string }): Promise<BigNumber>
-
-    deposit(overrides?: PayableOverrides & { from?: string }): Promise<BigNumber>
-
-    entryPoint(overrides?: CallOverrides): Promise<BigNumber>
-
-    getDeposit(overrides?: CallOverrides): Promise<BigNumber>
-
-    getHash(
-      userOp: UserOperationStruct,
-      validUntil: BigNumberish,
-      validAfter: BigNumberish,
-      overrides?: CallOverrides,
-    ): Promise<BigNumber>
-
-    owner(overrides?: CallOverrides): Promise<BigNumber>
-
-    parsePaymasterAndData(paymasterAndData: BytesLike, overrides?: CallOverrides): Promise<BigNumber>
-
-    postOp(
-      mode: BigNumberish,
-      context: BytesLike,
-      actualGasCost: BigNumberish,
-      overrides?: Overrides & { from?: string },
-    ): Promise<BigNumber>
-
-    renounceOwnership(overrides?: Overrides & { from?: string }): Promise<BigNumber>
-
-    senderNonce(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
-
-    signer(overrides?: CallOverrides): Promise<BigNumber>
-
-    transferOwnership(newOwner: string, overrides?: Overrides & { from?: string }): Promise<BigNumber>
-
-    unlockStake(overrides?: Overrides & { from?: string }): Promise<BigNumber>
+    unlockStake(overrides?: CallOverrides): Promise<void>;
 
     validatePaymasterUserOp(
       userOp: UserOperationStruct,
       userOpHash: BytesLike,
       maxCost: BigNumberish,
-      overrides?: Overrides & { from?: string },
-    ): Promise<BigNumber>
+      overrides?: CallOverrides
+    ): Promise<
+      [string, BigNumber] & { context: string; validationData: BigNumber }
+    >;
 
-    withdrawStake(withdrawAddress: string, overrides?: Overrides & { from?: string }): Promise<BigNumber>
+    withdrawStake(
+      withdrawAddress: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     withdrawTo(
       withdrawAddress: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string },
-    ): Promise<BigNumber>
-  }
+      overrides?: CallOverrides
+    ): Promise<void>;
+  };
+
+  filters: {
+    "OwnershipTransferred(address,address)"(
+      previousOwner?: string | null,
+      newOwner?: string | null
+    ): OwnershipTransferredEventFilter;
+    OwnershipTransferred(
+      previousOwner?: string | null,
+      newOwner?: string | null
+    ): OwnershipTransferredEventFilter;
+
+    "SignerChanged(address)"(signer?: string | null): SignerChangedEventFilter;
+    SignerChanged(signer?: string | null): SignerChangedEventFilter;
+  };
+
+  estimateGas: {
+    addStake(
+      unstakeDelaySec: BigNumberish,
+      overrides?: PayableOverrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    changeSigner(
+      _signer: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    deposit(
+      overrides?: PayableOverrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    entryPoint(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getDeposit(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getHash(
+      userOp: UserOperationStruct,
+      validUntil: BigNumberish,
+      validAfter: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    owner(overrides?: CallOverrides): Promise<BigNumber>;
+
+    parsePaymasterAndData(
+      paymasterAndData: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    postOp(
+      mode: BigNumberish,
+      context: BytesLike,
+      actualGasCost: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    renounceOwnership(
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    senderNonce(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+    signer(overrides?: CallOverrides): Promise<BigNumber>;
+
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    unlockStake(overrides?: Overrides & { from?: string }): Promise<BigNumber>;
+
+    validatePaymasterUserOp(
+      userOp: UserOperationStruct,
+      userOpHash: BytesLike,
+      maxCost: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    withdrawStake(
+      withdrawAddress: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    withdrawTo(
+      withdrawAddress: string,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+  };
 
   populateTransaction: {
     addStake(
       unstakeDelaySec: BigNumberish,
-      overrides?: PayableOverrides & { from?: string },
-    ): Promise<PopulatedTransaction>
+      overrides?: PayableOverrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
 
-    changeSigner(_signer: string, overrides?: Overrides & { from?: string }): Promise<PopulatedTransaction>
+    changeSigner(
+      _signer: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
 
-    deposit(overrides?: PayableOverrides & { from?: string }): Promise<PopulatedTransaction>
+    deposit(
+      overrides?: PayableOverrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
 
-    entryPoint(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    entryPoint(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    getDeposit(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    getDeposit(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getHash(
       userOp: UserOperationStruct,
       validUntil: BigNumberish,
       validAfter: BigNumberish,
-      overrides?: CallOverrides,
-    ): Promise<PopulatedTransaction>
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
-    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    parsePaymasterAndData(paymasterAndData: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>
+    parsePaymasterAndData(
+      paymasterAndData: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     postOp(
       mode: BigNumberish,
       context: BytesLike,
       actualGasCost: BigNumberish,
-      overrides?: Overrides & { from?: string },
-    ): Promise<PopulatedTransaction>
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
 
-    renounceOwnership(overrides?: Overrides & { from?: string }): Promise<PopulatedTransaction>
+    renounceOwnership(
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
 
-    senderNonce(arg0: string, overrides?: CallOverrides): Promise<PopulatedTransaction>
+    senderNonce(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
-    signer(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    signer(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    transferOwnership(newOwner: string, overrides?: Overrides & { from?: string }): Promise<PopulatedTransaction>
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
 
-    unlockStake(overrides?: Overrides & { from?: string }): Promise<PopulatedTransaction>
+    unlockStake(
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
 
     validatePaymasterUserOp(
       userOp: UserOperationStruct,
       userOpHash: BytesLike,
       maxCost: BigNumberish,
-      overrides?: Overrides & { from?: string },
-    ): Promise<PopulatedTransaction>
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
 
-    withdrawStake(withdrawAddress: string, overrides?: Overrides & { from?: string }): Promise<PopulatedTransaction>
+    withdrawStake(
+      withdrawAddress: string,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
 
     withdrawTo(
       withdrawAddress: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string },
-    ): Promise<PopulatedTransaction>
-  }
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+  };
 }

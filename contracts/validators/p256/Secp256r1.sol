@@ -8,12 +8,11 @@ import "./ISecp256r1.sol";
  * https://github.com/daimo-eth/p256-verifier
  */
 contract Secp256r1 is ISecp256r1 {
-    function validateSignature(bytes32 message, bytes calldata signature, bytes calldata publicKey)
-        external
-        view
-        override
-        returns (bool result)
-    {
+    function validateSignature(
+        bytes32 message,
+        bytes calldata signature,
+        bytes calldata publicKey
+    ) external view override returns (bool result) {
         uint256[2] memory rs;
         (rs[0], rs[1]) = abi.decode(signature, (uint256, uint256));
         uint256[2] memory Q;
@@ -25,8 +24,8 @@ contract Secp256r1 is ISecp256r1 {
     // Curve prime field modulus
     uint256 constant p = 0xFFFFFFFF00000001000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFF;
     // Short weierstrass first coefficient
-    uint256 constant a = // The assumption a == -3 (mod p) is used throughout the codebase
-     0xFFFFFFFF00000001000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFC;
+    // The assumption a == -3 (mod p) is used throughout the codebase
+    uint256 constant a = 0xFFFFFFFF00000001000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFC;
     // Short weierstrass second coefficient
     uint256 constant b = 0x5AC635D8AA3A93E7B3EBBD55769886BC651D06B0CC53B0F63BCE3C3E27D2604B;
     // Generating point affine coordinates
@@ -42,11 +41,12 @@ contract Secp256r1 is ISecp256r1 {
     /**
      * @dev ECDSA verification given signature and public key.
      */
-    function ecdsa_verify(bytes32 message_hash, uint256 r, uint256 s, uint256[2] memory pubKey)
-        private
-        view
-        returns (bool)
-    {
+    function ecdsa_verify(
+        bytes32 message_hash,
+        uint256 r,
+        uint256 s,
+        uint256[2] memory pubKey
+    ) private view returns (bool) {
         // Check r and s are in the scalar field
         if (r == 0 || r >= n || s == 0 || s >= n) {
             return false;
@@ -214,11 +214,14 @@ contract Secp256r1 is ISecp256r1 {
      * Matches https://github.com/supranational/blst/blob/9c87d4a09d6648e933c818118a4418349804ce7f/src/ec_ops.h#L705 closely
      * Handles points at infinity gracefully
      */
-    function ecZZ_dadd_affine(uint256 x1, uint256 y1, uint256 zz1, uint256 zzz1, uint256 x2, uint256 y2)
-        internal
-        pure
-        returns (uint256 x3, uint256 y3, uint256 zz3, uint256 zzz3)
-    {
+    function ecZZ_dadd_affine(
+        uint256 x1,
+        uint256 y1,
+        uint256 zz1,
+        uint256 zzz1,
+        uint256 x2,
+        uint256 y2
+    ) internal pure returns (uint256 x3, uint256 y3, uint256 zz3, uint256 zzz3) {
         if (ecAff_IsInf(x2, y2)) {
             // (X2, Y2) is point at infinity
             if (ecZZ_IsInf(zz1, zzz1)) return ecZZ_PointAtInf();
@@ -269,11 +272,12 @@ contract Secp256r1 is ISecp256r1 {
      * Uses http://hyperelliptic.org/EFD/g1p/auto-shortw-xyzz.html#doubling-dbl-2008-s-1
      * Handles point at infinity gracefully
      */
-    function ecZZ_double_zz(uint256 x1, uint256 y1, uint256 zz1, uint256 zzz1)
-        internal
-        pure
-        returns (uint256 x3, uint256 y3, uint256 zz3, uint256 zzz3)
-    {
+    function ecZZ_double_zz(
+        uint256 x1,
+        uint256 y1,
+        uint256 zz1,
+        uint256 zzz1
+    ) internal pure returns (uint256 x3, uint256 y3, uint256 zz3, uint256 zzz3) {
         if (ecZZ_IsInf(zz1, zzz1)) return ecZZ_PointAtInf();
 
         uint256 comp_U = mulmod(2, y1, p); // U = 2*Y1
@@ -293,11 +297,10 @@ contract Secp256r1 is ISecp256r1 {
      * Uses http://hyperelliptic.org/EFD/g1p/auto-shortw-xyzz.html#doubling-mdbl-2008-s-1
      * Handles point at infinity gracefully
      */
-    function ecZZ_double_affine(uint256 x1, uint256 y1)
-        internal
-        pure
-        returns (uint256 x3, uint256 y3, uint256 zz3, uint256 zzz3)
-    {
+    function ecZZ_double_affine(
+        uint256 x1,
+        uint256 y1
+    ) internal pure returns (uint256 x3, uint256 y3, uint256 zz3, uint256 zzz3) {
         if (ecAff_IsInf(x1, y1)) return ecZZ_PointAtInf();
 
         uint256 comp_U = mulmod(2, y1, p); // U = 2*Y1
@@ -315,11 +318,7 @@ contract Secp256r1 is ISecp256r1 {
      * Assumes (zz)^(3/2) == zzz (i.e. zz == z^2 and zzz == z^3)
      * See https://hyperelliptic.org/EFD/g1p/auto-shortw-xyzz-3.html
      */
-    function ecZZ_SetAff(uint256 x, uint256 y, uint256 zz, uint256 zzz)
-        internal
-        view
-        returns (uint256 x1, uint256 y1)
-    {
+    function ecZZ_SetAff(uint256 x, uint256 y, uint256 zz, uint256 zzz) internal view returns (uint256 x1, uint256 y1) {
         if (ecZZ_IsInf(zz, zzz)) {
             (x1, y1) = ecAffine_PointAtInf();
             return (x1, y1);

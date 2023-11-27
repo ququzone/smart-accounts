@@ -26,7 +26,7 @@ library Base64 {
         // - `data.length + 2`  -> Round up
         // - `/ 3`              -> Number of 3-bytes chunks
         // - `4 *`              -> 4 characters for each chunk
-        uint256 newlength = data.length * 8 / 6;
+        uint256 newlength = (data.length * 8) / 6;
         if (data.length % 6 > 0) {
             newlength++;
         }
@@ -45,7 +45,9 @@ library Base64 {
             for {
                 let dataPtr := data
                 let endPtr := add(data, mload(data))
-            } lt(dataPtr, endPtr) {} {
+            } lt(dataPtr, endPtr) {
+
+            } {
                 // Advance 3 bytes
                 dataPtr := add(dataPtr, 3)
                 let input := mload(dataPtr)

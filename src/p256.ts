@@ -1,52 +1,52 @@
-import crypto from 'crypto'
-import { Buffer } from 'buffer'
-import { bufferToHex, sha256 } from 'ethereumjs-util'
-import { BytesLike, defaultAbiCoder } from 'ethers/lib/utils'
-import { Signer } from './userop-builder'
+import crypto from 'crypto';
+import { Buffer } from 'buffer';
+import { bufferToHex, sha256 } from 'ethereumjs-util';
+import { BytesLike, defaultAbiCoder } from 'ethers/lib/utils';
+import { Signer } from './userop-builder';
 
 // @ts-ignore
 export const sign = (keyPair: any, message: any) => {
-  const messageHash = bufferToHex(sha256(message))
+  const messageHash = bufferToHex(sha256(message));
 
-  const signer = crypto.createSign('RSA-SHA256')
-  signer.update(message)
-  let sigString = signer.sign(keyPair.encodePrivateKey(), 'hex')
+  const signer = crypto.createSign('RSA-SHA256');
+  signer.update(message);
+  let sigString = signer.sign(keyPair.encodePrivateKey(), 'hex');
 
   // @ts-ignore
-  const xlength = 2 * ('0x' + sigString.slice(6, 8))
-  sigString = sigString.slice(8)
-  const signatureArray = ['0x' + sigString.slice(0, xlength), '0x' + sigString.slice(xlength + 4)]
-  const signature = defaultAbiCoder.encode(['uint256', 'uint256'], [signatureArray[0], signatureArray[1]])
+  const xlength = 2 * ('0x' + sigString.slice(6, 8));
+  sigString = sigString.slice(8);
+  const signatureArray = ['0x' + sigString.slice(0, xlength), '0x' + sigString.slice(xlength + 4)];
+  const signature = defaultAbiCoder.encode(['uint256', 'uint256'], [signatureArray[0], signatureArray[1]]);
 
   return {
     messageHash,
     signature,
-  }
-}
+  };
+};
 
 export class P2565Signer implements Signer {
-  private keyPair: any
-  private validatorAddr: string
+  private keyPair: any;
+  private validatorAddr: string;
 
   constructor(keyPair: any, address: string) {
-    this.keyPair = keyPair
-    this.validatorAddr = address
+    this.keyPair = keyPair;
+    this.validatorAddr = address;
   }
 
   signatureLength(): number {
-    return 128
+    return 128;
   }
 
   address(): string {
-    return this.validatorAddr
+    return this.validatorAddr;
   }
 
   async data(): Promise<BytesLike> {
-    return '0x' + this.keyPair.getPublicKey('hex').substring(2)
+    return '0x' + this.keyPair.getPublicKey('hex').substring(2);
   }
 
   async sign(opHash: string): Promise<string> {
-    const result = sign(this.keyPair, Buffer.from(opHash.substring(2), 'hex'))
-    return result.signature
+    const result = sign(this.keyPair, Buffer.from(opHash.substring(2), 'hex'));
+    return result.signature;
   }
 }

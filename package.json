@@ -11,8 +11,10 @@
     "test": "hardhat test",
     "snapshots": "UPDATE_SNAPSHOT=1 hardhat test",
     "build": "yarn clean && yarn compile && tsc",
-    "lint:fix": "forge fmt contracts/ && forge fmt test/ && prettier --write '{src,scripts,deploy,test}/**/*.ts'",
-    "lint": "forge fmt --check && prettier --check 'test/**/*.ts'"
+    "lint:fix": "yarn lint:sol:fix && forge fmt test/ && prettier --write '{src,scripts,deploy,test}/**/*.ts'",
+    "lint": "yarn lint:sol && prettier --check 'test/**/*.ts'",
+    "lint:sol": "prettier --log-level warn --ignore-path .gitignore '{contracts,test}/**/*.sol' --check",
+    "lint:sol:fix": "prettier --log-level warn --ignore-path .gitignore '{contracts,test}/**/*.sol' --write"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.6",
@@ -30,6 +32,7 @@
     "hardhat-deploy": "^0.11.37",
     "import-toml": "^1.0.0",
     "prettier": "^3.0.1",
+    "prettier-plugin-solidity": "^1.2.0",
     "solidity-coverage": "^0.8.0",
     "ts-node": "^10.9.1",
     "typechain": "^8.3.1",

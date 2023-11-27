@@ -2,193 +2,199 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from 'ethers'
-import type { Provider } from '@ethersproject/providers'
-import type { ValidatorManager, ValidatorManagerInterface } from '../../../contracts/core/ValidatorManager'
+import { Contract, Signer, utils } from "ethers";
+import type { Provider } from "@ethersproject/providers";
+import type {
+  ValidatorManager,
+  ValidatorManagerInterface,
+} from "../../../contracts/core/ValidatorManager";
 
 const _abi = [
   {
     inputs: [],
-    name: 'CallerNotEntryPoint',
-    type: 'error',
+    name: "CallerNotEntryPoint",
+    type: "error",
   },
   {
     inputs: [],
-    name: 'CallerNotSelf',
-    type: 'error',
+    name: "CallerNotSelf",
+    type: "error",
   },
   {
     inputs: [
       {
-        internalType: 'address',
-        name: '',
-        type: 'address',
+        internalType: "address",
+        name: "",
+        type: "address",
       },
     ],
-    name: 'ErrorValidator',
-    type: 'error',
+    name: "ErrorValidator",
+    type: "error",
   },
   {
     inputs: [
       {
-        internalType: 'address',
-        name: 'validator',
-        type: 'address',
+        internalType: "address",
+        name: "validator",
+        type: "address",
       },
     ],
-    name: 'ValidatorAlreadyEnabled',
-    type: 'error',
+    name: "ValidatorAlreadyEnabled",
+    type: "error",
   },
   {
     inputs: [
       {
-        internalType: 'address',
-        name: 'expectedValidator',
-        type: 'address',
+        internalType: "address",
+        name: "expectedValidator",
+        type: "address",
       },
       {
-        internalType: 'address',
-        name: 'returnedValidator',
-        type: 'address',
+        internalType: "address",
+        name: "returnedValidator",
+        type: "address",
       },
       {
-        internalType: 'address',
-        name: 'prevValidator',
-        type: 'address',
+        internalType: "address",
+        name: "prevValidator",
+        type: "address",
       },
     ],
-    name: 'ValidatorAndPrevValidatorMismatch',
-    type: 'error',
+    name: "ValidatorAndPrevValidatorMismatch",
+    type: "error",
   },
   {
     inputs: [
       {
-        internalType: 'address',
-        name: 'validator',
-        type: 'address',
+        internalType: "address",
+        name: "validator",
+        type: "address",
       },
     ],
-    name: 'ValidatorCannotBeZeroOrSentinel',
-    type: 'error',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: 'address',
-        name: 'validator',
-        type: 'address',
-      },
-    ],
-    name: 'DisabledValidator',
-    type: 'event',
+    name: "ValidatorCannotBeZeroOrSentinel",
+    type: "error",
   },
   {
     anonymous: false,
     inputs: [
       {
         indexed: false,
-        internalType: 'address',
-        name: 'validator',
-        type: 'address',
+        internalType: "address",
+        name: "validator",
+        type: "address",
       },
     ],
-    name: 'EnabledValidator',
-    type: 'event',
+    name: "DisabledValidator",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "validator",
+        type: "address",
+      },
+    ],
+    name: "EnabledValidator",
+    type: "event",
   },
   {
     inputs: [
       {
-        internalType: 'address',
-        name: 'prevValidator',
-        type: 'address',
+        internalType: "address",
+        name: "prevValidator",
+        type: "address",
       },
       {
-        internalType: 'address',
-        name: 'validator',
-        type: 'address',
+        internalType: "address",
+        name: "validator",
+        type: "address",
       },
     ],
-    name: 'disableValidator',
+    name: "disableValidator",
     outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
     inputs: [
       {
-        internalType: 'address',
-        name: 'validator',
-        type: 'address',
+        internalType: "address",
+        name: "validator",
+        type: "address",
       },
       {
-        internalType: 'bytes',
-        name: 'data',
-        type: 'bytes',
+        internalType: "bytes",
+        name: "data",
+        type: "bytes",
       },
     ],
-    name: 'enableValidator',
+    name: "enableValidator",
     outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
     inputs: [
       {
-        internalType: 'address',
-        name: 'start',
-        type: 'address',
+        internalType: "address",
+        name: "start",
+        type: "address",
       },
       {
-        internalType: 'uint256',
-        name: 'pageSize',
-        type: 'uint256',
+        internalType: "uint256",
+        name: "pageSize",
+        type: "uint256",
       },
     ],
-    name: 'getValidatorsPaginated',
+    name: "getValidatorsPaginated",
     outputs: [
       {
-        internalType: 'address[]',
-        name: 'array',
-        type: 'address[]',
+        internalType: "address[]",
+        name: "array",
+        type: "address[]",
       },
       {
-        internalType: 'address',
-        name: 'next',
-        type: 'address',
+        internalType: "address",
+        name: "next",
+        type: "address",
       },
     ],
-    stateMutability: 'view',
-    type: 'function',
+    stateMutability: "view",
+    type: "function",
   },
   {
     inputs: [
       {
-        internalType: 'address',
-        name: 'validator',
-        type: 'address',
+        internalType: "address",
+        name: "validator",
+        type: "address",
       },
     ],
-    name: 'isValidatorEnabled',
+    name: "isValidatorEnabled",
     outputs: [
       {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
+        internalType: "bool",
+        name: "",
+        type: "bool",
       },
     ],
-    stateMutability: 'view',
-    type: 'function',
+    stateMutability: "view",
+    type: "function",
   },
-] as const
+] as const;
 
 export class ValidatorManager__factory {
-  static readonly abi = _abi
+  static readonly abi = _abi;
   static createInterface(): ValidatorManagerInterface {
-    return new utils.Interface(_abi) as ValidatorManagerInterface
+    return new utils.Interface(_abi) as ValidatorManagerInterface;
   }
-  static connect(address: string, signerOrProvider: Signer | Provider): ValidatorManager {
-    return new Contract(address, _abi, signerOrProvider) as ValidatorManager
+  static connect(
+    address: string,
+    signerOrProvider: Signer | Provider
+  ): ValidatorManager {
+    return new Contract(address, _abi, signerOrProvider) as ValidatorManager;
   }
 }

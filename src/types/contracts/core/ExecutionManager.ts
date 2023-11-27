@@ -12,222 +12,305 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from 'ethers'
-import type { FunctionFragment, Result, EventFragment } from '@ethersproject/abi'
-import type { Listener, Provider } from '@ethersproject/providers'
-import type { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from '../../common'
+} from "ethers";
+import type {
+  FunctionFragment,
+  Result,
+  EventFragment,
+} from "@ethersproject/abi";
+import type { Listener, Provider } from "@ethersproject/providers";
+import type {
+  TypedEventFilter,
+  TypedEvent,
+  TypedListener,
+  OnEvent,
+} from "../../common";
 
 export interface ExecutionManagerInterface extends utils.Interface {
   functions: {
-    'addHook(address,bytes)': FunctionFragment
-    'execute(address,uint256,bytes)': FunctionFragment
-    'executeBatch(address[],uint256[],bytes[])': FunctionFragment
-    'removeHook(address,address,address)': FunctionFragment
-    'sudo(address,uint256,bytes)': FunctionFragment
-  }
+    "addHook(address,bytes)": FunctionFragment;
+    "execute(address,uint256,bytes)": FunctionFragment;
+    "executeBatch(address[],uint256[],bytes[])": FunctionFragment;
+    "removeHook(address,address,address)": FunctionFragment;
+    "sudo(address,uint256,bytes)": FunctionFragment;
+  };
 
-  getFunction(nameOrSignatureOrTopic: 'addHook' | 'execute' | 'executeBatch' | 'removeHook' | 'sudo'): FunctionFragment
+  getFunction(
+    nameOrSignatureOrTopic:
+      | "addHook"
+      | "execute"
+      | "executeBatch"
+      | "removeHook"
+      | "sudo"
+  ): FunctionFragment;
 
-  encodeFunctionData(functionFragment: 'addHook', values: [string, BytesLike]): string
-  encodeFunctionData(functionFragment: 'execute', values: [string, BigNumberish, BytesLike]): string
-  encodeFunctionData(functionFragment: 'executeBatch', values: [string[], BigNumberish[], BytesLike[]]): string
-  encodeFunctionData(functionFragment: 'removeHook', values: [string, string, string]): string
-  encodeFunctionData(functionFragment: 'sudo', values: [string, BigNumberish, BytesLike]): string
+  encodeFunctionData(
+    functionFragment: "addHook",
+    values: [string, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "execute",
+    values: [string, BigNumberish, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "executeBatch",
+    values: [string[], BigNumberish[], BytesLike[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "removeHook",
+    values: [string, string, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "sudo",
+    values: [string, BigNumberish, BytesLike]
+  ): string;
 
-  decodeFunctionResult(functionFragment: 'addHook', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'execute', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'executeBatch', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'removeHook', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'sudo', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: "addHook", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "executeBatch",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "removeHook", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "sudo", data: BytesLike): Result;
 
   events: {
-    'InstalledHook(address)': EventFragment
-    'UninstalledHook(address)': EventFragment
-  }
+    "InstalledHook(address)": EventFragment;
+    "UninstalledHook(address)": EventFragment;
+  };
 
-  getEvent(nameOrSignatureOrTopic: 'InstalledHook'): EventFragment
-  getEvent(nameOrSignatureOrTopic: 'UninstalledHook'): EventFragment
+  getEvent(nameOrSignatureOrTopic: "InstalledHook"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "UninstalledHook"): EventFragment;
 }
 
 export interface InstalledHookEventObject {
-  hook: string
+  hook: string;
 }
-export type InstalledHookEvent = TypedEvent<[string], InstalledHookEventObject>
+export type InstalledHookEvent = TypedEvent<[string], InstalledHookEventObject>;
 
-export type InstalledHookEventFilter = TypedEventFilter<InstalledHookEvent>
+export type InstalledHookEventFilter = TypedEventFilter<InstalledHookEvent>;
 
 export interface UninstalledHookEventObject {
-  hook: string
+  hook: string;
 }
-export type UninstalledHookEvent = TypedEvent<[string], UninstalledHookEventObject>
+export type UninstalledHookEvent = TypedEvent<
+  [string],
+  UninstalledHookEventObject
+>;
 
-export type UninstalledHookEventFilter = TypedEventFilter<UninstalledHookEvent>
+export type UninstalledHookEventFilter = TypedEventFilter<UninstalledHookEvent>;
 
 export interface ExecutionManager extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this
-  attach(addressOrName: string): this
-  deployed(): Promise<this>
+  connect(signerOrProvider: Signer | Provider | string): this;
+  attach(addressOrName: string): this;
+  deployed(): Promise<this>;
 
-  interface: ExecutionManagerInterface
+  interface: ExecutionManagerInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined,
-  ): Promise<Array<TEvent>>
+    toBlock?: string | number | undefined
+  ): Promise<Array<TEvent>>;
 
-  listeners<TEvent extends TypedEvent>(eventFilter?: TypedEventFilter<TEvent>): Array<TypedListener<TEvent>>
-  listeners(eventName?: string): Array<Listener>
-  removeAllListeners<TEvent extends TypedEvent>(eventFilter: TypedEventFilter<TEvent>): this
-  removeAllListeners(eventName?: string): this
-  off: OnEvent<this>
-  on: OnEvent<this>
-  once: OnEvent<this>
-  removeListener: OnEvent<this>
+  listeners<TEvent extends TypedEvent>(
+    eventFilter?: TypedEventFilter<TEvent>
+  ): Array<TypedListener<TEvent>>;
+  listeners(eventName?: string): Array<Listener>;
+  removeAllListeners<TEvent extends TypedEvent>(
+    eventFilter: TypedEventFilter<TEvent>
+  ): this;
+  removeAllListeners(eventName?: string): this;
+  off: OnEvent<this>;
+  on: OnEvent<this>;
+  once: OnEvent<this>;
+  removeListener: OnEvent<this>;
 
   functions: {
-    addHook(hook: string, data: BytesLike, overrides?: Overrides & { from?: string }): Promise<ContractTransaction>
+    addHook(
+      hook: string,
+      data: BytesLike,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
 
     execute(
       dest: string,
       value: BigNumberish,
       func: BytesLike,
-      overrides?: Overrides & { from?: string },
-    ): Promise<ContractTransaction>
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
 
     executeBatch(
       dest: string[],
       value: BigNumberish[],
       func: BytesLike[],
-      overrides?: Overrides & { from?: string },
-    ): Promise<ContractTransaction>
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
 
     removeHook(
       prevBeforeHook: string,
       prevAfterHook: string,
       hook: string,
-      overrides?: Overrides & { from?: string },
-    ): Promise<ContractTransaction>
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
 
     sudo(
       dest: string,
       value: BigNumberish,
       func: BytesLike,
-      overrides?: Overrides & { from?: string },
-    ): Promise<ContractTransaction>
-  }
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+  };
 
-  addHook(hook: string, data: BytesLike, overrides?: Overrides & { from?: string }): Promise<ContractTransaction>
+  addHook(
+    hook: string,
+    data: BytesLike,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
 
   execute(
     dest: string,
     value: BigNumberish,
     func: BytesLike,
-    overrides?: Overrides & { from?: string },
-  ): Promise<ContractTransaction>
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
 
   executeBatch(
     dest: string[],
     value: BigNumberish[],
     func: BytesLike[],
-    overrides?: Overrides & { from?: string },
-  ): Promise<ContractTransaction>
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
 
   removeHook(
     prevBeforeHook: string,
     prevAfterHook: string,
     hook: string,
-    overrides?: Overrides & { from?: string },
-  ): Promise<ContractTransaction>
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
 
   sudo(
     dest: string,
     value: BigNumberish,
     func: BytesLike,
-    overrides?: Overrides & { from?: string },
-  ): Promise<ContractTransaction>
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
 
   callStatic: {
-    addHook(hook: string, data: BytesLike, overrides?: CallOverrides): Promise<void>
+    addHook(
+      hook: string,
+      data: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    execute(dest: string, value: BigNumberish, func: BytesLike, overrides?: CallOverrides): Promise<void>
+    execute(
+      dest: string,
+      value: BigNumberish,
+      func: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    executeBatch(dest: string[], value: BigNumberish[], func: BytesLike[], overrides?: CallOverrides): Promise<void>
+    executeBatch(
+      dest: string[],
+      value: BigNumberish[],
+      func: BytesLike[],
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    removeHook(prevBeforeHook: string, prevAfterHook: string, hook: string, overrides?: CallOverrides): Promise<void>
+    removeHook(
+      prevBeforeHook: string,
+      prevAfterHook: string,
+      hook: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    sudo(dest: string, value: BigNumberish, func: BytesLike, overrides?: CallOverrides): Promise<void>
-  }
+    sudo(
+      dest: string,
+      value: BigNumberish,
+      func: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+  };
 
   filters: {
-    'InstalledHook(address)'(hook?: string | null): InstalledHookEventFilter
-    InstalledHook(hook?: string | null): InstalledHookEventFilter
+    "InstalledHook(address)"(hook?: string | null): InstalledHookEventFilter;
+    InstalledHook(hook?: string | null): InstalledHookEventFilter;
 
-    'UninstalledHook(address)'(hook?: string | null): UninstalledHookEventFilter
-    UninstalledHook(hook?: string | null): UninstalledHookEventFilter
-  }
+    "UninstalledHook(address)"(
+      hook?: string | null
+    ): UninstalledHookEventFilter;
+    UninstalledHook(hook?: string | null): UninstalledHookEventFilter;
+  };
 
   estimateGas: {
-    addHook(hook: string, data: BytesLike, overrides?: Overrides & { from?: string }): Promise<BigNumber>
+    addHook(
+      hook: string,
+      data: BytesLike,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
 
     execute(
       dest: string,
       value: BigNumberish,
       func: BytesLike,
-      overrides?: Overrides & { from?: string },
-    ): Promise<BigNumber>
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
 
     executeBatch(
       dest: string[],
       value: BigNumberish[],
       func: BytesLike[],
-      overrides?: Overrides & { from?: string },
-    ): Promise<BigNumber>
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
 
     removeHook(
       prevBeforeHook: string,
       prevAfterHook: string,
       hook: string,
-      overrides?: Overrides & { from?: string },
-    ): Promise<BigNumber>
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
 
     sudo(
       dest: string,
       value: BigNumberish,
       func: BytesLike,
-      overrides?: Overrides & { from?: string },
-    ): Promise<BigNumber>
-  }
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+  };
 
   populateTransaction: {
-    addHook(hook: string, data: BytesLike, overrides?: Overrides & { from?: string }): Promise<PopulatedTransaction>
+    addHook(
+      hook: string,
+      data: BytesLike,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
 
     execute(
       dest: string,
       value: BigNumberish,
       func: BytesLike,
-      overrides?: Overrides & { from?: string },
-    ): Promise<PopulatedTransaction>
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
 
     executeBatch(
       dest: string[],
       value: BigNumberish[],
       func: BytesLike[],
-      overrides?: Overrides & { from?: string },
-    ): Promise<PopulatedTransaction>
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
 
     removeHook(
       prevBeforeHook: string,
       prevAfterHook: string,
       hook: string,
-      overrides?: Overrides & { from?: string },
-    ): Promise<PopulatedTransaction>
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
 
     sudo(
       dest: string,
       value: BigNumberish,
       func: BytesLike,
-      overrides?: Overrides & { from?: string },
-    ): Promise<PopulatedTransaction>
-  }
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+  };
 }

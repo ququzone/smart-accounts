@@ -19,12 +19,11 @@ contract P256Validator is BaseValidator {
         impl = _impl;
     }
 
-    function validateSignature(UserOperation calldata userOp, bytes32 userOpHash, bytes calldata signature)
-        external
-        payable
-        override
-        returns (uint256 validationData)
-    {
+    function validateSignature(
+        UserOperation calldata userOp,
+        bytes32 userOpHash,
+        bytes calldata signature
+    ) external payable override returns (uint256 validationData) {
         if (impl.validateSignature(sha256(abi.encode(userOpHash)), signature, pks[userOp.sender])) {
             return 0;
         }

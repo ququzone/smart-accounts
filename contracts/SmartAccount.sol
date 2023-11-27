@@ -23,17 +23,18 @@ contract SmartAccount is
         _disableInitializers();
     }
 
-    function initialize(address defalutCallbackHandler, address[] calldata validators, bytes[] calldata data)
-        external
-        initializer
-    {
+    function initialize(
+        address defalutCallbackHandler,
+        address[] calldata validators,
+        bytes[] calldata data
+    ) external initializer {
         if (validators.length != data.length) {
             revert WrongArrayLength();
         }
         _setFallbackHandler(defalutCallbackHandler);
         _setupValidators();
         _setupRecoverors();
-        for (uint256 i = 0; i < validators.length;) {
+        for (uint256 i = 0; i < validators.length; ) {
             _enableValidator(validators[i], data[i]);
             unchecked {
                 i++;
@@ -45,12 +46,10 @@ contract SmartAccount is
         return _entryPoint();
     }
 
-    function _validateSignature(UserOperation calldata userOp, bytes32 userOpHash)
-        internal
-        virtual
-        override
-        returns (uint256 validationData)
-    {
+    function _validateSignature(
+        UserOperation calldata userOp,
+        bytes32 userOpHash
+    ) internal virtual override returns (uint256 validationData) {
         (address validator, bytes memory signature) = abi.decode(userOp.signature, (address, bytes));
 
         if (!isValidatorEnabled(validator)) {

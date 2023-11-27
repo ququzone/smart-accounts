@@ -12,24 +12,33 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from 'ethers'
-import type { FunctionFragment, Result, EventFragment } from '@ethersproject/abi'
-import type { Listener, Provider } from '@ethersproject/providers'
-import type { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from '../../../common'
+} from "ethers";
+import type {
+  FunctionFragment,
+  Result,
+  EventFragment,
+} from "@ethersproject/abi";
+import type { Listener, Provider } from "@ethersproject/providers";
+import type {
+  TypedEventFilter,
+  TypedEvent,
+  TypedListener,
+  OnEvent,
+} from "../../../common";
 
 export type UserOperationStruct = {
-  sender: string
-  nonce: BigNumberish
-  initCode: BytesLike
-  callData: BytesLike
-  callGasLimit: BigNumberish
-  verificationGasLimit: BigNumberish
-  preVerificationGas: BigNumberish
-  maxFeePerGas: BigNumberish
-  maxPriorityFeePerGas: BigNumberish
-  paymasterAndData: BytesLike
-  signature: BytesLike
-}
+  sender: string;
+  nonce: BigNumberish;
+  initCode: BytesLike;
+  callData: BytesLike;
+  callGasLimit: BigNumberish;
+  verificationGasLimit: BigNumberish;
+  preVerificationGas: BigNumberish;
+  maxFeePerGas: BigNumberish;
+  maxPriorityFeePerGas: BigNumberish;
+  paymasterAndData: BytesLike;
+  signature: BytesLike;
+};
 
 export type UserOperationStructOutput = [
   string,
@@ -42,225 +51,311 @@ export type UserOperationStructOutput = [
   BigNumber,
   BigNumber,
   string,
-  string,
+  string
 ] & {
-  sender: string
-  nonce: BigNumber
-  initCode: string
-  callData: string
-  callGasLimit: BigNumber
-  verificationGasLimit: BigNumber
-  preVerificationGas: BigNumber
-  maxFeePerGas: BigNumber
-  maxPriorityFeePerGas: BigNumber
-  paymasterAndData: string
-  signature: string
-}
+  sender: string;
+  nonce: BigNumber;
+  initCode: string;
+  callData: string;
+  callGasLimit: BigNumber;
+  verificationGasLimit: BigNumber;
+  preVerificationGas: BigNumber;
+  maxFeePerGas: BigNumber;
+  maxPriorityFeePerGas: BigNumber;
+  paymasterAndData: string;
+  signature: string;
+};
 
 export interface OwnerSessionKeyValidatorInterface extends utils.Interface {
   functions: {
-    'NAME()': FunctionFragment
-    'VERSION()': FunctionFragment
-    'enable(bytes)': FunctionFragment
-    'sessionKeyStorage(address,address)': FunctionFragment
-    'supportsInterface(bytes4)': FunctionFragment
-    'validCaller(address,bytes)': FunctionFragment
-    'validateSignature((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes),bytes32,bytes)': FunctionFragment
-  }
+    "NAME()": FunctionFragment;
+    "VERSION()": FunctionFragment;
+    "enable(bytes)": FunctionFragment;
+    "sessionKeyStorage(address,address)": FunctionFragment;
+    "supportsInterface(bytes4)": FunctionFragment;
+    "validCaller(address,bytes)": FunctionFragment;
+    "validateSignature((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes),bytes32,bytes)": FunctionFragment;
+  };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | 'NAME'
-      | 'VERSION'
-      | 'enable'
-      | 'sessionKeyStorage'
-      | 'supportsInterface'
-      | 'validCaller'
-      | 'validateSignature',
-  ): FunctionFragment
+      | "NAME"
+      | "VERSION"
+      | "enable"
+      | "sessionKeyStorage"
+      | "supportsInterface"
+      | "validCaller"
+      | "validateSignature"
+  ): FunctionFragment;
 
-  encodeFunctionData(functionFragment: 'NAME', values?: undefined): string
-  encodeFunctionData(functionFragment: 'VERSION', values?: undefined): string
-  encodeFunctionData(functionFragment: 'enable', values: [BytesLike]): string
-  encodeFunctionData(functionFragment: 'sessionKeyStorage', values: [string, string]): string
-  encodeFunctionData(functionFragment: 'supportsInterface', values: [BytesLike]): string
-  encodeFunctionData(functionFragment: 'validCaller', values: [string, BytesLike]): string
-  encodeFunctionData(functionFragment: 'validateSignature', values: [UserOperationStruct, BytesLike, BytesLike]): string
+  encodeFunctionData(functionFragment: "NAME", values?: undefined): string;
+  encodeFunctionData(functionFragment: "VERSION", values?: undefined): string;
+  encodeFunctionData(functionFragment: "enable", values: [BytesLike]): string;
+  encodeFunctionData(
+    functionFragment: "sessionKeyStorage",
+    values: [string, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "supportsInterface",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "validCaller",
+    values: [string, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "validateSignature",
+    values: [UserOperationStruct, BytesLike, BytesLike]
+  ): string;
 
-  decodeFunctionResult(functionFragment: 'NAME', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'VERSION', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'enable', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'sessionKeyStorage', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'supportsInterface', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'validCaller', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'validateSignature', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: "NAME", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "VERSION", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "enable", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "sessionKeyStorage",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "supportsInterface",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "validCaller",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "validateSignature",
+    data: BytesLike
+  ): Result;
 
   events: {
-    'NewSessionKey(address,address,uint48,uint48)': EventFragment
-  }
+    "NewSessionKey(address,address,uint48,uint48)": EventFragment;
+  };
 
-  getEvent(nameOrSignatureOrTopic: 'NewSessionKey'): EventFragment
+  getEvent(nameOrSignatureOrTopic: "NewSessionKey"): EventFragment;
 }
 
 export interface NewSessionKeyEventObject {
-  account: string
-  sessionKey: string
-  validUntil: number
-  validAfter: number
+  account: string;
+  sessionKey: string;
+  validUntil: number;
+  validAfter: number;
 }
-export type NewSessionKeyEvent = TypedEvent<[string, string, number, number], NewSessionKeyEventObject>
+export type NewSessionKeyEvent = TypedEvent<
+  [string, string, number, number],
+  NewSessionKeyEventObject
+>;
 
-export type NewSessionKeyEventFilter = TypedEventFilter<NewSessionKeyEvent>
+export type NewSessionKeyEventFilter = TypedEventFilter<NewSessionKeyEvent>;
 
 export interface OwnerSessionKeyValidator extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this
-  attach(addressOrName: string): this
-  deployed(): Promise<this>
+  connect(signerOrProvider: Signer | Provider | string): this;
+  attach(addressOrName: string): this;
+  deployed(): Promise<this>;
 
-  interface: OwnerSessionKeyValidatorInterface
+  interface: OwnerSessionKeyValidatorInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined,
-  ): Promise<Array<TEvent>>
+    toBlock?: string | number | undefined
+  ): Promise<Array<TEvent>>;
 
-  listeners<TEvent extends TypedEvent>(eventFilter?: TypedEventFilter<TEvent>): Array<TypedListener<TEvent>>
-  listeners(eventName?: string): Array<Listener>
-  removeAllListeners<TEvent extends TypedEvent>(eventFilter: TypedEventFilter<TEvent>): this
-  removeAllListeners(eventName?: string): this
-  off: OnEvent<this>
-  on: OnEvent<this>
-  once: OnEvent<this>
-  removeListener: OnEvent<this>
+  listeners<TEvent extends TypedEvent>(
+    eventFilter?: TypedEventFilter<TEvent>
+  ): Array<TypedListener<TEvent>>;
+  listeners(eventName?: string): Array<Listener>;
+  removeAllListeners<TEvent extends TypedEvent>(
+    eventFilter: TypedEventFilter<TEvent>
+  ): this;
+  removeAllListeners(eventName?: string): this;
+  off: OnEvent<this>;
+  on: OnEvent<this>;
+  once: OnEvent<this>;
+  removeListener: OnEvent<this>;
 
   functions: {
-    NAME(overrides?: CallOverrides): Promise<[string]>
+    NAME(overrides?: CallOverrides): Promise<[string]>;
 
-    VERSION(overrides?: CallOverrides): Promise<[string]>
+    VERSION(overrides?: CallOverrides): Promise<[string]>;
 
-    enable(data: BytesLike, overrides?: PayableOverrides & { from?: string }): Promise<ContractTransaction>
+    enable(
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string }
+    ): Promise<ContractTransaction>;
 
     sessionKeyStorage(
       sessionKey: string,
       account: string,
-      overrides?: CallOverrides,
-    ): Promise<[number, number] & { validUntil: number; validAfter: number }>
+      overrides?: CallOverrides
+    ): Promise<[number, number] & { validUntil: number; validAfter: number }>;
 
-    supportsInterface(interfaceId: BytesLike, overrides?: CallOverrides): Promise<[boolean]>
+    supportsInterface(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
-    validCaller(caller: string, arg1: BytesLike, overrides?: CallOverrides): Promise<[boolean]>
+    validCaller(
+      caller: string,
+      arg1: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
     validateSignature(
       userOp: UserOperationStruct,
       userOpHash: BytesLike,
       signature: BytesLike,
-      overrides?: PayableOverrides & { from?: string },
-    ): Promise<ContractTransaction>
-  }
+      overrides?: PayableOverrides & { from?: string }
+    ): Promise<ContractTransaction>;
+  };
 
-  NAME(overrides?: CallOverrides): Promise<string>
+  NAME(overrides?: CallOverrides): Promise<string>;
 
-  VERSION(overrides?: CallOverrides): Promise<string>
+  VERSION(overrides?: CallOverrides): Promise<string>;
 
-  enable(data: BytesLike, overrides?: PayableOverrides & { from?: string }): Promise<ContractTransaction>
+  enable(
+    data: BytesLike,
+    overrides?: PayableOverrides & { from?: string }
+  ): Promise<ContractTransaction>;
 
   sessionKeyStorage(
     sessionKey: string,
     account: string,
-    overrides?: CallOverrides,
-  ): Promise<[number, number] & { validUntil: number; validAfter: number }>
+    overrides?: CallOverrides
+  ): Promise<[number, number] & { validUntil: number; validAfter: number }>;
 
-  supportsInterface(interfaceId: BytesLike, overrides?: CallOverrides): Promise<boolean>
+  supportsInterface(
+    interfaceId: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
-  validCaller(caller: string, arg1: BytesLike, overrides?: CallOverrides): Promise<boolean>
+  validCaller(
+    caller: string,
+    arg1: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   validateSignature(
     userOp: UserOperationStruct,
     userOpHash: BytesLike,
     signature: BytesLike,
-    overrides?: PayableOverrides & { from?: string },
-  ): Promise<ContractTransaction>
+    overrides?: PayableOverrides & { from?: string }
+  ): Promise<ContractTransaction>;
 
   callStatic: {
-    NAME(overrides?: CallOverrides): Promise<string>
+    NAME(overrides?: CallOverrides): Promise<string>;
 
-    VERSION(overrides?: CallOverrides): Promise<string>
+    VERSION(overrides?: CallOverrides): Promise<string>;
 
-    enable(data: BytesLike, overrides?: CallOverrides): Promise<void>
+    enable(data: BytesLike, overrides?: CallOverrides): Promise<void>;
 
     sessionKeyStorage(
       sessionKey: string,
       account: string,
-      overrides?: CallOverrides,
-    ): Promise<[number, number] & { validUntil: number; validAfter: number }>
+      overrides?: CallOverrides
+    ): Promise<[number, number] & { validUntil: number; validAfter: number }>;
 
-    supportsInterface(interfaceId: BytesLike, overrides?: CallOverrides): Promise<boolean>
+    supportsInterface(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
-    validCaller(caller: string, arg1: BytesLike, overrides?: CallOverrides): Promise<boolean>
+    validCaller(
+      caller: string,
+      arg1: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     validateSignature(
       userOp: UserOperationStruct,
       userOpHash: BytesLike,
       signature: BytesLike,
-      overrides?: CallOverrides,
-    ): Promise<BigNumber>
-  }
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+  };
 
   filters: {
-    'NewSessionKey(address,address,uint48,uint48)'(
+    "NewSessionKey(address,address,uint48,uint48)"(
       account?: string | null,
       sessionKey?: string | null,
       validUntil?: null,
-      validAfter?: null,
-    ): NewSessionKeyEventFilter
+      validAfter?: null
+    ): NewSessionKeyEventFilter;
     NewSessionKey(
       account?: string | null,
       sessionKey?: string | null,
       validUntil?: null,
-      validAfter?: null,
-    ): NewSessionKeyEventFilter
-  }
+      validAfter?: null
+    ): NewSessionKeyEventFilter;
+  };
 
   estimateGas: {
-    NAME(overrides?: CallOverrides): Promise<BigNumber>
+    NAME(overrides?: CallOverrides): Promise<BigNumber>;
 
-    VERSION(overrides?: CallOverrides): Promise<BigNumber>
+    VERSION(overrides?: CallOverrides): Promise<BigNumber>;
 
-    enable(data: BytesLike, overrides?: PayableOverrides & { from?: string }): Promise<BigNumber>
+    enable(
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string }
+    ): Promise<BigNumber>;
 
-    sessionKeyStorage(sessionKey: string, account: string, overrides?: CallOverrides): Promise<BigNumber>
+    sessionKeyStorage(
+      sessionKey: string,
+      account: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
-    supportsInterface(interfaceId: BytesLike, overrides?: CallOverrides): Promise<BigNumber>
+    supportsInterface(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
-    validCaller(caller: string, arg1: BytesLike, overrides?: CallOverrides): Promise<BigNumber>
+    validCaller(
+      caller: string,
+      arg1: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     validateSignature(
       userOp: UserOperationStruct,
       userOpHash: BytesLike,
       signature: BytesLike,
-      overrides?: PayableOverrides & { from?: string },
-    ): Promise<BigNumber>
-  }
+      overrides?: PayableOverrides & { from?: string }
+    ): Promise<BigNumber>;
+  };
 
   populateTransaction: {
-    NAME(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    NAME(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    VERSION(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    VERSION(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    enable(data: BytesLike, overrides?: PayableOverrides & { from?: string }): Promise<PopulatedTransaction>
+    enable(
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
 
-    sessionKeyStorage(sessionKey: string, account: string, overrides?: CallOverrides): Promise<PopulatedTransaction>
+    sessionKeyStorage(
+      sessionKey: string,
+      account: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
-    supportsInterface(interfaceId: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>
+    supportsInterface(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
-    validCaller(caller: string, arg1: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>
+    validCaller(
+      caller: string,
+      arg1: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     validateSignature(
       userOp: UserOperationStruct,
       userOpHash: BytesLike,
       signature: BytesLike,
-      overrides?: PayableOverrides & { from?: string },
-    ): Promise<PopulatedTransaction>
-  }
+      overrides?: PayableOverrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+  };
 }

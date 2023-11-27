@@ -35,27 +35,34 @@ contract VerifyingPaymaster is BasePaymaster {
         }
     }
 
-    function getHash(UserOperation calldata userOp, uint48 validUntil, uint48 validAfter)
-        public
-        view
-        returns (bytes32)
-    {
-        return keccak256(
-            abi.encode(
-                pack(userOp), block.chainid, address(this), senderNonce[userOp.getSender()], validUntil, validAfter
-            )
-        );
+    function getHash(
+        UserOperation calldata userOp,
+        uint48 validUntil,
+        uint48 validAfter
+    ) public view returns (bytes32) {
+        return
+            keccak256(
+                abi.encode(
+                    pack(userOp),
+                    block.chainid,
+                    address(this),
+                    senderNonce[userOp.getSender()],
+                    validUntil,
+                    validAfter
+                )
+            );
     }
 
-    function _validatePaymasterUserOp(UserOperation calldata userOp, bytes32, /*userOpHash*/ uint256 requiredPreFund)
-        internal
-        override
-        returns (bytes memory context, uint256 validationData)
-    {
+    function _validatePaymasterUserOp(
+        UserOperation calldata userOp,
+        bytes32,
+        /*userOpHash*/ uint256 requiredPreFund
+    ) internal override returns (bytes memory context, uint256 validationData) {
         (requiredPreFund);
 
-        (uint48 validUntil, uint48 validAfter, bytes calldata signature) =
-            parsePaymasterAndData(userOp.paymasterAndData);
+        (uint48 validUntil, uint48 validAfter, bytes calldata signature) = parsePaymasterAndData(
+            userOp.paymasterAndData
+        );
         require(
             signature.length == 64 || signature.length == 65,
             "VerifyingPaymaster: invalid signature length in paymasterAndData"
@@ -70,13 +77,13 @@ contract VerifyingPaymaster is BasePaymaster {
         return ("", _packValidationData(false, validUntil, validAfter));
     }
 
-    function parsePaymasterAndData(bytes calldata paymasterAndData)
-        public
-        pure
-        returns (uint48 validUntil, uint48 validAfter, bytes calldata signature)
-    {
-        (validUntil, validAfter) =
-            abi.decode(paymasterAndData[VALID_TIMESTAMP_OFFSET:SIGNATURE_OFFSET], (uint48, uint48));
+    function parsePaymasterAndData(
+        bytes calldata paymasterAndData
+    ) public pure returns (uint48 validUntil, uint48 validAfter, bytes calldata signature) {
+        (validUntil, validAfter) = abi.decode(
+            paymasterAndData[VALID_TIMESTAMP_OFFSET:SIGNATURE_OFFSET],
+            (uint48, uint48)
+        );
         signature = paymasterAndData[SIGNATURE_OFFSET:];
     }
 

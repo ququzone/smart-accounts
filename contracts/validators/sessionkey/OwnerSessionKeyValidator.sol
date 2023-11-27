@@ -21,12 +21,11 @@ contract OwnerSessionKeyValidator is BaseValidator {
 
     mapping(address sessionKey => mapping(address account => SessionKeyStorage)) public sessionKeyStorage;
 
-    function validateSignature(UserOperation calldata userOp, bytes32 userOpHash, bytes calldata signature)
-        external
-        payable
-        override
-        returns (uint256 validationData)
-    {
+    function validateSignature(
+        UserOperation calldata userOp,
+        bytes32 userOpHash,
+        bytes calldata signature
+    ) external payable override returns (uint256 validationData) {
         bytes32 hash = ECDSA.toEthSignedMessageHash(userOpHash);
         address recovered = ECDSA.recover(hash, signature);
 

@@ -12,175 +12,257 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from 'ethers'
-import type { FunctionFragment, Result, EventFragment } from '@ethersproject/abi'
-import type { Listener, Provider } from '@ethersproject/providers'
-import type { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from '../../common'
+} from "ethers";
+import type {
+  FunctionFragment,
+  Result,
+  EventFragment,
+} from "@ethersproject/abi";
+import type { Listener, Provider } from "@ethersproject/providers";
+import type {
+  TypedEventFilter,
+  TypedEvent,
+  TypedListener,
+  OnEvent,
+} from "../../common";
 
 export interface ValidatorManagerInterface extends utils.Interface {
   functions: {
-    'disableValidator(address,address)': FunctionFragment
-    'enableValidator(address,bytes)': FunctionFragment
-    'getValidatorsPaginated(address,uint256)': FunctionFragment
-    'isValidatorEnabled(address)': FunctionFragment
-  }
+    "disableValidator(address,address)": FunctionFragment;
+    "enableValidator(address,bytes)": FunctionFragment;
+    "getValidatorsPaginated(address,uint256)": FunctionFragment;
+    "isValidatorEnabled(address)": FunctionFragment;
+  };
 
   getFunction(
-    nameOrSignatureOrTopic: 'disableValidator' | 'enableValidator' | 'getValidatorsPaginated' | 'isValidatorEnabled',
-  ): FunctionFragment
+    nameOrSignatureOrTopic:
+      | "disableValidator"
+      | "enableValidator"
+      | "getValidatorsPaginated"
+      | "isValidatorEnabled"
+  ): FunctionFragment;
 
-  encodeFunctionData(functionFragment: 'disableValidator', values: [string, string]): string
-  encodeFunctionData(functionFragment: 'enableValidator', values: [string, BytesLike]): string
-  encodeFunctionData(functionFragment: 'getValidatorsPaginated', values: [string, BigNumberish]): string
-  encodeFunctionData(functionFragment: 'isValidatorEnabled', values: [string]): string
+  encodeFunctionData(
+    functionFragment: "disableValidator",
+    values: [string, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "enableValidator",
+    values: [string, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getValidatorsPaginated",
+    values: [string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "isValidatorEnabled",
+    values: [string]
+  ): string;
 
-  decodeFunctionResult(functionFragment: 'disableValidator', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'enableValidator', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'getValidatorsPaginated', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'isValidatorEnabled', data: BytesLike): Result
+  decodeFunctionResult(
+    functionFragment: "disableValidator",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "enableValidator",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getValidatorsPaginated",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "isValidatorEnabled",
+    data: BytesLike
+  ): Result;
 
   events: {
-    'DisabledValidator(address)': EventFragment
-    'EnabledValidator(address)': EventFragment
-  }
+    "DisabledValidator(address)": EventFragment;
+    "EnabledValidator(address)": EventFragment;
+  };
 
-  getEvent(nameOrSignatureOrTopic: 'DisabledValidator'): EventFragment
-  getEvent(nameOrSignatureOrTopic: 'EnabledValidator'): EventFragment
+  getEvent(nameOrSignatureOrTopic: "DisabledValidator"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "EnabledValidator"): EventFragment;
 }
 
 export interface DisabledValidatorEventObject {
-  validator: string
+  validator: string;
 }
-export type DisabledValidatorEvent = TypedEvent<[string], DisabledValidatorEventObject>
+export type DisabledValidatorEvent = TypedEvent<
+  [string],
+  DisabledValidatorEventObject
+>;
 
-export type DisabledValidatorEventFilter = TypedEventFilter<DisabledValidatorEvent>
+export type DisabledValidatorEventFilter =
+  TypedEventFilter<DisabledValidatorEvent>;
 
 export interface EnabledValidatorEventObject {
-  validator: string
+  validator: string;
 }
-export type EnabledValidatorEvent = TypedEvent<[string], EnabledValidatorEventObject>
+export type EnabledValidatorEvent = TypedEvent<
+  [string],
+  EnabledValidatorEventObject
+>;
 
-export type EnabledValidatorEventFilter = TypedEventFilter<EnabledValidatorEvent>
+export type EnabledValidatorEventFilter =
+  TypedEventFilter<EnabledValidatorEvent>;
 
 export interface ValidatorManager extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this
-  attach(addressOrName: string): this
-  deployed(): Promise<this>
+  connect(signerOrProvider: Signer | Provider | string): this;
+  attach(addressOrName: string): this;
+  deployed(): Promise<this>;
 
-  interface: ValidatorManagerInterface
+  interface: ValidatorManagerInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined,
-  ): Promise<Array<TEvent>>
+    toBlock?: string | number | undefined
+  ): Promise<Array<TEvent>>;
 
-  listeners<TEvent extends TypedEvent>(eventFilter?: TypedEventFilter<TEvent>): Array<TypedListener<TEvent>>
-  listeners(eventName?: string): Array<Listener>
-  removeAllListeners<TEvent extends TypedEvent>(eventFilter: TypedEventFilter<TEvent>): this
-  removeAllListeners(eventName?: string): this
-  off: OnEvent<this>
-  on: OnEvent<this>
-  once: OnEvent<this>
-  removeListener: OnEvent<this>
+  listeners<TEvent extends TypedEvent>(
+    eventFilter?: TypedEventFilter<TEvent>
+  ): Array<TypedListener<TEvent>>;
+  listeners(eventName?: string): Array<Listener>;
+  removeAllListeners<TEvent extends TypedEvent>(
+    eventFilter: TypedEventFilter<TEvent>
+  ): this;
+  removeAllListeners(eventName?: string): this;
+  off: OnEvent<this>;
+  on: OnEvent<this>;
+  once: OnEvent<this>;
+  removeListener: OnEvent<this>;
 
   functions: {
     disableValidator(
       prevValidator: string,
       validator: string,
-      overrides?: Overrides & { from?: string },
-    ): Promise<ContractTransaction>
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
 
     enableValidator(
       validator: string,
       data: BytesLike,
-      overrides?: Overrides & { from?: string },
-    ): Promise<ContractTransaction>
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
 
     getValidatorsPaginated(
       start: string,
       pageSize: BigNumberish,
-      overrides?: CallOverrides,
-    ): Promise<[string[], string] & { array: string[]; next: string }>
+      overrides?: CallOverrides
+    ): Promise<[string[], string] & { array: string[]; next: string }>;
 
-    isValidatorEnabled(validator: string, overrides?: CallOverrides): Promise<[boolean]>
-  }
+    isValidatorEnabled(
+      validator: string,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+  };
 
   disableValidator(
     prevValidator: string,
     validator: string,
-    overrides?: Overrides & { from?: string },
-  ): Promise<ContractTransaction>
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
 
   enableValidator(
     validator: string,
     data: BytesLike,
-    overrides?: Overrides & { from?: string },
-  ): Promise<ContractTransaction>
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
 
   getValidatorsPaginated(
     start: string,
     pageSize: BigNumberish,
-    overrides?: CallOverrides,
-  ): Promise<[string[], string] & { array: string[]; next: string }>
+    overrides?: CallOverrides
+  ): Promise<[string[], string] & { array: string[]; next: string }>;
 
-  isValidatorEnabled(validator: string, overrides?: CallOverrides): Promise<boolean>
+  isValidatorEnabled(
+    validator: string,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   callStatic: {
-    disableValidator(prevValidator: string, validator: string, overrides?: CallOverrides): Promise<void>
+    disableValidator(
+      prevValidator: string,
+      validator: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    enableValidator(validator: string, data: BytesLike, overrides?: CallOverrides): Promise<void>
+    enableValidator(
+      validator: string,
+      data: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     getValidatorsPaginated(
       start: string,
       pageSize: BigNumberish,
-      overrides?: CallOverrides,
-    ): Promise<[string[], string] & { array: string[]; next: string }>
+      overrides?: CallOverrides
+    ): Promise<[string[], string] & { array: string[]; next: string }>;
 
-    isValidatorEnabled(validator: string, overrides?: CallOverrides): Promise<boolean>
-  }
+    isValidatorEnabled(
+      validator: string,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+  };
 
   filters: {
-    'DisabledValidator(address)'(validator?: null): DisabledValidatorEventFilter
-    DisabledValidator(validator?: null): DisabledValidatorEventFilter
+    "DisabledValidator(address)"(
+      validator?: null
+    ): DisabledValidatorEventFilter;
+    DisabledValidator(validator?: null): DisabledValidatorEventFilter;
 
-    'EnabledValidator(address)'(validator?: null): EnabledValidatorEventFilter
-    EnabledValidator(validator?: null): EnabledValidatorEventFilter
-  }
+    "EnabledValidator(address)"(validator?: null): EnabledValidatorEventFilter;
+    EnabledValidator(validator?: null): EnabledValidatorEventFilter;
+  };
 
   estimateGas: {
     disableValidator(
       prevValidator: string,
       validator: string,
-      overrides?: Overrides & { from?: string },
-    ): Promise<BigNumber>
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
 
-    enableValidator(validator: string, data: BytesLike, overrides?: Overrides & { from?: string }): Promise<BigNumber>
+    enableValidator(
+      validator: string,
+      data: BytesLike,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
 
-    getValidatorsPaginated(start: string, pageSize: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+    getValidatorsPaginated(
+      start: string,
+      pageSize: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
-    isValidatorEnabled(validator: string, overrides?: CallOverrides): Promise<BigNumber>
-  }
+    isValidatorEnabled(
+      validator: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+  };
 
   populateTransaction: {
     disableValidator(
       prevValidator: string,
       validator: string,
-      overrides?: Overrides & { from?: string },
-    ): Promise<PopulatedTransaction>
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
 
     enableValidator(
       validator: string,
       data: BytesLike,
-      overrides?: Overrides & { from?: string },
-    ): Promise<PopulatedTransaction>
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
 
     getValidatorsPaginated(
       start: string,
       pageSize: BigNumberish,
-      overrides?: CallOverrides,
-    ): Promise<PopulatedTransaction>
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
-    isValidatorEnabled(validator: string, overrides?: CallOverrides): Promise<PopulatedTransaction>
-  }
+    isValidatorEnabled(
+      validator: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+  };
 }

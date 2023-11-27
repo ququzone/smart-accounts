@@ -16,10 +16,11 @@ contract SmartAccountFactory {
         accountImplementation = new SmartAccount(_entryPoint);
     }
 
-    function createAccount(address[] calldata validators, bytes[] calldata data, uint256 salt)
-        public
-        returns (SmartAccount ret)
-    {
+    function createAccount(
+        address[] calldata validators,
+        bytes[] calldata data,
+        uint256 salt
+    ) public returns (SmartAccount ret) {
         address addr = getAddress(validators, data, salt);
         uint256 codeSize = addr.code.length;
         if (codeSize > 0) {
@@ -28,28 +29,30 @@ contract SmartAccountFactory {
         ret = SmartAccount(
             payable(
                 new ERC1967Proxy{salt: bytes32(salt)}(
-                    address(accountImplementation), abi.encodeCall(SmartAccount.initialize, (handler, validators, data))
+                    address(accountImplementation),
+                    abi.encodeCall(SmartAccount.initialize, (handler, validators, data))
                 )
             )
         );
     }
 
-    function getAddress(address[] calldata validators, bytes[] calldata data, uint256 salt)
-        public
-        view
-        returns (address)
-    {
-        return Create2.computeAddress(
-            bytes32(salt),
-            keccak256(
-                abi.encodePacked(
-                    type(ERC1967Proxy).creationCode,
-                    abi.encode(
-                        address(accountImplementation),
-                        abi.encodeCall(SmartAccount.initialize, (handler, validators, data))
+    function getAddress(
+        address[] calldata validators,
+        bytes[] calldata data,
+        uint256 salt
+    ) public view returns (address) {
+        return
+            Create2.computeAddress(
+                bytes32(salt),
+                keccak256(
+                    abi.encodePacked(
+                        type(ERC1967Proxy).creationCode,
+                        abi.encode(
+                            address(accountImplementation),
+                            abi.encodeCall(SmartAccount.initialize, (handler, validators, data))
+                        )
                     )
                 )
-            )
-        );
+            );
     }
 }

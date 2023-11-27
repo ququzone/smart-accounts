@@ -1,5 +1,15 @@
 {
-    "semi": false,
+    "printWidth": 120,
     "singleQuote": true,
-    "printWidth": 120
+    "trailingComma": "all",
+    "arrowParens": "avoid",
+    "overrides": [
+      {
+        "files": "*.sol",
+        "options": {
+          "singleQuote": false
+        }
+      }
+    ],
+    "plugins": ["prettier-plugin-solidity"]
 }

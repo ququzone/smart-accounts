@@ -16,11 +16,10 @@ abstract contract RecoveryManager is Authority {
 
     mapping(address => address) internal recoverors;
 
-    function getRecoverorsPaginated(address start, uint256 pageSize)
-        external
-        view
-        returns (address[] memory array, address next)
-    {
+    function getRecoverorsPaginated(
+        address start,
+        uint256 pageSize
+    ) external view returns (address[] memory array, address next) {
         return recoverors.page(start, pageSize);
     }
 

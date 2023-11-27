@@ -19,12 +19,11 @@ contract WebauthnValidator is BaseValidator {
         impl = _impl;
     }
 
-    function validateSignature(UserOperation calldata userOp, bytes32 userOpHash, bytes calldata signature)
-        external
-        payable
-        override
-        returns (uint256 validationData)
-    {
+    function validateSignature(
+        UserOperation calldata userOp,
+        bytes32 userOpHash,
+        bytes calldata signature
+    ) external payable override returns (uint256 validationData) {
         bytes memory sig;
         bytes32 messageHash;
         {
@@ -35,8 +34,11 @@ contract WebauthnValidator is BaseValidator {
                 string memory clientDataJSONPost
             ) = abi.decode(signature, (bytes, bytes, string, string));
 
-            string memory clientDataJSON =
-                string.concat(clientDataJSONPre, Base64.encode(bytes.concat(userOpHash)), clientDataJSONPost);
+            string memory clientDataJSON = string.concat(
+                clientDataJSONPre,
+                Base64.encode(bytes.concat(userOpHash)),
+                clientDataJSONPost
+            );
             bytes32 clientDataHash = sha256(bytes(clientDataJSON));
             messageHash = sha256(bytes.concat(authenticatorData, clientDataHash));
             sig = realSig;

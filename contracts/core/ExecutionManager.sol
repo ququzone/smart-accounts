@@ -60,22 +60,23 @@ abstract contract ExecutionManager is Authority {
         _execute(dest, value, func);
     }
 
-    function executeBatch(address[] calldata dest, uint256[] calldata value, bytes[] calldata func)
-        external
-        onlyEntryPoint
-    {
+    function executeBatch(
+        address[] calldata dest,
+        uint256[] calldata value,
+        bytes[] calldata func
+    ) external onlyEntryPoint {
         if (dest.length != func.length || (value.length != 0 && value.length != func.length)) {
             revert WrongArrayLength();
         }
         if (value.length == 0) {
-            for (uint256 i = 0; i < dest.length;) {
+            for (uint256 i = 0; i < dest.length; ) {
                 _execute(dest[i], 0, func[i]);
                 unchecked {
                     i++;
                 }
             }
         } else {
-            for (uint256 i = 0; i < dest.length;) {
+            for (uint256 i = 0; i < dest.length; ) {
                 _execute(dest[i], value[i], func[i]);
                 unchecked {
                     i++;

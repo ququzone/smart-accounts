@@ -13,18 +13,21 @@ abstract contract ValidatorManager is Authority {
 
     error ValidatorCannotBeZeroOrSentinel(address validator);
     error ValidatorAlreadyEnabled(address validator);
-    error ValidatorAndPrevValidatorMismatch(address expectedValidator, address returnedValidator, address prevValidator);
+    error ValidatorAndPrevValidatorMismatch(
+        address expectedValidator,
+        address returnedValidator,
+        address prevValidator
+    );
 
     event EnabledValidator(address validator);
     event DisabledValidator(address validator);
 
     mapping(address => address) internal validators;
 
-    function getValidatorsPaginated(address start, uint256 pageSize)
-        external
-        view
-        returns (address[] memory array, address next)
-    {
+    function getValidatorsPaginated(
+        address start,
+        uint256 pageSize
+    ) external view returns (address[] memory array, address next) {
         return validators.page(start, pageSize);
     }
 

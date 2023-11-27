@@ -4,12 +4,11 @@ pragma solidity ^0.8.19;
 import "./ISecp256r1.sol";
 
 contract Secp256r1IoTeX is ISecp256r1 {
-    function validateSignature(bytes32 message, bytes calldata signature, bytes calldata publicKey)
-        external
-        view
-        override
-        returns (bool result)
-    {
+    function validateSignature(
+        bytes32 message,
+        bytes calldata signature,
+        bytes calldata publicKey
+    ) external view override returns (bool result) {
         bytes32 rs0;
         bytes32 rs1;
         bytes32 Q0;
@@ -31,8 +30,12 @@ contract Secp256r1IoTeX is ISecp256r1 {
             mstore(add(input, 0x81), Q1)
             let success := staticcall(gas(), 0x8001, input, 0xa1, out, 0x1)
             switch success
-            case 0 { revert(0x0, 0x0) }
-            default { result := mload(out) }
+            case 0 {
+                revert(0x0, 0x0)
+            }
+            default {
+                result := mload(out)
+            }
         }
     }
 }
